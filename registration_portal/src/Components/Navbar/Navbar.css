@@ -1,0 +1,19 @@
+.NavbarContainer{
+    display: flex;
+    width: 94%;
+    padding: 46px 46px 5px;    /* top, leftRight , Buttom  */ 
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid var(--scarpa-flow-200, #D9D9DE);
+    background: #EFF2F7;
+    
+}
+
+.PageNameContainer{
+    color: var(--jade-950, #03301F);
+    font-size: 28px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    padding-bottom: 5px;
+}
