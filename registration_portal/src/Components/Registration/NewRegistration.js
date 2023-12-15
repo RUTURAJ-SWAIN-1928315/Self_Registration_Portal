@@ -14,6 +14,8 @@ function NewRegistration() {
           <div className='capturePhoto'></div>
           <div> <button className='capureButton'>Capture</button></div>
         </div>
+
+        
       </div>
 
     </div>
