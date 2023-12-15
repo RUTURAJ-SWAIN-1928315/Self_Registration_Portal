@@ -1,8 +1,12 @@
 import React from 'react'
+import Navbar from '../Navbar/Navbar'
 
 function LabReport() {
   return (
-    <div>LabReport</div>
+    <>
+     <Navbar pagename={'Lab Report'}/>
+    </>
+    
   )
 }
 
