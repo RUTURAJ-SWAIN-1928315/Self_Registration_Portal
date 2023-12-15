@@ -5,6 +5,7 @@ import Home from './Components/Home/Home';
 import NewRegistration from './Components/Registration/NewRegistration';
 import BookAppointment from './Components/BookAppointment/BookAppointment';
 import LabReport from './Components/Report/LabReport';
+import RegisterPatientDetail from './Components/Registration/RegisterPatientDetail';
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
      <Routes>
        <Route path='/' element={<Home/>} />
        <Route path="/new-registration" element={<NewRegistration/>} />
+       <Route path="/RegisterPatientDetail" element={<RegisterPatientDetail/>} />
        <Route path="/book-appointment" element={<BookAppointment/>} />
        <Route path="/lab-report" element={<LabReport/>} />
 
