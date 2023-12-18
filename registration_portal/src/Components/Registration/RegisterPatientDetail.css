@@ -1,0 +1,7 @@
+.RegistrationFormBody{
+    height: 86.5vh;
+    background-color:#EFF2F7;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

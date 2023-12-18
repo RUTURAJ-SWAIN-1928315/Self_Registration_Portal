@@ -1,8 +1,16 @@
 import React from 'react'
+import Navbar from '../Navbar/Navbar'
+import './RegisterPatientDetail.css'
 
 function RegisterPatientDetail() {
   return (
-    <div>RegisterPatientDetail</div>
+    <>
+      <Navbar pagename={'New Registration'}/>
+      <div className='RegistrationFormBody'>
+
+      </div>
+
+    </>
   )
 }
 

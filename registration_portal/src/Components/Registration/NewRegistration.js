@@ -3,8 +3,11 @@ import Navbar from '../Navbar/Navbar';
 import axios from 'axios';
 import './NewRegistration.css';
 import rightIcon from '../../Assests/Images/rightIcon.svg';
+import { useNavigate } from 'react-router-dom';
 
 function NewRegistration() {
+
+  const navigate = useNavigate();
   const [stream, setStream] = useState(null);
   const [canvasURL, setCanvasURL] = useState(null); // State to hold the canvas URL
   const [captured, setCaptured] = useState(false); // State to track if photo is captured
@@ -100,7 +103,7 @@ function NewRegistration() {
             </button>
           </div>
         </div>
-        <button className='NewRegistrationSkipButton'>
+        <button onClick={() => navigate('/patient-detail-register')} className='NewRegistrationSkipButton'>
           SKIP<img src={rightIcon} alt="Right Icon" />
         </button>
       </div>
