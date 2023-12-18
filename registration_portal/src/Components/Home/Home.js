@@ -8,7 +8,7 @@ import AboutKims from '../../Assests/Images/AboutKIMS.svg'
 import MyLocation from '../../Assests/Images/MyLocation.svg'
 import feedback from '../../Assests/Images/feedback.svg'
 import faq from '../../Assests/Images/faq.svg'
-
+ 
 
 
 function Home() {
