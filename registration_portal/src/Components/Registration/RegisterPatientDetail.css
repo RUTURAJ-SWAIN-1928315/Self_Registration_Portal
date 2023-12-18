@@ -5,3 +5,224 @@
     justify-content: center;
     align-items: center;
 }
+.mandatoryField {
+    color: red;
+}
+.patientTypeDetailBox{
+    align-items: flex-start;
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    justify-content: center;
+    width: 32%;
+}
+.patientTypeDetailLabel{
+    color: #292b37;
+    color: var(--Text1,#292b37);
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px;
+}
+.patientTypeSelectDropdown{
+    gap: 8px;
+    height: 32px;
+    padding: 4px 10px;
+    width: 16rem;
+    border-radius: 8px;
+    border: 1px solid var(--Scarpa-Flow-300, #B9B9C0);
+    background: var(--White, #FFF);
+}
+.patientOptionDropdown{
+    font-size: 14px;
+    line-height: 20px;
+    padding: 15px;
+}
+
+.newRegistrationBody{
+    height: 80vh;
+    width: 95vw;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+.newRegistrationContent{
+    display: flex;
+    padding-bottom: 20px;
+    align-items: flex-start;
+    gap: 34px;
+    border-bottom: 1px solid var(--Scarpa-Flow-200, #D9D9DE);
+    margin:20px;
+}
+
+.newRegistrationContentSection{
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+}
+.newRegistrationHeaderRow{
+    display: flex;
+    flex-direction: column;
+    width:100%;
+    gap:20px;
+    margin: 10px;
+    justify-content: space-between;
+}
+.newRegistrationHeaderRow1{
+    display: flex;
+    width:100%;
+    flex-direction: column;
+    gap:10px;
+    margin: 10px;
+    justify-content: space-between;
+}
+.newRegistrationAadharHeaderRow{
+    display: flex;
+    width:100%;
+    gap:10px;
+    margin: 10px;
+    margin: 0px 136px;
+}
+.patientNameInput{
+    display: flex;
+    padding: 12px 8px;
+    flex-direction: column;
+    align-items: flex-start;
+    flex: 1 0 0;
+    border-radius: 6px 6px 6px 6px;
+    border: 1px solid var(--Scarpa-Flow-300, #B9B9C0);
+    background: var(--White, #FFF);
+    width: 179px;
+}
+.aadharNumberInput{
+    display: flex;
+    padding: 12px 8px;
+    flex-direction: column;
+    align-items: flex-start;
+    flex: 1 0;
+    border-radius: 6px 6px 6px 6px;
+    border: 1px solid var(--Scarpa-Flow-300, #B9B9C0);
+    background: var(--White, #FFF);
+    width: 179px;
+}
+.gender-selection {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  
+  .gender-radio {
+    display: none;
+  }
+  
+  .gender-label {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100px; /* or whatever width you want */
+    padding: 10px;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    margin: 0 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .gender-label.selected {
+    background-color:var(--Jade-600, #0FA968);
+    color: white;
+    border-color: var(--Jade-600, #0FA968);
+  }
+  .genderSelectionBox{
+    align-items: flex-start;
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    justify-content: center;
+    width: 32%;
+  }
+  .patientDatePicker{
+    color: #000;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    height: 22px;
+    line-height: normal;
+    padding: 4px 10px;
+    border-radius: 10px;
+  }
+  .patientAgeContainer{
+    display: flex;
+    height: 34px;
+  }
+  .patientNumberInput{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    height: 33px;
+    border-radius: 6px 6px 6px 6px;
+    border: 1px solid var(--Scarpa-Flow-300, #B9B9C0);
+    background: var(--White, #FFF);
+  }
+  .addressDetailsSection{
+    padding: 10px;
+  }
+  .addressDetailsContent{
+    display: flex;
+    gap:10px;
+    flex-direction: column;
+  }
+  .addressDetailsContentRow{
+    display: flex;
+    gap:10px;
+  }
+  .addressInputRow{
+    display: flex;
+    gap:10px;
+    flex-direction: column;
+  }
+  .newRegistrationButtonGroupRow{
+    display: flex;
+    padding: 16px 0px;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    align-self: stretch;
+}
+.newRegistrationCancelButton{
+  display: flex;
+  padding: 4px 12px 4px 10px;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  border-radius: 5px;
+  border: 1px solid var(--Jade-600, #0FA968);
+  background: var(--Jade-50, #EFFEF7);
+  box-shadow: 6px 10px 12px 0px rgba(0, 63, 141, 0.10);
+  color: var(--Jade-600, #0FA968);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 24px;
+  cursor: pointer;
+}
+.newRegistrationSaveButton{
+  display: flex;
+  padding: 4px 12px 4px 10px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  background: var(--Jade-600, #0FA968);;
+  box-shadow: 6px 10px 12px 0px rgba(0, 63, 141, 0.10);
+  border: none;
+  color: var(--White, #FFF);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 24px; /* 150% */
+  cursor: pointer;
+}
