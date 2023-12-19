@@ -3,9 +3,21 @@ import {React,useState,useEffect} from 'react'
 import Navbar from '../Navbar/Navbar'
 import './RegisterPatientDetail.css'
 import DefaultPatient from  "../../Assests/Images/defaultPatient.svg";
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 function RegisterPatientDetail() {
+  const navigate = useNavigate();
+  const BACKEND_URL = process.env.REACT_APP_EMR_BACKEND_BASE_URL;
+  const siteId = localStorage.getItem('SiteId');
+
   const [patientTypeList,setPatientTypeList] = useState([]);
+    const [countryList, setCountryList] = useState([]);
+  const [stateList, setStateList] = useState([]);
+  const [districtList, setDistrictList] = useState([]);
+  // const [cityList, setCityList] = useState([]);
+  const [villageList, setVillageList] = useState([]);
+
   const patientImage = null;
   const [selectedGender, setSelectedGender] = useState('female');  
   const [selectedArea,setSelectedArea] = useState('Rural');
@@ -22,6 +34,78 @@ function RegisterPatientDetail() {
     policeStation: '',
   });
 
+   //For getting Patient Type master
+   useEffect(() => {
+    
+    axios
+      .get(`${BACKEND_URL}/kiosk/patientTypeMaster?siteId=${siteId}`)
+      .then((response) => {
+        if (response.data && response.data.status === "sucess") {
+          const types = response.data.data.map(item => item.registrationType);
+          setPatientTypeList(types);
+        }
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+      });
+    }, [BACKEND_URL,siteId]);
+
+    const handleAddressChange = (event) => {
+      // const pinCode = event.target.value;
+      // setFormData({ ...formData, pinCode: pinCode });
+      // const state = event.target.value;
+      // setFormData({ ...formData, state: state });
+      // const country = event.target.value;
+      // const district = event.target.value;
+      // setFormData({ ...formData, district: district });
+      // //cityName and village will be suggestions
+      // const village = event.target.value;
+      // setFormData({ ...formData, village: village });
+
+      // Update only the field that triggered the event
+      const { name, value } = event.target;
+      console.log("value",value);
+  setFormData(prevState => ({
+    ...prevState,
+    [name]: value
+  }));
+
+     // Check if the name of the field is pinCode and its value is empty
+  if (name === "pinCode" && value.trim() === "") {
+    // Reset all lists
+    setCountryList([]);
+    setStateList([]);
+    setDistrictList([]);
+    setVillageList([]);
+  }else if (name === "pinCode" && value.length === 6){
+
+      if (value.length === 6) { // Assuming pin code length is 6
+        axios.get(`${BACKEND_URL}/kiosk/getAddressMaster?pinCode=${value}`, {
+        })
+        .then((response) => {
+          if (response.data.status === "success" && response.data.data.length > 0) {
+            const data = response.data.data;
+            const uniqueCountries = [...new Set(data.map(item => item.countryName))];
+            const uniqueStates = [...new Set(data.map(item => item.stateName))];
+            const uniqueDistricts = [...new Set(data.map(item => item.districtName))];
+            // const uniqueCities = [...new Set(data.map(item => item.cityName).filter(name => name))];
+            const uniqueVillages = [...new Set(data.map(item => item.villageName).filter(name => name))];
+    
+            setCountryList(uniqueCountries);
+            setStateList(uniqueStates);
+            setDistrictList(uniqueDistricts);
+            // setCityList(uniqueCities);
+            setVillageList(uniqueVillages);
+          }
+        })
+        .catch((error) => {
+          console.error('Error fetching address data:', error);
+        });
+      }
+    }
+    };
+ 
+  console.log("district List",districtList)
   const handleGenderChange = (event) => {
     setSelectedGender(event.target.value);
   };
@@ -34,13 +118,20 @@ function RegisterPatientDetail() {
     }));
   };
 
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    setFormData(prevState => ({
-      ...prevState,
-      [name]: value
-    }));
-  };
+  // const handleInputChange = (event) => {
+  //   const { name, value } = event.target;
+  //   setFormData(prevState => ({
+  //     ...prevState,
+  //     [name]: value
+  //   }));
+  // };
+
+  const handleSaveNewRegistration = () =>{
+    //Mention the saving logic here
+
+
+    navigate('/BookAppointment');
+  }
   return (
     <>
       <Navbar pagename={'New Registration'}/>
@@ -57,9 +148,10 @@ function RegisterPatientDetail() {
             <div style={{width: "80%"}}>
                 <select className='patientTypeSelectDropdown' placeholder='Select'  
                   >
-                    <option className='patientOptionDropdown'>Select Patient Type</option>
-                     <option>OPD</option>
-                     <option>IP</option>
+                    <option className='patientOptionDropdown' disabled>Select Patient Type</option>
+                    {patientTypeList.map((type, index) => (
+                    <option key={index} value={type}>{type}</option>
+                  ))}
                 </select>
             </div>
         </div>
@@ -215,7 +307,7 @@ function RegisterPatientDetail() {
                className='patientNameInput'
               placeholder='Pin Code'
                value={formData.pinCode}
-              onChange={handleInputChange}
+              onChange={handleAddressChange}
              />
             </div>
 
@@ -224,8 +316,9 @@ function RegisterPatientDetail() {
             <select className='patientTypeSelectDropdown' placeholder='Select'  
                   >
                     <option className='patientOptionDropdown'>Select District</option>
-                     <option>Khurdha</option>
-                     <option>CUttack</option>
+                    {districtList.map((type, index) => (
+                    <option key={index} value={type}>{type}</option>
+                  ))}
                 </select>
             </div>
 
@@ -234,8 +327,9 @@ function RegisterPatientDetail() {
             <select className='patientTypeSelectDropdown' placeholder='Select'  
                   >
                     <option className='patientOptionDropdown'>Select State</option>
-                     <option>Odisha</option>
-                     <option>Delhi</option>
+                    {stateList.map((type, index) => (
+                    <option key={index} value={type}>{type}</option>
+                  ))}
                 </select>
             </div>
 
@@ -244,8 +338,9 @@ function RegisterPatientDetail() {
             <select className='patientTypeSelectDropdown' placeholder='Select'  
                   >
                     <option className='patientOptionDropdown'>Select Country</option>
-                     <option>India</option>
-                     <option>USA</option>
+                    {countryList.map((type, index) => (
+                    <option key={index} value={type}>{type}</option>
+                  ))}
                 </select>
             </div>
             </div>
@@ -260,7 +355,7 @@ function RegisterPatientDetail() {
                className='patientNameInput'
               placeholder='Village'
                value={formData.village}
-              onChange={handleInputChange}
+              onChange={handleAddressChange}
              />
             </div>
 
@@ -272,7 +367,7 @@ function RegisterPatientDetail() {
                className='patientNameInput'
               placeholder='Locality'
                value={formData.locality}
-              onChange={handleInputChange}
+              onChange={handleAddressChange}
              />
             </div>
 
@@ -284,7 +379,7 @@ function RegisterPatientDetail() {
                className='patientNameInput'
               placeholder='Post Office'
                value={formData.postOffice}
-              onChange={handleInputChange}
+              onChange={handleAddressChange}
              />
             </div>
             
@@ -296,7 +391,7 @@ function RegisterPatientDetail() {
                className='patientNameInput'
               placeholder='Police Station'
                value={formData.policeStation}
-              onChange={handleInputChange}
+              onChange={handleAddressChange}
              />
             </div>
             </div>
@@ -305,7 +400,7 @@ function RegisterPatientDetail() {
 
             <div className='newRegistrationButtonGroupRow'>
                 <button className='newRegistrationCancelButton' >Clear All</button>
-                <button className='newRegistrationSaveButton' >Save & Next</button>
+                <button className='newRegistrationSaveButton' onClick={handleSaveNewRegistration} >Save & Next</button>
             </div>
 
         </div>

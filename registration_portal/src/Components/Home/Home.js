@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 import './Home.css'
 import NewRegistrationImage from '../../Assests/Images/NewRegistration.svg';
@@ -8,24 +8,42 @@ import AboutKims from '../../Assests/Images/AboutKIMS.svg'
 import MyLocation from '../../Assests/Images/MyLocation.svg'
 import feedback from '../../Assests/Images/feedback.svg'
 import faq from '../../Assests/Images/faq.svg'
- 
+import axios from 'axios';
 
 
 function Home() {
+    const BACKEND_URL = process.env.REACT_APP_EMR_BACKEND_BASE_URL;
+    const loginUserName = process.env.REACT_APP_USERNAME;
+    const loginPassword = process.env.REACT_APP_PASSWORD;
+
+    //For logging into Kiosk
+    useEffect(() => {
+        axios
+          .get(`${BACKEND_URL}/kiosk/login?userName=${loginUserName}&password=${loginPassword}`)
+          .then((response) => {
+            if(response.data && response.data.siteId) {
+                // Store 'siteId' in localStorage
+                localStorage.setItem('SiteId', response.data.siteId);
+              }
+          })
+          .catch((error) => {
+            console.error('Error fetching data:', error);
+          });
+        }, [BACKEND_URL,loginUserName,loginPassword]);
 
     const navigate = useNavigate();
 
     const handleRegisterCardClick = () => {
-        navigate('/new-registration');
+        navigate('/NewRegistration');
     };
    
 
     const handleBookAppointmentCardClick = () => {
-        navigate('/book-appointment');
+        navigate('/BookAppointment');
     };
 
     const handleLabReportCardClick = () => {
-        navigate('/lab-report');
+        navigate('/LabReport');
     };
 
     const handleAboutKimsCardClick = () => {
@@ -58,14 +76,14 @@ function Home() {
                 </div>
                 <div className='cardBody' onClick={handleBookAppointmentCardClick}>
                     <div><img src={BookAppointment} alt="BookAppointment"/> </div>
-                    <div className='cardBodyHeader'>Book Appointment</div>
+                    <div className='cardBodyHeader'>Already Registered</div>
                     <div className='cardBodyTxt'>for patients already registered</div>
                 </div>
-                <div className='cardBody' onClick={handleLabReportCardClick} >
+                {/* <div className='cardBody' onClick={handleLabReportCardClick} >
                     <div><img src={LabReport} alt="LabReport" /> </div>
                     <div className='cardBodyHeader'>Lab Reports</div>
                     <div className='cardBodyTxt'>for patients done lab test</div>
-                </div>
+                </div> */}
 
             </div>
 
