@@ -103,7 +103,7 @@ function NewRegistration() {
             </button>
           </div>
         </div>
-        <button onClick={() => navigate('/patient-detail-register')} className='NewRegistrationSkipButton'>
+        <button onClick={() => navigate('/PatientDetailRegister')} className='NewRegistrationSkipButton'>
           SKIP<img src={rightIcon} alt="Right Icon" />
         </button>
       </div>
