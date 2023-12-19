@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom'
 function Navbar(props) {
 
   const navigate = useNavigate()
-  console.log("pageName", props.pagename)
+  // console.log("pageName", props.pagename)
 
   
   return (

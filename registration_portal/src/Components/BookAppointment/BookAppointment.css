@@ -87,14 +87,30 @@
     line-height: 18px; /* 112.5% */
     letter-spacing: 0.2px;
 }
+.OTPPrompt{
+    width: 100%;
+}
 
-.OTPTimer{
-    color: var(--Jade-500, #1ACD81);
-    font-feature-settings: 'clig' off, 'liga' off;
-    font-family: Roboto;
-    font-size: 16px;
+.verifyBtn{
+    display: flex;
+    height: 42px;
+    padding: 10px 20px;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    flex: 1 0 0;
+    border-radius: 10px;
+    background: var(--Jade-500, #1ACD81);
+    border: none;
+    color: var(--White, #FFF);
+    font-size: 19px;
     font-style: normal;
-    font-weight: 700;
-    line-height: 18px; /* 112.5% */
-    letter-spacing: 0.2px;
+    font-weight: 400;
+    line-height: normal;
+    width: 100%;
+}
+
+.otp-input-root input{
+    border-radius: 10px;
+    background-color: aquamarine !important ;
 }

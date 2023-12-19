@@ -18,6 +18,10 @@ function BookAppointment() {
     setShowOTPInputs(true); // Set showOTPInputs state to true on arrow button click
   };
 
+  const handleResend = () => {
+    console.log(otp);
+  };
+
   return (
     <div>
       <Navbar pagename={'Book Appointment'} />
@@ -40,22 +44,13 @@ function BookAppointment() {
               <div className='OTPheader'>
                 Enter OTP
               </div>
-              <div style={{display: 'flex', flexDirection:'row'}}>
-                <div className='OTPsubheader'>
-                An OTP has been sent to xxxxxx7272 
-                </div>
-                <div className='OTPTimer'>
-                <OtpTimer
-                seconds={3}
-                text="Re-Send OTP in"
-                ButtonText="Resend OTP"
-                textColor={"green"}
-              />
-                </div>
+          
+                  <div className='OTPsubheader'>
+                  An OTP has been sent to xxxxxx7272 
+                  </div>
               
-              </div>
               <OtpInput
-              style={{ margin: "15% 0% 15% 3%" }}
+              style={{ margin: "5%", gap:'10%',justifyContent:'space-evenly'  }}
               OTPLength={4}
               value={otp}
               onChange={setOtp}
@@ -63,6 +58,29 @@ function BookAppointment() {
               disabled={false}
               autoFocus
             ></OtpInput>
+
+            <div style={{display:'flex', flexDirection:'row', alignContent:'center', justifyContent:'space-around', alignItems:'center'}}>
+              
+              <OtpTimer
+                minutes={0}
+                seconds={3}
+                text="Time Remaining:"
+                ButtonText="Resend OTP"
+                resend={handleResend}
+                textColor={"green"}
+                buttonColor={"green"}
+                background= {"var(--Scarpa-Flow-800, #42424A)"}               
+              />
+
+             <div style={{width:'60%'}}>
+              <button className='verifyBtn'>
+               VERIFY
+              </button>
+             </div>
+
+            </div>
+
+
             </div>
           )}
         </div>
