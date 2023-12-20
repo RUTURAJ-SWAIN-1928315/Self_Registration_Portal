@@ -72,12 +72,12 @@ function Home() {
                 <div className='cardBody' onClick={handleRegisterCardClick}>
                     <div><img src={NewRegistrationImage} alt="registion" /> </div>
                     <div className='cardBodyHeader'>New Registration</div>
-                    <div className='cardBodyTxt'>for patients not registered yet</div>
+                    <div className='cardBodyTxt'>Registration & appointment booking</div>
                 </div>
                 <div className='cardBody' onClick={handleBookAppointmentCardClick}>
                     <div><img src={BookAppointment} alt="BookAppointment"/> </div>
                     <div className='cardBodyHeader'>Already Registered</div>
-                    <div className='cardBodyTxt'>for patients already registered</div>
+                    <div className='cardBodyTxt'>check-in, appointment booking, lab reports, bills</div>
                 </div>
                 {/* <div className='cardBody' onClick={handleLabReportCardClick} >
                     <div><img src={LabReport} alt="LabReport" /> </div>
