@@ -9,7 +9,8 @@ import { useNavigate } from 'react-router-dom';
 function RegisterPatientDetail() {
   const navigate = useNavigate();
   const BACKEND_URL = process.env.REACT_APP_EMR_BACKEND_BASE_URL;
-  const siteId = localStorage.getItem('SiteId');
+  const profileData = JSON.parse(localStorage.getItem('profileData'));
+  //const siteId = localStorage.getItem('SiteId');
 
   const [patientTypeList,setPatientTypeList] = useState([]);
     const [countryList, setCountryList] = useState([]);
@@ -33,12 +34,13 @@ function RegisterPatientDetail() {
     postOffice: '',
     policeStation: '',
   });
+  console.log("profileData.siteId",profileData.siteId)
 
    //For getting Patient Type master
    useEffect(() => {
     
     axios
-      .get(`${BACKEND_URL}/kiosk/patientTypeMaster?siteId=${siteId}`)
+      .get(`${BACKEND_URL}/kiosk/patientTypeMaster?siteId=${profileData.siteId}`)
       .then((response) => {
         if (response.data && response.data.status === "sucess") {
           const types = response.data.data.map(item => item.registrationType);
@@ -48,7 +50,7 @@ function RegisterPatientDetail() {
       .catch((error) => {
         console.error('Error fetching data:', error);
       });
-    }, [BACKEND_URL,siteId]);
+    }, [BACKEND_URL,profileData.siteId]);
 
     const handleAddressChange = (event) => {
       // const pinCode = event.target.value;
