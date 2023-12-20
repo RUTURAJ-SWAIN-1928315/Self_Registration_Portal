@@ -157,7 +157,7 @@ function RegisterPatientDetail() {
         </div>
 
         <div className='genderSelectionBox'>
-          <div className='patientTypeDetailLabel'>Gender<span className='mandatoryField'>*</span></div>
+          <div className='patientTypeDetailLabel' style={{marginLeft:'10px'}}>Gender<span className='mandatoryField'>*</span></div>
            <div className="gender-selection">
             <input
               type="radio"
@@ -264,8 +264,8 @@ function RegisterPatientDetail() {
 
         <div className='addressDetailsSection'>
         <div className='patientTypeDetailLabel'>ADDRESS DETAILS</div>
-        <div className='genderSelectionBox'>
-          <div className='patientTypeDetailLabel'>Area<span className='mandatoryField'>*</span></div>
+        <div className='areaSelectionBox'>
+          <div className='patientTypeDetailLabel' style={{marginLeft:'10px'}}>Area<span className='mandatoryField'>*</span></div>
            <div className="gender-selection">
             <input
               type="radio"
@@ -313,7 +313,7 @@ function RegisterPatientDetail() {
 
             <div className='addressInputRow'>
             <div className='patientTypeDetailLabel'>District<span className='mandatoryField'>*</span></div>
-            <select className='patientTypeSelectDropdown' placeholder='Select'  
+            <select className='patientTypeSelectDropdown1' placeholder='Select'  
                   >
                     <option className='patientOptionDropdown'>Select District</option>
                     {districtList.map((type, index) => (
@@ -324,7 +324,7 @@ function RegisterPatientDetail() {
 
             <div className='addressInputRow'>
             <div className='patientTypeDetailLabel'>State<span className='mandatoryField'>*</span></div>
-            <select className='patientTypeSelectDropdown' placeholder='Select'  
+            <select className='patientTypeSelectDropdown1' placeholder='Select'  
                   >
                     <option className='patientOptionDropdown'>Select State</option>
                     {stateList.map((type, index) => (
@@ -335,7 +335,7 @@ function RegisterPatientDetail() {
 
             <div className='addressInputRow'>
             <div className='patientTypeDetailLabel'>Country<span className='mandatoryField'>*</span></div>
-            <select className='patientTypeSelectDropdown' placeholder='Select'  
+            <select className='patientTypeSelectDropdown1' placeholder='Select'  
                   >
                     <option className='patientOptionDropdown'>Select Country</option>
                     {countryList.map((type, index) => (
@@ -346,13 +346,13 @@ function RegisterPatientDetail() {
             </div>
 
             {formData.selectedArea === 'Rural' && (
-            <div className='addressDetailsContentRow'>
+            <div className='addressDetailsContentRow1'>
             <div className='addressInputRow'>
             <div className='patientTypeDetailLabel'>Village<span className='mandatoryField'>*</span></div>
             <input
                type="text"
                name="village"
-               className='patientNameInput'
+               className='addressInput'
               placeholder='Village'
                value={formData.village}
               onChange={handleAddressChange}
@@ -364,10 +364,11 @@ function RegisterPatientDetail() {
             <input
                type="text"
                name="locality"
-               className='patientNameInput'
+               className='addressInput'
               placeholder='Locality'
                value={formData.locality}
               onChange={handleAddressChange}
+              style={{width:'230px'}}
              />
             </div>
 
@@ -376,10 +377,11 @@ function RegisterPatientDetail() {
             <input
                type="text"
                name="postOffice"
-               className='patientNameInput'
+               className='addressInput'
               placeholder='Post Office'
                value={formData.postOffice}
               onChange={handleAddressChange}
+              style={{width:'230px'}}
              />
             </div>
             
@@ -388,10 +390,11 @@ function RegisterPatientDetail() {
             <input
                type="text"
                name="policeStation"
-               className='patientNameInput'
+               className='addressInput'
               placeholder='Police Station'
                value={formData.policeStation}
               onChange={handleAddressChange}
+              style={{width:'230px'}}
              />
             </div>
             </div>
