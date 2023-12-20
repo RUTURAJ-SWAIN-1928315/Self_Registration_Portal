@@ -15,15 +15,17 @@ function Home() {
     const BACKEND_URL = process.env.REACT_APP_EMR_BACKEND_BASE_URL;
     const loginUserName = process.env.REACT_APP_USERNAME;
     const loginPassword = process.env.REACT_APP_PASSWORD;
+    
 
     //For logging into Kiosk
     useEffect(() => {
         axios
           .get(`${BACKEND_URL}/kiosk/login?userName=${loginUserName}&password=${loginPassword}`)
           .then((response) => {
-            if(response.data && response.data.siteId) {
+            if(response.data) {
+                console.log("response.data.profile",JSON.stringify(response.data.profile));
                 // Store 'siteId' in localStorage
-                localStorage.setItem('SiteId', response.data.siteId);
+                localStorage.setItem('profileData', JSON.stringify(response.data.profile));
               }
           })
           .catch((error) => {
@@ -34,7 +36,7 @@ function Home() {
     const navigate = useNavigate();
 
     const handleRegisterCardClick = () => {
-        navigate('/NewRegistration');
+        navigate('/NewRegistrationAadhar');
     };
    
 
