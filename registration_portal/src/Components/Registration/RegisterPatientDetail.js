@@ -132,140 +132,117 @@ function RegisterPatientDetail() {
 
     navigate('/BookAppointment');
   }
-  return (
-    <>
-      <Navbar pagename={'New Registration'}/>
-      <div className='newRegistrationBody'>
-        <div className='newRegistrationContent'>
-        <div>
-        <img className='patientImage' src={patientImage || DefaultPatient} alt="Patient" />
-        </div>
-        <div className='newRegistrationContentSection'>
-        <div className='newRegistrationHeaderRow'>
+  
+return (
+  <>
+    <Navbar pagename={'New Registration'}/>
+     
+     <div className='newRegisterPatientBody'>
+      <div className='newRegisterPatientContent' style={{display:'flex', flexDirection:'row'}}>
 
-        <div className="patientTypeDetailBox">
-            <div className='patientTypeDetailLabel'>Patient Type<span className='mandatoryField'>*</span></div>
-            <div style={{width: "80%"}}>
-                <select className='patientTypeSelectDropdown' placeholder='Select'  
-                  >
-                    <option className='patientOptionDropdown' disabled>Select Patient Type</option>
-                    {patientTypeList.map((type, index) => (
-                    <option key={index} value={type}>{type}</option>
-                  ))}
-                </select>
-            </div>
-        </div>
+         <div style={{border:'groove', borderColor:'#f0ffff34', width:'11%', height:'170px', display:'flex', alignItems:'center', justifyContent:'center' }}>
+           <img className='patientImage' src={patientImage || DefaultPatient} alt="Patient" />
+         </div>
 
-        <div className='genderSelectionBox'>
-          <div className='patientTypeDetailLabel' style={{marginLeft:'10px'}}>Gender<span className='mandatoryField'>*</span></div>
-           <div className="gender-selection">
-            <input
-              type="radio"
-              id="male"
-              name="gender"
-              value="male"
-              checked={selectedGender === 'male'}
-              onChange={handleGenderChange}
-              className="gender-radio"
-            />
-            <label htmlFor="male" className={`gender-label ${selectedGender === 'male' ? 'selected' : ''}`}>
-              Male
-            </label>
+         <div className='detailContainer1' style={{ borderColor:'#f0ffff34', width:'100%' }}>
 
-              <input
-                type="radio"
-                id="female"
-                name="gender"
-                value="female"
-                checked={selectedGender === 'female'}
-                onChange={handleGenderChange}
-                className="gender-radio"
-              />
-              <label htmlFor="female" className={`gender-label ${selectedGender === 'female' ? 'selected' : ''}`}>
-                Female
-              </label>
+          <div> 
 
-              <input
-                type="radio"
-                id="other"
-                name="gender"
-                value="other"
-                checked={selectedGender === 'other'}
-                onChange={handleGenderChange}
-                className="gender-radio"
-              />
-              <label htmlFor="other" className={`gender-label ${selectedGender === 'other' ? 'selected' : ''}`}>
-                Other
-              </label>
-            </div>
-            </div>
+                  <div className="patientTypeDetailBox">
+                    <div className='patientTypeDetailLabel'>Patient Type<span className='mandatoryField'>*</span></div>
+                    <div style={{width: "80%"}}>
+                        <select className='patientTypeSelectDropdown' placeholder='Select'  
+                          >
+                            <option className='patientOptionDropdown' disabled>Select Patient Type</option>
+                            {patientTypeList.map((type, index) => (
+                            <option key={index} value={type}>{type}</option>
+                          ))}
+                        </select>
+                    </div>
+                  </div>
 
+                 <div className="patientTypeDetailBox">
+                    <div className='patientTypeDetailLabel'>Gender<span className='mandatoryField'>*</span></div>
+                    <div style={{width: "80%"}}>
+                        <select className='patientTypeSelectDropdown' placeholder='Select'>
+                            <option className='patientOptionDropdown' disabled>Select Patient Type</option>
+                            {patientTypeList.map((type, index) => (
+                            <option key={index} value={type}>{type}</option>
+                          ))}
+                        </select>
+                    </div>
+                 </div>
+             </div>
 
-        </div>
+             <div style={{paddingLeft:'30px',paddingRight:'30px', width:'100%'}}>
 
-          <div className='newRegistrationHeaderRow1'>
-                <div className="patientTypeDetailBox">
+             <div className="patientTypeDetailBox">
                 <div className='patientTypeDetailLabel'>Patient Name<span className='mandatoryField'>*</span></div>
-                <div style={{display:'flex'}}>
-                <input className='patientNameInput' placeholder='First Name'></input>
-                <input className='patientNameInput' placeholder='Middle Name'></input>
-                <input className='patientNameInput' placeholder='Last Name'></input>
+                  <div style={{display:'flex'}}>
+                  <input style={{borderRadius: '6px 0px 0px 6px'}} className='patientNameInput' placeholder='First Name'></input>
+                  <input style={{borderRadius: '0px'}} className='patientNameInput' placeholder='Middle Name'></input>
+                  <input style={{borderRadius: '0px 6px 6px 0px'}} className='patientNameInput' placeholder='Last Name'></input>
                 </div>
-                  
+              </div>
+              <div style={{display:'flex', gap:'20px'}}>
+
+                 <div className="patientTypeDetailBox">
+                    <div className='patientTypeDetailLabel'>Date of Birth</div>
+                    <div style={{display:'flex'}}>
+                    <input className='patientDatePicker' type='date' placeholder='dd-mm-yyyy'></input>
+                    </div>  
+                 </div>
+
+                 <div style={{display:'flex', flexDirection:'column',gap:'6px'}}>    
+                  <div className='patientTypeDetailLabel'>Age<span className='mandatoryField'>*</span></div>
+                  <div className='patientAgeContainer'> 
+                  <input style={{ borderRadius: '6px 0px 0px 6px'}} className='patientAgeInput'></input>
+                  <select style={{borderRadius: '0px 6px 6px 0px'}}>
+                          <option value="">Years</option>
+                          <option value="">Months</option>
+                        </select>
+                  </div>
                 </div>
 
-                <div style={{display:'flex', gap:'10px'}}>
+                <div style={{display:'flex', flexDirection:'column',gap:'6px',width:'100%'}}>
+                  <div className='patientTypeDetailLabel'>Mobile Number<span className='mandatoryField'>*</span></div>
+                  <input className='patientNumberInput' placeholder='0000000000'></input>
+                </div>
+
+              </div>
+
+                                 
+              </div>
+         </div>
+         
+      </div>
+      <div className='newRegisterPatientAdharContent' style={{display:'flex', gap:'20px', paddingTop:'0px', paddingBottom:'0px'}}>
+                <div style={{ width:'50%'}}>
+                  <div className="patientTypeDetailBox">
+                    <div className='patientTypeDetailLabel'>Aadhar Number<span className='mandatoryField'>*</span></div>
+                    <div style={{display:'flex'}}>
+                    <input className='aadharNumberInput' placeholder='0000 0000 0000 0000'></input>
+                    </div>
+                  </div>
+  
+                </div>
+                <div style={{ width:'50%'}}>
                 <div className="patientTypeDetailBox">
-
-                <div className='patientTypeDetailLabel'>Date of Birth</div>
-                <div style={{display:'flex'}}>
-                <input className='patientDatePicker' type='date' placeholder='dd-mm-yyyy'></input>
-                </div>  
-                </div>
-
-                <div style={{display:'flex', flexDirection:'column',gap:'6px'}}>    
-                <div className='patientTypeDetailLabel'>Age<span className='mandatoryField'>*</span></div>
-                <div className='patientAgeContainer'> 
-                <input className='patientNameInput'></input>
-                <select style={{borderRadius:'6px'}}>
-                        <option value="">Years</option>
-                        <option value="">Months</option>
-                      </select>
-                </div>
-                </div>
-
-                <div style={{display:'flex', flexDirection:'column',gap:'6px'}}>
-                <div className='patientTypeDetailLabel'>Mobile Number<span className='mandatoryField'>*</span></div>
-                <input className='patientNumberInput' placeholder='0000000000'></input>
-                </div>
+                  <div className='patientTypeDetailLabel'>Email</div>
+                  <div style={{display:'flex'}}>
+                  <input className='aadharNumberInput' placeholder='example@email.com'></input>
+                  </div>
+                    
+                  </div>
                 </div>
 
       </div>
 
-      </div>
-        </div>
-        <div className='newRegistrationAadharHeaderRow'>
-      <div className="patientTypeDetailBox">
-           <div className='patientTypeDetailLabel'>Aadhar Number<span className='mandatoryField'>*</span></div>
-           <div style={{display:'flex'}}>
-           <input className='aadharNumberInput' placeholder='0000 0000 0000 0000'></input>
-          </div>
-            
-           </div>
+      <div className='AddressContainer'>
 
-           <div className="patientTypeDetailBox">
-           <div className='patientTypeDetailLabel'>Email</div>
-           <div style={{display:'flex'}}>
-           <input className='aadharNumberInput' placeholder='example@email.com'></input>
-          </div>
-            
-           </div>
-        </div>
-
-        <div className='addressDetailsSection'>
-        <div className='patientTypeDetailLabel'>ADDRESS DETAILS</div>
+      <div className='patientTypeDetailLabel'>ADDRESS DETAILS</div>
         <div className='areaSelectionBox'>
-          <div className='patientTypeDetailLabel' style={{marginLeft:'10px'}}>Area<span className='mandatoryField'>*</span></div>
+          <div className='patientTypeDetailLabel'>Area<span className='mandatoryField'>*</span></div>
            <div className="gender-selection">
             <input
               type="radio"
@@ -296,55 +273,54 @@ function RegisterPatientDetail() {
             </div>
             </div>
 
-            <div className='addressDetailsContent'>
+     <div style={{ width:'100%', height:'133px'}}>
+          <div className='addressDetailsContentRow'>
+                <div className='addressInputRow'>
+                <div className='patientTypeDetailLabel'>Pin Code<span className='mandatoryField'>*</span></div>
+                <input
+                  type="text"
+                  name="pinCode"
+                  className='patientNameInput'
+                  placeholder='Pin Code'
+                  value={formData.pinCode}
+                  onChange={handleAddressChange}
+                />
+                </div>
 
-            <div className='addressDetailsContentRow'>
-            <div className='addressInputRow'>
-            <div className='patientTypeDetailLabel'>Pin Code<span className='mandatoryField'>*</span></div>
-            <input
-               type="text"
-               name="pinCode"
-               className='patientNameInput'
-              placeholder='Pin Code'
-               value={formData.pinCode}
-              onChange={handleAddressChange}
-             />
-            </div>
+                <div className='addressInputRow'>
+                <div className='patientTypeDetailLabel'>District<span className='mandatoryField'>*</span></div>
+                <select className='patientTypeSelectDropdownAddress' placeholder='Select'  
+                      >
+                        <option className='patientOptionDropdown'>Select District</option>
+                        {districtList.map((type, index) => (
+                        <option key={index} value={type}>{type}</option>
+                      ))}
+                    </select>
+                </div>
 
-            <div className='addressInputRow'>
-            <div className='patientTypeDetailLabel'>District<span className='mandatoryField'>*</span></div>
-            <select className='patientTypeSelectDropdown1' placeholder='Select'  
-                  >
-                    <option className='patientOptionDropdown'>Select District</option>
-                    {districtList.map((type, index) => (
-                    <option key={index} value={type}>{type}</option>
-                  ))}
-                </select>
-            </div>
+                <div className='addressInputRow'>
+                <div className='patientTypeDetailLabel'>State<span className='mandatoryField'>*</span></div>
+                <select className='patientTypeSelectDropdownAddress' placeholder='Select'  
+                      >
+                        <option className='patientOptionDropdown'>Select State</option>
+                        {stateList.map((type, index) => (
+                        <option key={index} value={type}>{type}</option>
+                      ))}
+                    </select>
+                </div>
 
-            <div className='addressInputRow'>
-            <div className='patientTypeDetailLabel'>State<span className='mandatoryField'>*</span></div>
-            <select className='patientTypeSelectDropdown1' placeholder='Select'  
-                  >
-                    <option className='patientOptionDropdown'>Select State</option>
-                    {stateList.map((type, index) => (
-                    <option key={index} value={type}>{type}</option>
-                  ))}
-                </select>
-            </div>
-
-            <div className='addressInputRow'>
-            <div className='patientTypeDetailLabel'>Country<span className='mandatoryField'>*</span></div>
-            <select className='patientTypeSelectDropdown1' placeholder='Select'  
-                  >
-                    <option className='patientOptionDropdown'>Select Country</option>
-                    {countryList.map((type, index) => (
-                    <option key={index} value={type}>{type}</option>
-                  ))}
-                </select>
-            </div>
-            </div>
-
+                <div className='addressInputRow'>
+                <div className='patientTypeDetailLabel'>Country<span className='mandatoryField'>*</span></div>
+                <select className='patientTypeSelectDropdownAddress' placeholder='Select'  
+                      >
+                        <option className='patientOptionDropdown'>Select Country</option>
+                        {countryList.map((type, index) => (
+                        <option key={index} value={type}>{type}</option>
+                      ))}
+                    </select>
+                </div>
+                </div>
+            
             {formData.selectedArea === 'Rural' && (
             <div className='addressDetailsContentRow1'>
             <div className='addressInputRow'>
@@ -368,7 +344,7 @@ function RegisterPatientDetail() {
               placeholder='Locality'
                value={formData.locality}
               onChange={handleAddressChange}
-              style={{width:'230px'}}
+              // style={{width:'230px'}}
              />
             </div>
 
@@ -381,7 +357,7 @@ function RegisterPatientDetail() {
               placeholder='Post Office'
                value={formData.postOffice}
               onChange={handleAddressChange}
-              style={{width:'230px'}}
+              // style={{width:'230px'}}
              />
             </div>
             
@@ -394,24 +370,24 @@ function RegisterPatientDetail() {
               placeholder='Police Station'
                value={formData.policeStation}
               onChange={handleAddressChange}
-              style={{width:'230px'}}
+              // style={{width:'230px'}}
              />
             </div>
             </div>
             )}
-            </div>
-
-            <div className='newRegistrationButtonGroupRow'>
-                <button className='newRegistrationCancelButton' >Clear All</button>
-                <button className='newRegistrationSaveButton' onClick={handleSaveNewRegistration} >Save & Next</button>
-            </div>
-
-        </div>
+         </div> 
 
       </div>
 
-    </>
-  )
+      <div className='newRegistrationButtonGroupRow'>
+                <button className='newRegistrationCancelButton' >Clear All</button>
+                <button className='newRegistrationSaveButton' onClick={handleSaveNewRegistration} >Save & Next</button>
+      </div>
+
+     </div>
+    
+  </>
+)
 }
 
 export default RegisterPatientDetail

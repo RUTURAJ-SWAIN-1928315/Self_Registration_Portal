@@ -11,9 +11,10 @@
 .patientTypeDetailBox{
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 6px;
     justify-content: center;
-    width: 32%;
+    width: 100%;
+    padding-bottom: 12px;
 }
 .patientTypeDetailLabel{
     color: #292b37;
@@ -25,13 +26,24 @@
 }
 .patientTypeSelectDropdown{
     gap: 8px;
-    height: 32px;
+    height: 40px;
     padding: 4px 10px;
     width: 16rem;
     border-radius: 8px;
     border: 1px solid var(--Scarpa-Flow-300, #B9B9C0);
     background: var(--White, #FFF);
 }
+
+.patientTypeSelectDropdownAddress{
+  gap: 8px;
+  height: 40px;
+  padding: 4px 10px;
+  width: 93%;
+  border-radius: 8px;
+  border: 1px solid var(--Scarpa-Flow-300, #B9B9C0);
+  background: var(--White, #FFF);
+}
+
 .patientTypeSelectDropdown1{
   height: 43px;
   padding: 4px 10px;
@@ -106,7 +118,18 @@
     border-radius: 6px 6px 6px 6px;
     border: 1px solid var(--Scarpa-Flow-300, #B9B9C0);
     background: var(--White, #FFF);
-    width: 179px;
+    width: 93%;
+}
+.patientAgeInput{
+  display: flex;
+  padding: 12px 8px;
+  flex-direction: column;
+  align-items: flex-start;
+  flex: 1 0 0;
+  border-radius: 6px 6px 6px 6px;
+  border: 1px solid var(--Scarpa-Flow-300, #B9B9C0);
+  background: var(--White, #FFF);
+  width: 179px;
 }
 .addressInput{
     display: flex;
@@ -117,7 +140,7 @@
     border-radius: 6px 6px 6px 6px;
     border: 1px solid var(--Scarpa-Flow-300, #B9B9C0);
     background: var(--White, #FFF);
-    width: 179px;
+    width: 89%;
 }
 .aadharNumberInput{
     display: flex;
@@ -131,9 +154,10 @@
     width: 179px;
 }
 .gender-selection {
-    display: flex;
+    display: flex-start;
     justify-content: center;
-    margin-bottom: 20px;
+    padding-bottom: 2px;
+    width: 100%;
   }
   
   .gender-radio {
@@ -176,7 +200,7 @@
     flex-direction: column;
     gap: 4px;
     justify-content: center;
-    width: 32%;
+    width: 100%;
     margin-top:10px;
   }
   .patientDatePicker{
@@ -188,16 +212,19 @@
     line-height: normal;
     padding: 4px 10px;
     border-radius: 10px;
+    width: 98%;
+    height: 29px;
+    border: 1px solid var(--Scarpa-Flow-300, #B9B9C0);
   }
   .patientAgeContainer{
     display: flex;
-    height: 34px;
+    height: 39px;
   }
   .patientNumberInput{
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    height: 33px;
+    height: 36px;
     border-radius: 6px 6px 6px 6px;
     border: 1px solid var(--Scarpa-Flow-300, #B9B9C0);
     background: var(--White, #FFF);
@@ -217,15 +244,20 @@
   .addressDetailsContentRow{
     display: flex;
     gap:10px;
+    width: 100%;
+    justify-content: space-evenly;
   }
   .addressDetailsContentRow1{
     display: flex;
     gap: 20px;
+    width: 100%;
+    justify-content: space-evenly;
   }
   .addressInputRow{
     display: flex;
-    gap:10px;
+    gap:5px;
     flex-direction: column;
+    width: 100%;
   }
   .newRegistrationButtonGroupRow{
     display: flex;
@@ -267,4 +299,34 @@
   font-weight: 600;
   line-height: 24px; /* 150% */
   cursor: pointer;
+}
+
+.patientImage{
+  height: 150px;
+  width: auto;
+}
+
+.newRegisterPatientBody{
+  height: 86.5vh;
+  background-color:#EFF2F7;
+
+}
+
+.newRegisterPatientContent{
+  padding: 10px 20px;
+}
+.detailContainer1{
+  padding: 5px;
+  padding-left: 64px;
+  display: flex;
+  flex-direction: row;
+}
+
+.newRegisterPatientAdharContent{
+  padding: 10px 48px;
+  border-bottom: 1px solid var(--Scarpa-Flow-200, #D9D9DE);
+}
+
+.AddressContainer{
+  padding: 10px 20px;
 }
