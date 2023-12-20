@@ -280,7 +280,7 @@ return (
                 <input
                   type="text"
                   name="pinCode"
-                  className='patientNameInput'
+                  className='addressInput'
                   placeholder='Pin Code'
                   value={formData.pinCode}
                   onChange={handleAddressChange}
@@ -289,36 +289,39 @@ return (
 
                 <div className='addressInputRow'>
                 <div className='patientTypeDetailLabel'>District<span className='mandatoryField'>*</span></div>
-                <select className='patientTypeSelectDropdownAddress' placeholder='Select'  
-                      >
-                        <option className='patientOptionDropdown'>Select District</option>
-                        {districtList.map((type, index) => (
-                        <option key={index} value={type}>{type}</option>
-                      ))}
-                    </select>
-                </div>
+                <input
+                  type='text'
+                  name='district'
+                  className='addressInput'
+                  placeholder='District'
+                  value={formData.district}
+                  onChange={handleAddressChange}
+                />
+              </div>
 
-                <div className='addressInputRow'>
+              <div className='addressInputRow'>
                 <div className='patientTypeDetailLabel'>State<span className='mandatoryField'>*</span></div>
-                <select className='patientTypeSelectDropdownAddress' placeholder='Select'  
-                      >
-                        <option className='patientOptionDropdown'>Select State</option>
-                        {stateList.map((type, index) => (
-                        <option key={index} value={type}>{type}</option>
-                      ))}
-                    </select>
-                </div>
+                <input
+                  type='text'
+                  name='state'
+                  className='addressInput'
+                  placeholder='State'
+                  value={formData.state}
+                  onChange={handleAddressChange}
+                />
+              </div>
 
-                <div className='addressInputRow'>
+              <div className='addressInputRow'>
                 <div className='patientTypeDetailLabel'>Country<span className='mandatoryField'>*</span></div>
-                <select className='patientTypeSelectDropdownAddress' placeholder='Select'  
-                      >
-                        <option className='patientOptionDropdown'>Select Country</option>
-                        {countryList.map((type, index) => (
-                        <option key={index} value={type}>{type}</option>
-                      ))}
-                    </select>
-                </div>
+                <input
+                  type='text'
+                  name='country'
+                  className='addressInput'
+                  placeholder='Country'
+                  value={formData.country}
+                  onChange={handleAddressChange}
+                />
+              </div>
                 </div>
             
             {formData.selectedArea === 'Rural' && (
@@ -336,43 +339,43 @@ return (
             </div>
 
             <div className='addressInputRow'>
-            <div className='patientTypeDetailLabel'>Locality</div>
-            <input
-               type="text"
-               name="locality"
-               className='addressInput'
-              placeholder='Locality'
-               value={formData.locality}
-              onChange={handleAddressChange}
-              // style={{width:'230px'}}
-             />
+              <div className='patientTypeDetailLabel'>Locality</div>
+              <select
+                name='locality'
+                className='patientTypeSelectDropdownAddress'
+                value={formData.locality}
+                onChange={handleAddressChange}
+              >
+                <option value=''>Select Locality</option>
+                {/* Add options dynamically here */}
+              </select>
             </div>
 
             <div className='addressInputRow'>
-            <div className='patientTypeDetailLabel'>Post Office<span className='mandatoryField'>*</span></div>
-            <input
-               type="text"
-               name="postOffice"
-               className='addressInput'
-              placeholder='Post Office'
-               value={formData.postOffice}
-              onChange={handleAddressChange}
-              // style={{width:'230px'}}
-             />
+              <div className='patientTypeDetailLabel'>Post Office<span className='mandatoryField'>*</span></div>
+              <select
+                name='postOffice'
+                className='patientTypeSelectDropdownAddress'
+                value={formData.postOffice}
+                onChange={handleAddressChange}
+              >
+                <option value=''>Select Post Office</option>
+                {/* Add options dynamically here */}
+              </select>
             </div>
             
             <div className='addressInputRow'>
             <div className='patientTypeDetailLabel'>Police Station<span className='mandatoryField'>*</span></div>
-            <input
-               type="text"
-               name="policeStation"
-               className='addressInput'
-              placeholder='Police Station'
-               value={formData.policeStation}
+            <select
+              name='policeStation'
+              className='patientTypeSelectDropdownAddress'
+              value={formData.policeStation}
               onChange={handleAddressChange}
-              // style={{width:'230px'}}
-             />
-            </div>
+            >
+              <option value=''>Select Police Station</option>
+              {/* Add options dynamically here */}
+            </select>
+          </div>
             </div>
             )}
          </div> 
