@@ -33,6 +33,21 @@
     border: 1px solid var(--Scarpa-Flow-300, #B9B9C0);
     background: var(--White, #FFF);
 }
+.patientTypeSelectDropdown:disabled{
+  background-color: lightgrey;
+}
+/* Customize the scrollbar */
+.patientTypeSelectDropdown::-webkit-scrollbar {
+  width: 8px; 
+}
+.patientTypeSelectDropdown::-webkit-scrollbar-thumb {
+  background-color: #888;  
+  border-radius: 4px;  
+}
+
+.patientTypeSelectDropdown::-webkit-scrollbar-track {
+  background-color: #f1f1f1;  
+}
 
 .patientTypeSelectDropdownAddress{
   gap: 8px;
@@ -42,6 +57,9 @@
   border-radius: 8px;
   border: 1px solid var(--Scarpa-Flow-300, #B9B9C0);
   background: var(--White, #FFF);
+}
+.patientTypeSelectDropdownAddress:disabled{
+  background-color: lightgrey;
 }
 
 .patientTypeSelectDropdown1{
@@ -120,6 +138,9 @@
     background: var(--White, #FFF);
     width: 93%;
 }
+.patientNameInput:disabled{
+  background-color: lightgrey;
+}
 .patientAgeInput{
   display: flex;
   padding: 12px 8px;
@@ -130,6 +151,9 @@
   border: 1px solid var(--Scarpa-Flow-300, #B9B9C0);
   background: var(--White, #FFF);
   width: 179px;
+}
+.patientAgeInput:disabled{
+  background-color: lightgrey;
 }
 .addressInput{
     display: flex;
@@ -142,6 +166,9 @@
     background: var(--White, #FFF);
     width: 89%;
 }
+.addressInput:disabled{
+  background-color: lightgrey;
+}
 .aadharNumberInput{
     display: flex;
     padding: 12px 8px;
@@ -152,6 +179,9 @@
     border: 1px solid var(--Scarpa-Flow-300, #B9B9C0);
     background: var(--White, #FFF);
     width: 179px;
+}
+.aadharNumberInput:disabled{
+  background-color: lightgrey;
 }
 .gender-selection {
     display: flex-start;
@@ -283,6 +313,9 @@
   font-weight: 600;
   line-height: 24px;
   cursor: pointer;
+}
+.newRegistrationCancelButton:disabled{
+  background-color: lightgrey;
 }
 .newRegistrationSaveButton{
   display: flex;
