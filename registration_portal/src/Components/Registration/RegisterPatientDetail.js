@@ -12,12 +12,44 @@ function RegisterPatientDetail() {
   const navigate = useNavigate();
   const BACKEND_URL = process.env.REACT_APP_EMR_BACKEND_BASE_URL;
   const profileData = JSON.parse(localStorage.getItem('profileData'));
-  const aadharData = JSON.parse(localStorage.getItem('aadharData'));
+ 
+ // const aadharData = JSON.parse(localStorage.getItem('aadharData'));
+
+ //HardCoded aadharData for testing
+const aadharData = {
+  full_name: "Ruturaj Swain",
+  aadhaar_number: "537903394779",
+  dob: "2001-06-04",
+  gender: "M",
+  address: {
+      country: "India",
+      dist: "Khordha",
+      state: "Orissa",
+      po: "",
+      loc: "Nuasahi,Nayapalli",
+      vtc: "Bhubaneswar",
+      subdist: "",
+      street: "Keshari Enclave",
+      house: "Flat No-B-305",
+      landmark: ""
+  },
+  face_status: false,
+  face_score: -1.0,
+  zip: "751012",
+  has_image: true,
+  care_of: "S/O Kruti Uchhwas Swain",
+  share_code: "3542",
+  mobile_verified: false,
+  referenceId: null,
+  status: "success_aadhaar",
+  uniqueness_id: "ede5d9acf30b8c308df44d040c54d7e02027df268a2cf8391d0bc5ef18e7b376"
+}
+ 
   const [disableInputFieldAadhar,setDisableInputFieldAadhar] = useState(false);
   const [isLoading,setIsLoading] = useState(false);
   //const siteId = localStorage.getItem('SiteId');
 
-  console.log("aadharData",aadharData)
+
 
   // const [patientTypeList,setPatientTypeList] = useState([]);
   const [prefixMaster,setPrefixMaster] = useState([]);
@@ -37,12 +69,15 @@ function RegisterPatientDetail() {
     middleName:'',
     lastName:'',
     selectedGender: '',
+    selectedGenderId:'',
     selectedArea: 'Urban',
     selectedPrefix:'',
     selectedPrefixId:'',
     aadharNumber:'',
+    mobileNumber:'',
     dob:'',
     age:'',
+    emailId:'',
     pinCode: '',
     district: '',
     state: '',
@@ -61,6 +96,7 @@ function RegisterPatientDetail() {
   };
 
   useEffect(() => {
+
     if(aadharData !== null){
       setDisableInputFieldAadhar(true);
       // Call maskAadharNumber function and update the masked Aadhar number state
@@ -213,6 +249,32 @@ function RegisterPatientDetail() {
   //   setSelectedGender(event.target.value);
   // };
 
+  const handleInputChange = (event) =>{
+    const { name, value } = event.target;
+     // Ensure only numeric values are entered for mobileNumber
+  if (name === 'mobileNumber' && !/^\d+$/.test(value)) {
+    return; // Ignore non-numeric input
+  }
+    setFormData(prevState => ({
+      ...prevState,
+      [name]: name === 'mobileNumber' ? value.slice(0, 10) : value
+    }));
+  }
+
+  const handlePrefixChange = (event) => {
+    const selectedPrefix = event.target.value;
+  
+    // Find the corresponding prefixId based on the selected prefix
+    const selectedPrefixId = prefixMaster.find(item => item.prefix === selectedPrefix)?.prefixId;
+  
+    // Update the formData state with the selectedPrefix and selectedPrefixId
+    setFormData(prevState => ({
+      ...prevState,
+      selectedPrefix: selectedPrefix,
+      selectedPrefixId: selectedPrefixId,
+    }));
+  };
+
   const handleAreaChange = (event) => {
     const { value } = event.target;
     setFormData(prevState => ({
@@ -221,26 +283,88 @@ function RegisterPatientDetail() {
     }));
   };
 
-  // const handleInputChange = (event) => {
-  //   const { name, value } = event.target;
-  //   setFormData(prevState => ({
-  //     ...prevState,
-  //     [name]: value
-  //   }));
-  // };
-
   function delay(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
+  function formatDate(inputDate) {
+    const dateParts = inputDate.split("-");
+    const formattedDate = `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`;
+    return formattedDate;
+  }
+
+  
+
   const handleSaveNewRegistration = () =>{
+    console.log("formData.selectedPrefix",formData.selectedPrefix,"formData.selectedPrefixId",formData.selectedPrefixId)
+     // Validate mandatory fields
+  const mandatoryFields = [
+    'firstName',
+    'selectedGender',
+    'aadharNumber',
+    'pinCode',
+    'mobileNumber',
+    'dob',
+    'age',
+    'district',
+    'state',
+    'country',
+    'village',
+  ];
+
+  const missingFields = mandatoryFields.filter(field => !formData[field]);
+  
+  if (missingFields.length > 0) {
+    // Display toast error if any mandatory field is missing
+    toast.error(`Please fill all mandatory fields: ${missingFields.join(', ')}`, {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+    return;
+  }
+
+
+    const formattedDOB = formatDate(aadharData.dob);
     
     const newRegistrationRequestBody = {
-
+      genderId:formData.selectedGenderId,
+      siteId:Number(profileData?.siteId),
+      prefixId:Number(formData.selectedPrefixId),
+      prefix:formData.selectedPrefix,
+      firstName:formData.firstName,
+      middleName:formData.middleName,
+      lastName:formData.lastName,
+      gender:formData.selectedGender,
+      dobStr:formattedDOB,
+      age:Number(formData.age),
+      contactNo:Number(formData.mobileNumber),
+      email:formData.emailId,
+      userId:Number(profileData.userId),
+      aadhaarNumber:formData.aadharNumber,
+      addressList:[
+        {
+          active:true,
+          isRural:formData.selectedArea === 'Rural'?true:false,
+          isUrban:formData.selectedArea === 'Urban'?true:false,
+          pin:Number(formData.pinCode),
+          district:formData.district,
+          state:formData.state,
+          country:formData.country,
+          village:formData.village,
+          locality:formData.locality,
+          postOffice:formData.postOffice,
+          policeStation:formData.policeStation
+        }
+      ]
     }
     
     axios
-    .post(`${BACKEND_URL}/emr/registerPatient`,newRegistrationRequestBody)
+    .post(`${BACKEND_URL}/kiosk/registerPatient`,newRegistrationRequestBody)
      .then(async (response) => {
       setIsLoading(false);
           if(response.data.status === true){
@@ -277,7 +401,9 @@ function RegisterPatientDetail() {
       selectedGender: '',
       aadharNumber:'',
       pinCode: '',
+      mobileNumber:'',
       dob: '',
+      emailId:'',
       age:'',
       district:'',
       state: '',
@@ -320,13 +446,12 @@ return (
                   <div className="patientTypeDetailBox">
                     <div className='patientTypeDetailLabel'>Prefix<span className='mandatoryField'>*</span></div>
                     <div style={{width: "80%"}}>
-                        <select className='patientTypeSelectDropdown' placeholder='Select' 
-                          >
-                            <option className='patientOptionDropdown' value="" disabled>Select Prefix</option>
-                        {prefixMaster.map((type, index) => (
-                          <option key={index} value={type.prefix}>{type.prefix}</option>
-                        ))}
-                        </select>
+                    <select className='patientTypeSelectDropdown' placeholder='Select' value={formData.selectedPrefix} onChange={(e) => handlePrefixChange(e)}>
+                      <option className='patientOptionDropdown' value="" disabled>Select Prefix</option>
+                      {prefixMaster.map((type, index) => (
+                        <option key={index} value={type.prefix}>{type.prefix}</option>
+                      ))}
+                    </select>
                     </div>
                   </div>
 
@@ -389,8 +514,8 @@ return (
 
                 <div style={{display:'flex', flexDirection:'column',gap:'6px',width:'100%'}}>
                   <div className='patientTypeDetailLabel'>Mobile Number<span className='mandatoryField'>*</span></div>
-                  <input className='patientNumberInput' placeholder='0000000000'></input>
-                </div>
+                  <input name = 'mobileNumber' className='patientNumberInput' placeholder='0000000000' value={formData.mobileNumber} onChange={handleInputChange}></input>
+                </div> 
 
               </div>
 
@@ -413,7 +538,7 @@ return (
                 <div className="patientTypeDetailBox">
                   <div className='patientTypeDetailLabel'>Email</div>
                   <div style={{display:'flex'}}>
-                  <input className='aadharNumberInput' placeholder='example@email.com'></input>
+                  <input className='aadharNumberInput' placeholder='example@email.com' name='emailId' value={formData.emailId} onChange={handleInputChange}></input>
                   </div>
                     
                   </div>

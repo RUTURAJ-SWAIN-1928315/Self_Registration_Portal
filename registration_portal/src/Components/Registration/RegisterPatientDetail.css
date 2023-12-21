@@ -246,6 +246,9 @@
     height: 29px;
     border: 1px solid var(--Scarpa-Flow-300, #B9B9C0);
   }
+  .patientDatePicker:disabled{
+    background-color: lightgrey;
+  }
   .patientAgeContainer{
     display: flex;
     height: 39px;
