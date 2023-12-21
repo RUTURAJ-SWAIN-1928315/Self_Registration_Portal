@@ -5,9 +5,11 @@ import searchIcon from '../../Assests/Images/searchIcon.svg';
 import EastIcon from '@mui/icons-material/East';
 import OtpInput from "otp-input-react";
 import OtpTimer from "otp-timer";
+import { useNavigate } from 'react-router-dom'
 
 function BookAppointment() {
 
+  const navigate= useNavigate();
   const [otp, setOtp] = useState('');
 
 
@@ -20,6 +22,10 @@ function BookAppointment() {
 
   const handleResend = () => {
     console.log(otp);
+  };
+
+  const handleVerifyClick = () => {
+    navigate('/BookAppointmentLanding');
   };
 
   return (
@@ -73,7 +79,7 @@ function BookAppointment() {
               />
 
              <div style={{width:'60%'}}>
-              <button className='verifyBtn'>
+              <button onClick={handleVerifyClick} className='verifyBtn'>
                VERIFY
               </button>
              </div>

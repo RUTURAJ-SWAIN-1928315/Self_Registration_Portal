@@ -1,0 +1,98 @@
+.mainPatientCard{
+    display: flex;
+    padding: 20px;
+    align-items: flex-start;
+    gap: 50px;
+    align-self: stretch;
+    border-radius: 10px;
+    background: var(--Scarpa-Flow-800, #42424A);
+    margin: 10px 20px;
+    color: #fff;
+    /* width: 100%; */
+    height: 180px;
+    background-image: url('../../Assests/Images/slideImg.svg');
+    background-repeat: no-repeat;
+    background-size: contain; /* Adjust as needed */
+    background-position: top right, top right; /* Position the images accordingly */
+}
+
+.PatientInfo{
+    width: 30%;
+    border-right: 2px solid #757582;
+}
+.HeaderName{
+    color: var(--White, #FFF);
+    font-size: 34px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.patientImageCard{
+    height: 150px;
+    width: auto;
+  }
+
+  .genderShow{
+    color: var(--White, #FFF);
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    padding-top: 17px ;
+  }
+
+  .genderShowround{
+    border-radius: 10px;
+    background: var(--Scarpa-Flow-600, #565661);
+    display: flex;
+    padding: 3px 7px;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .subHeader{
+    color: var(--White, #FFF);
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    width: 145px;
+  }
+
+  .subtitle{
+    color: var(--White, #FFF);
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+  }
+
+  .AdressHeader{
+    color: var(--Scarpa-Flow-400, #92929E);
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-size: 21px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 18px; /* 112.5% */
+    letter-spacing: 0.2px;
+    padding-top: 22px;
+  }
+
+  .addressSubheader{
+    color: var(--White, #FFF);
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    width: 111px;
+  }
+
+  .addresstitle{
+    color: var(--White, #FFF);
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    width: 146px;
+  }
