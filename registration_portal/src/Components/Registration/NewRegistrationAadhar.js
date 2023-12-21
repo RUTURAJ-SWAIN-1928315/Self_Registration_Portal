@@ -16,10 +16,9 @@ function NewRegistrationAadhar() {
     const [otp, setOtp] = useState('');
     const [aadharNumber, setAadharNumber] = useState('');
     const navigate = useNavigate();
-    const aadharData = JSON.parse(localStorage.getItem('aadharData'));
+    // const aadharData = JSON.parse(localStorage.getItem('aadharData'));
     const [isLoading,setIsLoading] = useState(false);
 
-    console.log("aadharData",aadharData);
 
 
     const [showOTPInputs, setShowOTPInputs] = useState(false);
