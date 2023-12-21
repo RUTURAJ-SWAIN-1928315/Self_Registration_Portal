@@ -9,6 +9,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate,useSearchParams  } from 'react-router-dom';
 import rightIcon from '../../Assests/Images/rightIcon.svg';
 import axios from 'axios';
+import { CircularProgress, Box } from '@mui/material';
 
 function NewRegistrationAadhar() {
     
@@ -81,6 +82,7 @@ function NewRegistrationAadhar() {
             }
         })
         .catch((error) => {
+          setIsLoading(false);
             if(error.response.status === 400){
                 toast.error("Invalid Aadhar number.", {
                     position: "top-right",
@@ -126,9 +128,11 @@ function NewRegistrationAadhar() {
     }
     console.log("OTP",otp)
     function verifyAadharOTP(){
+      setIsLoading(true);
         axios
         .get(`${BACKEND_URL}/kiosk/verifyAadhaarOtp?otp=${otp}&clientId=${clientId}`)
         .then((response) => {
+          setIsLoading(false);
           if(response.data.status === 'success') {
            const aadharData = response.data.data;
            localStorage.setItem('aadharData',JSON.stringify(aadharData));
@@ -149,6 +153,7 @@ function NewRegistrationAadhar() {
             }
         })
         .catch((error) => {
+          setIsLoading(false);
           console.error('Error fetching data:', error);
         });
         
@@ -180,10 +185,19 @@ function NewRegistrationAadhar() {
                  />
               </div>
 
+            {isLoading ? (
+              <div className='ArrowBtn' style={{ width: '60%',background:'transparent' }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                      <CircularProgress />
+                    </Box>
+                  </div>
+            ):(
               <button className='ArrowBtn' onClick={handleArrowClick} onInput={handleKeyPress} disabled={isLoading}>
-                <EastIcon />
+                  <EastIcon />
               </button>
-              <button onClick={() => navigate('/PatientDetailRegister')} className='NewRegistrationSkipButton'>
+            )}
+             
+              <button onClick={() => navigate('/NewRegistration')} className='NewRegistrationSkipButton'>
           SKIP<img src={rightIcon} alt="Right Icon" />
         </button>
             </div>
@@ -220,11 +234,19 @@ function NewRegistrationAadhar() {
                 background= {"var(--Scarpa-Flow-800, #42424A)"}               
               />
 
+            {isLoading ? (
+              <div className='ArrowBtn' style={{ width: '60%',background:'transparent' }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                      <CircularProgress />
+                    </Box>
+                  </div>
+            ):(
              <div style={{width:'60%'}}>
               <button className='verifyBtn' onClick={verifyAadharOTP}>
                VERIFY
               </button>
              </div>
+          )}
 
             </div>
 
@@ -232,7 +254,7 @@ function NewRegistrationAadhar() {
             </div>
           )}
         </div>
-        <ToastContainer position="top-right" autoClose={5000} />
+        <ToastContainer position="top-right" autoClose={2000} />
       </div>
     </div>
     

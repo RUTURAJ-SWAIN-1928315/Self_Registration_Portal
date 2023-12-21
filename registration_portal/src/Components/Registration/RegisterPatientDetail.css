@@ -340,6 +340,7 @@
 .patientImage{
   height: 150px;
   width: auto;
+  border-radius: 20px;
 }
 
 .newRegisterPatientBody{
