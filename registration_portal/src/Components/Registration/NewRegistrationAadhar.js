@@ -95,7 +95,18 @@ function NewRegistrationAadhar() {
                   });
                 return;
             }
-          console.error('Error fetching data:', error);
+            toast.error("Something Went Wrong!!!!", {
+              position: "top-right",
+              autoClose: 800,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
+            console.error('Error fetching data:', error);
+          return;
+          
         });
     }
     const [clientId,setClientId] = useState('');
@@ -123,7 +134,18 @@ function NewRegistrationAadhar() {
                   });
                 return;
             }
-          console.error('Error fetching data:', error);
+            toast.error("Something Went Wrong!!!!", {
+              position: "top-right",
+              autoClose: 800,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
+            console.error('Error fetching data:', error);
+          return;
+          
         });
     }
     console.log("OTP",otp)
@@ -154,7 +176,18 @@ function NewRegistrationAadhar() {
         })
         .catch((error) => {
           setIsLoading(false);
+          toast.error("Something Went Wrong!!!!", {
+            position: "top-right",
+            autoClose: 800,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
           console.error('Error fetching data:', error);
+        return;
+          
         });
         
     }
