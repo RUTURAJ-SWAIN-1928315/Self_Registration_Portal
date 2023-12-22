@@ -178,7 +178,7 @@
     border-radius: 6px 6px 6px 6px;
     border: 1px solid var(--Scarpa-Flow-300, #B9B9C0);
     background: var(--White, #FFF);
-    width: 179px;
+    width: 175px;
 }
 .aadharNumberInput:disabled{
   background-color: lightgrey;

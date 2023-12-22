@@ -7,6 +7,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer,toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+ 
 
 function RegisterPatientDetail() {
   const navigate = useNavigate();
@@ -51,15 +52,17 @@ function RegisterPatientDetail() {
   //const siteId = localStorage.getItem('SiteId');
 
 
-
-  // const [patientTypeList,setPatientTypeList] = useState([]);
+ 
   const [prefixMaster,setPrefixMaster] = useState([]);
-    const [countryList, setCountryList] = useState([]);
-  const [stateList, setStateList] = useState([]);
-  const [districtList, setDistrictList] = useState([]);
-  const [cityList, setCityList] = useState([]);
+  // const [countryList, setCountryList] = useState([]);
+  // const [stateList, setStateList] = useState([]);
+  // const [districtList, setDistrictList] = useState([]);
+  // const [cityList, setCityList] = useState([]);
   const [genderList,setGenderList] = useState([]);
-  const [villageList, setVillageList] = useState([]);
+  // const [villageList, setVillageList] = useState([]);
+  const [localityList,setLocalityList] = useState([]);
+  const [postOfficeList,setPostOfficeList] = useState([]);
+  const [policeStationList,setPoliceStationList] = useState([]);
   const [maskedAadharNumber, setMaskedAadharNumber] = useState('');
 
 
@@ -71,6 +74,7 @@ function RegisterPatientDetail() {
     lastName:'',
     selectedGender: '',
     selectedGenderId:'',
+    selectedGenderCode:'',
     selectedArea: 'Urban',
     selectedPrefix:'',
     selectedPrefixId:'',
@@ -78,6 +82,7 @@ function RegisterPatientDetail() {
     mobileNumber:'',
     dob:'',
     age:'',
+    ageUnit:'Years',
     emailId:'',
     pinCode: '',
     district: '',
@@ -144,40 +149,79 @@ function RegisterPatientDetail() {
       });
     }
   }, []);
+
+    // Function to handle changes in the age input
+    const handleAgeChange = (e) => {
+      setFormData({ ...formData, age: e.target.value });
+    };
+  
+    // Function to handle changes in the age unit selection
+    const handleAgeUnitChange = (e) => {
+      setFormData({ ...formData, ageUnit: e.target.value });
+    };
  
 
-   // Function to calculate age
-   const calculateAge = (dob) => {
-    const birthday = new Date(dob);
-    const today = new Date();
-    let age = today.getFullYear() - birthday.getFullYear();
-    const m = today.getMonth() - birthday.getMonth();
-    if (m < 0 || (m === 0 && today.getDate() < birthday.getDate())) {
-      age--;
-    }
-    return age;
-  };
+  // Function to calculate age
 
-  //  //For getting Patient Type master
-  //  useEffect(() => {
-    
-  //   axios
-  //     .get(`${BACKEND_URL}/kiosk/patientTypeMaster?siteId=${profileData.siteId}`)
-  //     .then((response) => {
-  //       if (response.data && response.data.status === "sucess") {
-  //         const types = response.data.data.map(item => item.registrationType);
-  //         setPatientTypeList(types);
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.error('Error fetching data:', error);
-  //     });
-  //   }, [BACKEND_URL,profileData.siteId]);
+const calculateAge = (dob) => {
+  if (!dob) {
+    // If DOB is empty, return an empty string for age and unit
+    return { age: '', unit: '' };
+  }
+  const birthday = new Date(dob);
+  const today = new Date();
+  if (today < birthday) {
+    // If the entered DOB is a future date, show an error and clear the DOB
+    toast.error("Date of Birth cannot be in the future", {
+      position: "top-right",
+      autoClose: 2000,
+    });
+    return { age: '', unit: '' };
+  }
+
+  let ageInYears = today.getFullYear() - birthday.getFullYear();
+  let ageInMonths = today.getMonth() - birthday.getMonth();
+  let ageInDays = today.getDate() - birthday.getDate();
+
+  if (ageInMonths < 0 || (ageInMonths === 0 && ageInDays < 0)) {
+    ageInYears--;
+  }
+
+  if (ageInYears > 0) {
+    return { age: ageInYears, unit: 'Years' };
+  } else if (ageInMonths > 0) {
+    return { age: ageInMonths, unit: 'Months' };
+  } else {
+    return { age: Math.abs(ageInDays), unit: 'Days' };
+  }
+};
+
+
+
+  //For getting gender Master
+  useEffect(() => {
+    axios
+      .get(`${BACKEND_URL}/kiosk/getGenderMaster?categoryName=SEX`)
+      .then((response) => {
+        if (response.data && response.data.status === "success") {
+          const genders = response.data.data.map(item => ({
+            gender: item.lookupValue,
+            genderId: item.lookupId,
+            genderCode:item.lookupCode
+          }));
+          setGenderList(genders);
+        }
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+      });
+    }, [BACKEND_URL]);
+
 
        //For getting Prefix master
    useEffect(() => {
     axios
-      .get(`${BACKEND_URL}/kiosk/getPrefixMaster?`)
+      .get(`${BACKEND_URL}/kiosk/getPrefixMaster`)
       .then((response) => {
         if (response.data && response.data.status === "success") {
           const prefixes = response.data.data.map(item => ({
@@ -190,7 +234,7 @@ function RegisterPatientDetail() {
       .catch((error) => {
         console.error('Error fetching data:', error);
       });
-    }, [BACKEND_URL,profileData?.siteId]);
+    }, [BACKEND_URL]);
 
 
 
@@ -216,11 +260,20 @@ function RegisterPatientDetail() {
 
      // Check if the name of the field is pinCode and its value is empty
   if (name === "pinCode" && value.trim() === "") {
-    // Reset all lists
-    setCountryList([]);
-    setStateList([]);
-    setDistrictList([]);
-    setVillageList([]);
+    // // Reset all lists
+    // setCountryList([]);
+    // setStateList([]);
+    // setDistrictList([]);
+    // setVillageList([]);
+
+    setFormData(prevState => ({
+      ...prevState,
+      district: '',
+      state: '',
+      country: ''
+    }));
+
+
   }else if (name === "pinCode" && value.length === 6){
 
       if (value.length === 6) { // Assuming pin code length is 6
@@ -229,17 +282,31 @@ function RegisterPatientDetail() {
         .then((response) => {
           if (response.data.status === "success" && response.data.data.length > 0) {
             const data = response.data.data;
-            const uniqueCountries = [...new Set(data.map(item => item.countryName))];
-            const uniqueStates = [...new Set(data.map(item => item.stateName))];
-            const uniqueDistricts = [...new Set(data.map(item => item.districtName))];
-            // const uniqueCities = [...new Set(data.map(item => item.cityName).filter(name => name))];
-            const uniqueVillages = [...new Set(data.map(item => item.villageName).filter(name => name))];
+            //  const uniqueCountries = [...new Set(data.map(item => item.countryName))];
+            //  const uniqueStates = [...new Set(data.map(item => item.stateName))];
+            //  const uniqueDistricts = [...new Set(data.map(item => item.districtName))];
+            //  const uniqueCities = [...new Set(data.map(item => item.cityName).filter(name => name))];
+            // const uniqueVillages = [...new Set(data.map(item => item.villageName).filter(name => name))];
+
+            const uniqueLocality = [...new Set(data.map(item => item.locality))];
+
     
-            setCountryList(uniqueCountries);
-            setStateList(uniqueStates);
-            setDistrictList(uniqueDistricts);
+            // setCountryList(uniqueCountries);
+            // setStateList(uniqueStates);
+            // setDistrictList(uniqueDistricts);
             // setCityList(uniqueCities);
-            setVillageList(uniqueVillages);
+            // setVillageList(uniqueVillages);
+          setLocalityList(uniqueLocality)
+          setFormData(prevState => ({
+            ...prevState,
+            city:response.data.data[0].cityName,
+            village:response.data.data[0].villageName,
+            country: response.data.data[0].countryName,
+            state: response.data.data[0].stateName,
+            district: response.data.data[0].districtName
+ 
+          }));
+          
           }
         })
         .catch((error) => {
@@ -256,6 +323,7 @@ function RegisterPatientDetail() {
 
   const handleInputChange = (event) =>{
     const { name, value } = event.target;
+    
      // Ensure only numeric values are entered for mobileNumber
   if (name === 'mobileNumber' && !/^\d+$/.test(value)) {
     return; // Ignore non-numeric input
@@ -264,6 +332,23 @@ function RegisterPatientDetail() {
       ...prevState,
       [name]: name === 'mobileNumber' ? value.slice(0, 10) : value
     }));
+
+   // Handle DOB change
+  if (name === 'dob') {
+    const { age, unit } = calculateAge(value);
+    setFormData(prevState => ({
+      ...prevState,
+      dob: value,
+      age: age,
+      ageUnit: unit
+    }));
+  }else {
+    // Handle other input changes
+    setFormData(prevState => ({
+      ...prevState,
+      [name]: value
+    }));
+  }
   }
 
   const handlePrefixChange = (event) => {
@@ -280,6 +365,18 @@ function RegisterPatientDetail() {
     }));
   };
 
+  const handleGenderChange = (event) => {
+    const selectedGender = event.target.value;
+    const selectedGenderId = genderList.find(item => item.gender === selectedGender)?.genderId;
+    const selectedGenderCode = genderList.find(item => item.gender === selectedGender)?.genderCode;
+    setFormData(prevState => ({
+      ...prevState,
+      selectedGender: selectedGender,
+      selectedGenderId: selectedGenderId,
+      selectedGenderCode: selectedGenderCode
+    }));
+  }
+
   const handleAreaChange = (event) => {
     const { value } = event.target;
     setFormData(prevState => ({
@@ -287,6 +384,16 @@ function RegisterPatientDetail() {
       selectedArea: value
     }));
   };
+
+  const handleAadharChange = (e) => {
+    const value = e.target.value.replace(/\D/g, ''); // Removes non-digit characters
+    if (value.length <= 12) {
+      setFormData(prevState => ({
+        ...prevState,
+        aadharNumber: value.replace(/(.{4})/g, '$1 ').trim()
+      }));
+    }
+};
 
   function delay(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -303,18 +410,81 @@ function RegisterPatientDetail() {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
+  const[validAAdhar,SetValidAadhar] = useState(false);
+  function validateAadhar(){
+    const formattedAadharNumber = formData.aadharNumber.replace(/\s/g, ''); // Remove spaces
+    axios
+    .get(`${BACKEND_URL}/kiosk/validateAadhaar?aadhaarNo=${formattedAadharNumber}`)
+    .then((response) => {
+        setIsLoading(false);
+      if(response.data.status === 'success') {
+        SetValidAadhar(true);
+        }
+    })
+    .catch((error) => {
+      SetValidAadhar(false);
+      setIsLoading(false);
+        if(error.response.status === 400){
+            toast.error("Invalid Aadhar number.", {
+                position: "top-right",
+                autoClose: 800,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+              });
+            return;
+        }
+        toast.error("Something Went Wrong!!!!", {
+          position: "top-right",
+          autoClose: 800,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+        console.error('Error fetching data:', error);
+      return;
+      
+    });
+}
   
-
+console.log("aadharData",aadharData)
   const handleSaveNewRegistration = () =>{
-    console.log("formData.selectedPrefix",formData.selectedPrefix,"formData.selectedPrefixId",formData.selectedPrefixId)
+    setIsLoading(true);
+    // validateAadhar();
+    // if(!validAAdhar){
+    //   setIsLoading(false);
+    //   return;
+    // }
+
+    if (formData.aadharNumber.replace(/\s/g, '').length !== 12) {
+      toast.error("Invalid Aadhar number.", {
+          position: "top-right",
+          autoClose: 800,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      return;
+  }
+    setIsLoading(true);
+
+    //Since No information regarding post office and police station available so for now not including 
+    //post office and police station as mandatory field
+
      // Validate mandatory fields
   const mandatoryFields = [
+    'selectedPrefix',
     'firstName',
     'selectedGender',
     'aadharNumber',
     'pinCode',
     'mobileNumber',
-    'dob',
     'age',
     'district',
     'state',
@@ -335,6 +505,7 @@ function RegisterPatientDetail() {
       draggable: true,
       progress: undefined,
     });
+    setIsLoading(false);
     return;
   }
 
@@ -351,25 +522,37 @@ function RegisterPatientDetail() {
     });
     return;
   }
+    let formattedDOB;
+    if(aadharData === null){
+    if(formData.dob === ''){
+      formattedDOB='';
+    }else{
+      formattedDOB = formatDate(formData.dob);
+    }
+    }else{
+    formattedDOB = formatDate(aadharData.dob);
+    }
 
-
-    const formattedDOB = formatDate(aadharData.dob);
-    
+    const formattedAadharNumber = formData.aadharNumber.replace(/\s/g, ''); // Remove spaces
+    setIsLoading(true);
     const newRegistrationRequestBody = {
       genderId:formData.selectedGenderId,
+      gender:formData.selectedGender,
+      genderCode:formData.selectedGenderCode,
       siteId:Number(profileData?.siteId),
       prefixId:Number(formData.selectedPrefixId),
       prefix:formData.selectedPrefix,
       firstName:formData.firstName,
       middleName:formData.middleName === '' ? 'NA': formData.middleName,
       lastName:formData.lastName,
-      gender:formData.selectedGender,
       dobStr:formattedDOB,
       age:Number(formData.age),
+      ageUnit:formData.ageUnit,
       contactNo:Number(formData.mobileNumber),
       email:formData.emailId,
       userId:Number(profileData.userId),
-      aadhaarNumber:formData.aadharNumber,
+      aadhaarNumber:formattedAadharNumber,
+      //photo:(aadharData.profile_image === '' || aadharData.profile_image === null)? patientImage : aadharData.profile_image,
       addressList:[
         {
           active:true,
@@ -415,33 +598,42 @@ function RegisterPatientDetail() {
     
   }
 
-  
+
   const handleClearAllInputs = () =>{
     setFormData({
       ...formData,
-      firstName:  '',
-      middleName: '',
-      lastName: '',
+      firstName:'',
+      middleName:'',
+      lastName:'',
       selectedGender: '',
+      selectedGenderId:'',
+      selectedGenderCode:'',
+      selectedArea: 'Urban',
+      selectedPrefix:'',
+      selectedPrefixId:'',
       aadharNumber:'',
-      pinCode: '',
       mobileNumber:'',
-      dob: '',
-      emailId:'',
+      dob:'',
       age:'',
-      district:'',
+      ageUnit:'Years',
+      emailId:'',
+      pinCode: '',
+      district: '',
       state: '',
-      country:'',
-      city: '',
-      village:'',
-      locality:'',
-      postOffice:'',
+      country: '',
+      village: '',
+      city:'',
+      locality: '',
+      postOffice: '',
+      policeStation: ''
     });
   }
 
+  console.log("localityList",localityList)
+
 return (
   <>
-    <Navbar pagename={'New Registration'}/>
+    <Navbar pagename={'New Registration'} registerPatientDetailIsCalled={true}/>
      
      <div className='newRegisterPatientBody'>
       <div className='newRegisterPatientContent' style={{display:'flex', flexDirection:'row'}}>
@@ -488,10 +680,12 @@ return (
                     ):(
 
                       <div style={{width: "80%"}}>
-                      <select className='patientTypeSelectDropdown' placeholder='Select' value={formData.selectedGender} disabled={disableInputFieldAadhar}>
+                      <select className='patientTypeSelectDropdown' placeholder='Select' value={formData.selectedGender} disabled={disableInputFieldAadhar} onChange={(e) => handleGenderChange(e)}>
                             <option className='patientOptionDropdown' disabled>Select Gender</option>
-                            {genderList.map((type, index) => (
-                            <option key={index} value={type}>{type}</option>
+                            {genderList.map((gender) => (
+                            <option key={gender.genderId} value={gender.gender}>
+                              {gender.gender}
+                            </option>
                           ))}
                         </select>
                         </div>
@@ -506,9 +700,9 @@ return (
              <div className="patientTypeDetailBox">
                 <div className='patientTypeDetailLabel'>Patient Name<span className='mandatoryField'>*</span></div>
                   <div style={{display:'flex'}}>
-                  <input style={{borderRadius: '6px 0px 0px 6px'}} className='patientNameInput' placeholder='First Name' value={formData.firstName} disabled={disableInputFieldAadhar} onChange={handleInputChange}></input>
-                  <input style={{borderRadius: '0px'}} className='patientNameInput' placeholder='Middle Name' value={formData.middleName} disabled={disableInputFieldAadhar} onChange={handleInputChange}></input>
-                  <input style={{borderRadius: '0px 6px 6px 0px'}} className='patientNameInput' placeholder='Last Name' value={formData.lastName} disabled={disableInputFieldAadhar} onChange={handleInputChange}></input>
+                  <input style={{borderRadius: '6px 0px 0px 6px'}} className='patientNameInput' placeholder='First Name' value={formData.firstName} disabled={disableInputFieldAadhar} onChange={handleInputChange} name="firstName"></input>
+                  <input style={{borderRadius: '0px'}} className='patientNameInput' placeholder='Middle Name' value={formData.middleName} disabled={disableInputFieldAadhar} onChange={handleInputChange} name="middleName"></input>
+                  <input style={{borderRadius: '0px 6px 6px 0px'}} className='patientNameInput' placeholder='Last Name' value={formData.lastName} disabled={disableInputFieldAadhar} onChange={handleInputChange} name="lastName"></input>
                 </div>
               </div>
               <div style={{display:'flex', gap:'20px'}}>
@@ -516,19 +710,21 @@ return (
                  <div className="patientTypeDetailBox">
                     <div className='patientTypeDetailLabel'>Date of Birth</div>
                     <div style={{display:'flex'}}>
-                    <input className='patientDatePicker' type='date' placeholder='dd-mm-yyyy' value={formData.dob} disabled={disableInputFieldAadhar} onChange={handleInputChange}></input>
+                    <input className='patientDatePicker' type='date' placeholder='dd-mm-yyyy' value={formData.dob} disabled={disableInputFieldAadhar} onChange={handleInputChange} name='dob'></input>
                     </div>  
                  </div>
 
                  <div style={{display:'flex', flexDirection:'column',gap:'6px'}}>    
                   <div className='patientTypeDetailLabel'>Age<span className='mandatoryField'>*</span></div>
                   <div className='patientAgeContainer'> 
-                  <input style={{ borderRadius: '6px 0px 0px 6px'}} className='patientAgeInput' value = {formData.age} disabled={disableInputFieldAadhar} onChange={handleInputChange}></input>
+                  <input style={{ borderRadius: '6px 0px 0px 6px'}} className='patientAgeInput' value = {formData.age} disabled={disableInputFieldAadhar || formData.dob === '' ? false:true} onChange={handleAgeChange}></input>
                   <select style={{
                     borderRadius: '0px 6px 6px 0px',
                     backgroundColor: disableInputFieldAadhar ? '#D9D9DE' : 'inherit',
                     }}
-                    disabled={disableInputFieldAadhar}
+                    onChange={handleAgeUnitChange}
+                    value={formData.ageUnit}
+                    disabled={disableInputFieldAadhar || formData.dob === '' ? false:true}
                     >
                           <option value="Days">Days</option>
                           <option value="Months">Months</option>
@@ -554,7 +750,8 @@ return (
                   <div className="patientTypeDetailBox">
                     <div className='patientTypeDetailLabel'>Aadhar Number<span className='mandatoryField'>*</span></div>
                     <div style={{display:'flex'}}>
-                    <input className='aadharNumberInput' placeholder='0000 0000 0000 0000' value={maskedAadharNumber} disabled={disableInputFieldAadhar} onChange={handleInputChange}></input>
+                    <input className='aadharNumberInput' placeholder='0000 0000 0000' value={maskedAadharNumber === '' ? formData.aadharNumber:maskAadharNumber } disabled={disableInputFieldAadhar} onChange={handleAadharChange}></input>
+                     
                     </div>
                   </div>
   
@@ -693,7 +890,7 @@ return (
             {disableInputFieldAadhar ? (
               <div className='addressInputRow'>
               <div className='patientTypeDetailLabel'>Locality</div>
-                      <input style={{borderRadius: '6px',width:'320px'}} className='patientNameInput' placeholder='locality' value={formData.locality} disabled={disableInputFieldAadhar}></input>
+                      <input style={{borderRadius: '6px',width:'320px'}} className='patientNameInput' placeholder='' value={formData.locality || ''} disabled={aadharData.address.loc === '' ? false:true} onChange={handleInputChange} name='locality'></input>
                       </div>
             ):(
               <div className='addressInputRow'>
@@ -706,51 +903,41 @@ return (
                 onChange={handleAddressChange}
               >
                 <option value=''>Select Locality</option>
-                {/* Add options dynamically here */}
+                {localityList.map((locality, index) => (
+                <option key={index} value={locality}>
+                  {locality}
+                </option>
+              ))}
               </select>
               </div>
             )}
               
             {disableInputFieldAadhar ? (
               <div className='addressInputRow'>
-              <div className='patientTypeDetailLabel'>Post Office</div>
+              <div className='patientTypeDetailLabel'>Post Office<span className='mandatoryField'>*</span></div>
                       <input style={{borderRadius: '6px',width:'316px'}} className='patientNameInput' placeholder='Post Office' value={formData.postOffice || ' '} disabled={disableInputFieldAadhar}></input>
                       </div>
             ):(
+
               <div className='addressInputRow'>
-              <div className='patientTypeDetailLabel'>Post Office<span className='mandatoryField'>*</span></div>
-              <select
-                name='postOffice'
-                className='patientTypeSelectDropdownAddress'
-                value={formData.postOffice}
-                disabled={disableInputFieldAadhar}
-                onChange={handleAddressChange}
-              >
-                <option value=''>Select Post Office</option>
-                {/* Add options dynamically here */}
-              </select>
-            </div>
+              <div className='patientTypeDetailLabel'>Post Office</div>
+                      <input style={{borderRadius: '6px',width:'316px'}} className='patientNameInput' placeholder='Post Office' value={formData.postOffice || ' '} disabled={disableInputFieldAadhar} onChange={handleAddressChange} name='postOffice'></input>
+                      </div>
 
             )}
 
             {disableInputFieldAadhar ? (
               <div className='addressInputRow'>
-              <div className='patientTypeDetailLabel'>Police Station</div>
+              <div className='patientTypeDetailLabel'>Police Station<span className='mandatoryField'>*</span></div>
                       <input style={{borderRadius: '6px',width:'316px'}} className='patientNameInput' placeholder='Police Station' value={formData.policeStation || ' '} disabled={disableInputFieldAadhar}></input>
                       </div>
             ):(
+
               <div className='addressInputRow'>
-            <div className='patientTypeDetailLabel'>Police Station<span className='mandatoryField'>*</span></div>
-            <select
-              name='policeStation'
-              className='patientTypeSelectDropdownAddress'
-              value={formData.policeStation}
-              onChange={handleAddressChange}
-            >
-              <option value=''>Select Police Station</option>
-              {/* Add options dynamically here */}
-            </select>
-          </div>
+              <div className='patientTypeDetailLabel'>Police Station</div>
+                      <input style={{borderRadius: '6px',width:'316px'}} className='patientNameInput' placeholder='Police Station' value={formData.policeStation || ' '} disabled={disableInputFieldAadhar} onChange={handleAddressChange} name='policeStation'></input>
+                      </div>
+          
             )}
 
             </div>
