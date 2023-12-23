@@ -82,7 +82,7 @@ useEffect(() => {
 
   return (
     <div style={{background:'#EFF2F7', height:'100vh'}}>
-      <Navbar pagename={'New Registration'}/>
+      <Navbar pagename={'New Registration'} NewRegisterBookConsultationIsCalled={true}/>
       <PatientCard/>
 
     <div className='AppointmentContent'>
