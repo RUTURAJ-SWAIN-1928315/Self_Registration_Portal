@@ -118,7 +118,8 @@ function RegisterPatientDetail() {
       const lastName = fullNameParts.length > 1 ? fullNameParts[fullNameParts.length - 1] : '';
       const middleName = fullNameParts.slice(1, -1).join(' ');
       // Call calculateAge function and update the formData state
-      const age = calculateAge(aadharData.dob);
+     // Call calculateAge function and update the formData state
+  const { age: calculatedAge, unit } = calculateAge(aadharData.dob);
 
       let gender;
       if (aadharData.gender === 'M') {
@@ -138,7 +139,8 @@ function RegisterPatientDetail() {
         aadharNumber: aadharData.aadhaar_number,
         pinCode:aadharData.zip,
         dob: aadharData.dob,
-        age:age,
+        age:calculatedAge,
+        ageUnit: unit,
         district: aadharData.address.dist,
         state: aadharData.address.state,
         country: aadharData.address.country,
@@ -151,10 +153,17 @@ function RegisterPatientDetail() {
   }, []);
 
     // Function to handle changes in the age input
-    const handleAgeChange = (e) => {
-      setFormData({ ...formData, age: e.target.value });
+    const handleAgeChange = (event) => {
+      const ageValue = event.target.value;
+    
+      // Allow only numbers in the age field
+      if (/^\d*$/.test(ageValue)) {
+        setFormData(prevState => ({
+          ...prevState,
+          age: ageValue
+        }));
+      }
     };
-  
     // Function to handle changes in the age unit selection
     const handleAgeUnitChange = (e) => {
       setFormData({ ...formData, ageUnit: e.target.value });
@@ -210,6 +219,18 @@ const calculateAge = (dob) => {
             genderCode:item.lookupCode
           }));
           setGenderList(genders);
+          
+          if(aadharData){
+            //Now only comparing male and female gender
+            const selectedGender = aadharData.gender === 'M' ? 'MALE': aadharData.gender === 'F' ? 'FEMALE':'';
+            const selectedGenderId = response.data.data.find(item => item.lookupValue === selectedGender)?.lookupId;
+            const selectedGenderCode = response.data.data.find(item => item.lookupValue === selectedGender)?.lookupCode;
+            setFormData(prevState => ({
+              ...prevState,
+              selectedGenderId: selectedGenderId,
+              selectedGenderCode: selectedGenderCode
+            }));
+           }
         }
       })
       .catch((error) => {
@@ -321,35 +342,37 @@ const calculateAge = (dob) => {
   //   setSelectedGender(event.target.value);
   // };
 
-  const handleInputChange = (event) =>{
+  const handleInputChange = (event) => {
     const { name, value } = event.target;
-    
-     // Ensure only numeric values are entered for mobileNumber
-  if (name === 'mobileNumber' && !/^\d+$/.test(value)) {
-    return; // Ignore non-numeric input
-  }
-    setFormData(prevState => ({
-      ...prevState,
-      [name]: name === 'mobileNumber' ? value.slice(0, 10) : value
-    }));
 
-   // Handle DOB change
-  if (name === 'dob') {
-    const { age, unit } = calculateAge(value);
-    setFormData(prevState => ({
-      ...prevState,
-      dob: value,
-      age: age,
-      ageUnit: unit
-    }));
-  }else {
-    // Handle other input changes
-    setFormData(prevState => ({
-      ...prevState,
-      [name]: value
-    }));
-  }
-  }
+    // Allow only numeric values or an empty string for mobileNumber
+    if (name === 'mobileNumber' && value !== '' && !/^\d+$/.test(value)) {
+        return; // Ignore non-numeric input, except for empty string
+    }
+
+    // Handle mobile number input with length restriction
+    if (name === 'mobileNumber') {
+        setFormData(prevState => ({
+            ...prevState,
+            [name]: value.slice(0, 10) // Restrict to max 10 digits
+        }));
+    } else if (name === 'dob') {
+        // Handle DOB change and calculate age
+        const { age, unit } = calculateAge(value);
+        setFormData(prevState => ({
+            ...prevState,
+            dob: value,
+            age: age,
+            ageUnit: unit
+        }));
+    } else {
+        // Handle other input changes
+        setFormData(prevState => ({
+            ...prevState,
+            [name]: value
+        }));
+    }
+};
 
   const handlePrefixChange = (event) => {
     const selectedPrefix = event.target.value;
@@ -410,55 +433,37 @@ const calculateAge = (dob) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
-  const[validAAdhar,SetValidAadhar] = useState(false);
-  function validateAadhar(){
-    const formattedAadharNumber = formData.aadharNumber.replace(/\s/g, ''); // Remove spaces
-    axios
-    .get(`${BACKEND_URL}/kiosk/validateAadhaar?aadhaarNo=${formattedAadharNumber}`)
-    .then((response) => {
-        setIsLoading(false);
-      if(response.data.status === 'success') {
-        SetValidAadhar(true);
-        }
-    })
-    .catch((error) => {
-      SetValidAadhar(false);
-      setIsLoading(false);
-        if(error.response.status === 400){
-            toast.error("Invalid Aadhar number.", {
-                position: "top-right",
-                autoClose: 800,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-              });
-            return;
-        }
-        toast.error("Something Went Wrong!!!!", {
-          position: "top-right",
-          autoClose: 800,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
-        console.error('Error fetching data:', error);
-      return;
-      
+  
+  const validateAadhar = () => {
+    return new Promise((resolve, reject) => {
+        const formattedAadharNumber = formData.aadharNumber.replace(/\s/g, '');
+        axios.get(`${BACKEND_URL}/kiosk/validateAadhaar?aadhaarNo=${formattedAadharNumber}`)
+            .then((response) => {
+                if (response.data.status === 'success') {
+                    
+                    resolve(true);
+                } else {
+                     
+                    resolve(false);
+                }
+            })
+            .catch((error) => {
+                 
+                toast.error("Aadhar validation failed.", {/* Toast options */});
+                resolve(false);
+            });
     });
-}
+};
   
 console.log("aadharData",aadharData)
-  const handleSaveNewRegistration = () =>{
+  const handleSaveNewRegistration = async () =>{
     setIsLoading(true);
-    // validateAadhar();
-    // if(!validAAdhar){
-    //   setIsLoading(false);
-    //   return;
-    // }
+
+    const isValidAadhar = await validateAadhar();
+    if (!isValidAadhar) {
+        setIsLoading(false);
+        return;
+    }
 
     if (formData.aadharNumber.replace(/\s/g, '').length !== 12) {
       toast.error("Invalid Aadhar number.", {
@@ -478,7 +483,7 @@ console.log("aadharData",aadharData)
     //post office and police station as mandatory field
 
      // Validate mandatory fields
-  const mandatoryFields = [
+  let mandatoryFields = [
     'selectedPrefix',
     'firstName',
     'selectedGender',
@@ -489,8 +494,14 @@ console.log("aadharData",aadharData)
     'district',
     'state',
     'country',
-    'village',
   ];
+
+   // Add 'village' or 'city' to mandatory fields based on selected area
+   if (formData.selectedArea === 'Rural') {
+    mandatoryFields.push('village');
+} else if (formData.selectedArea === 'Urban') {
+    mandatoryFields.push('city');
+}
 
   const missingFields = mandatoryFields.filter(field => !formData[field]);
   
@@ -593,6 +604,15 @@ console.log("aadharData",aadharData)
      }
      })
     .catch((error) => {
+      toast.error("Something Went Wrong!!!!", {
+        position: "top-right",
+       autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+     });
       console.error('Error saving data:', error);
     });
     
@@ -612,6 +632,7 @@ console.log("aadharData",aadharData)
       selectedPrefix:'',
       selectedPrefixId:'',
       aadharNumber:'',
+      maskedAadharNumber:'',
       mobileNumber:'',
       dob:'',
       age:'',
@@ -717,7 +738,7 @@ return (
                  <div style={{display:'flex', flexDirection:'column',gap:'6px'}}>    
                   <div className='patientTypeDetailLabel'>Age<span className='mandatoryField'>*</span></div>
                   <div className='patientAgeContainer'> 
-                  <input style={{ borderRadius: '6px 0px 0px 6px'}} className='patientAgeInput' value = {formData.age} disabled={disableInputFieldAadhar || formData.dob === '' ? false:true} onChange={handleAgeChange}></input>
+                  <input style={{ borderRadius: '6px 0px 0px 6px'}} className='patientAgeInput' value = {formData.age} disabled={disableInputFieldAadhar} onChange={handleAgeChange}></input>
                   <select style={{
                     borderRadius: '0px 6px 6px 0px',
                     backgroundColor: disableInputFieldAadhar ? '#D9D9DE' : 'inherit',
@@ -750,7 +771,8 @@ return (
                   <div className="patientTypeDetailBox">
                     <div className='patientTypeDetailLabel'>Aadhar Number<span className='mandatoryField'>*</span></div>
                     <div style={{display:'flex'}}>
-                    <input className='aadharNumberInput' placeholder='0000 0000 0000' value={maskedAadharNumber === '' ? formData.aadharNumber:maskAadharNumber } disabled={disableInputFieldAadhar} onChange={handleAadharChange}></input>
+                    <input className='aadharNumberInput' placeholder='0000 0000 0000' 
+                     value={aadharData ? maskedAadharNumber : formData.aadharNumber}  disabled={disableInputFieldAadhar} onChange={handleAadharChange}></input>
                      
                     </div>
                   </div>

@@ -5,6 +5,7 @@ import RightArrow from "../../Assests/Images/right.svg"
 import BackButton from "../../Assests/Images/backButton.svg"
 import { useNavigate } from 'react-router-dom'
 import navBarPatientDetail from "../../Assests/Images/navBarPatientDetail.svg";
+import NewRegisterBookConsultation from "../../Assests/Images/navBarNewRegisterBookConsultation.svg";
 
 
 function Navbar(props) {
@@ -33,6 +34,9 @@ function Navbar(props) {
       <div className='PageNameContainer'> {props.pagename} </div>
       {props.registerPatientDetailIsCalled && (
         <div style={{marginLeft:'200px'}}> <img src={navBarPatientDetail} alt="navBarPatientDetail" /> </div>
+      )}
+      {props.NewRegisterBookConsultationIsCalled && (
+        <div style={{marginLeft:'200px'}}> <img src={NewRegisterBookConsultation} alt="NewRegisterBookConsultation" /> </div>
       )}
      </div>
       
