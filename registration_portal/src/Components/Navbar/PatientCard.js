@@ -6,7 +6,8 @@ import emailIcon from "../../Assests/Images/emailIcon.svg";
 
 function PatientCard() {
 
-  const patientImage = null;
+const capturedPhoto = localStorage.getItem('capturedPhoto');
+  const patientImage = capturedPhoto;
 
   return (
     <div className='mainPatientCard'>

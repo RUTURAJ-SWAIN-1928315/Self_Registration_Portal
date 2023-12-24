@@ -134,6 +134,8 @@ function NewRegistration() {
   // Since Facing issue on capture Again so for time being using windows reload 
   //on capture again
   const handleCaptureAgainClick = () =>{
+    // Clear previous image in localStorage, if any
+    localStorage.removeItem('capturedPhoto');
     window.location.reload();
   }
 
