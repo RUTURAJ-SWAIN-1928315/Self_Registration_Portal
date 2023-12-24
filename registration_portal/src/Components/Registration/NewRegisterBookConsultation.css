@@ -165,7 +165,7 @@
     display: flex;
     padding: 8px;
     gap: 10px;
-    width: 230px;
+    width: 250px;
     height: 50px;
     border-radius: 10px;
     background: var(--White, #FFF);
@@ -194,4 +194,32 @@
     font-weight: 400;
     line-height: normal;
     letter-spacing: 0.2px;
+}
+.doctor-label.selected .doctorDeptSubtitle {
+    color: white;
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 0.2px;
+}
+.DtrDeptSearchContainer{
+    display: flex;
+    height: 11px;
+    width: 290px;
+    padding: 12px 20px 14px 8px;
+    align-items: center;
+    gap: 4px;
+    align-self: stretch;
+    border-radius: 8px;
+    border: 1px solid var(--Scarpa-Flow-300, #B9B9C0);
+    background: var(--White, #FFF);
+    margin: 25px 0px 0px 10px;
+}
+.DtrDeptSearchInput{
+    border: none;
+    outline: none;
+    height: 11px;
+    width: 290px;
 }
