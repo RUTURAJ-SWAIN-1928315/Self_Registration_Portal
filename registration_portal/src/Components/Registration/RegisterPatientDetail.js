@@ -102,9 +102,12 @@ function RegisterPatientDetail() {
   };
 
   useEffect(() => {
-
+    const capturedPhoto = localStorage.getItem('capturedPhoto');
     if(aadharData && aadharData.has_image){
       SetPatientImage(`data:image/jpeg;base64,${aadharData.profile_image}`);
+    }
+    else{
+      SetPatientImage(capturedPhoto)
     }
 
     if(aadharData !== null){
@@ -151,7 +154,7 @@ function RegisterPatientDetail() {
       });
     }
   }, []);
-
+ 
     // Function to handle changes in the age input
     const handleAgeChange = (event) => {
       const ageValue = event.target.value;
@@ -260,20 +263,8 @@ const calculateAge = (dob) => {
 
 
     const handleAddressChange = (event) => {
-      // const pinCode = event.target.value;
-      // setFormData({ ...formData, pinCode: pinCode });
-      // const state = event.target.value;
-      // setFormData({ ...formData, state: state });
-      // const country = event.target.value;
-      // const district = event.target.value;
-      // setFormData({ ...formData, district: district });
-      // //cityName and village will be suggestions
-      // const village = event.target.value;
-      // setFormData({ ...formData, village: village });
-
-      // Update only the field that triggered the event
       const { name, value } = event.target;
-      console.log("value",value);
+
   setFormData(prevState => ({
     ...prevState,
     [name]: value
@@ -338,9 +329,6 @@ const calculateAge = (dob) => {
     };
  
  
-  // const handleGenderChange = (event) => {
-  //   setSelectedGender(event.target.value);
-  // };
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -563,7 +551,7 @@ console.log("aadharData",aadharData)
       email:formData.emailId,
       userId:Number(profileData.userId),
       aadhaarNumber:formattedAadharNumber,
-      //photo:(aadharData.profile_image === '' || aadharData.profile_image === null)? patientImage : aadharData.profile_image,
+      photo:patientImage === null || patientImage === '' ? 'NA' :patientImage,
       addressList:[
         {
           active:true,
@@ -650,7 +638,6 @@ console.log("aadharData",aadharData)
     });
   }
 
-  console.log("localityList",localityList)
 
 return (
   <>
@@ -659,27 +646,13 @@ return (
      <div className='newRegisterPatientBody'>
       <div className='newRegisterPatientContent' style={{display:'flex', flexDirection:'row'}}>
 
-         <div style={{border:'groove', borderColor:'#f0ffff34', width:'11%', height:'170px', display:'flex', alignItems:'center', justifyContent:'center',borderRadius:'20px'}}>
+         <div style={{border:'groove', borderColor:'#f0ffff34', width:'11%', height:'170px', display:'flex', alignItems:'center', justifyContent:'center',borderRadius:'20px',padding:'10px'}}>
            <img className='patientImage' src={patientImage || DefaultPatient} alt="Patient" />
          </div>
 
          <div className='detailContainer1' style={{ borderColor:'#f0ffff34', width:'100%' }}>
 
           <div> 
-
-                  {/* <div className="patientTypeDetailBox">
-                    <div className='patientTypeDetailLabel'>Patient Type<span className='mandatoryField'>*</span></div>
-                    <div style={{width: "80%"}}>
-                        <select className='patientTypeSelectDropdown' placeholder='Select' 
-                          >
-                            <option className='patientOptionDropdown' disabled>Select Patient Type</option>
-                            {patientTypeList.map((type, index) => (
-                            <option key={index} value={type}>{type}</option>
-                          ))}
-                        </select>
-                    </div>
-                  </div> */}
-
                   <div className="patientTypeDetailBox">
                     <div className='patientTypeDetailLabel'>Prefix<span className='mandatoryField'>*</span></div>
                     <div style={{width: "80%"}}>

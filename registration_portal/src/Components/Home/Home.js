@@ -13,6 +13,7 @@ import axios from 'axios';
 
 function Home() {
     localStorage.removeItem('aadharData');
+    //localStorage.removeItem('capturedPhoto');
     const BACKEND_URL = process.env.REACT_APP_EMR_BACKEND_BASE_URL;
     const loginUserName = process.env.REACT_APP_USERNAME;
     const loginPassword = process.env.REACT_APP_PASSWORD;
