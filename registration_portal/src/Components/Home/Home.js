@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import './Home.css'
 import NewRegistrationImage from '../../Assests/Images/NewRegistration.svg';
 import BookAppointment from '../../Assests/Images/BookAppointment.svg'
-import LabReport from '../../Assests/Images/LabReport.svg'
 import AboutKims from '../../Assests/Images/AboutKIMS.svg'
 import MyLocation from '../../Assests/Images/MyLocation.svg'
 import feedback from '../../Assests/Images/feedback.svg'
@@ -45,10 +44,6 @@ function Home() {
 
     const handleBookAppointmentCardClick = () => {
         navigate('/BookAppointment');
-    };
-
-    const handleLabReportCardClick = () => {
-        navigate('/LabReport');
     };
 
     const handleAboutKimsCardClick = () => {

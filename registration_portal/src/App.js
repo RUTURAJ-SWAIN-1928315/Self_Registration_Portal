@@ -5,10 +5,11 @@ import Home from './Components/Home/Home';
 import NewRegistration from './Components/Registration/NewRegistration';
 import BookAppointment from './Components/BookAppointment/BookAppointment';
 import NewRegistrationAadhar from './Components/Registration/NewRegistrationAadhar';
-import LabReport from './Components/Report/LabReport';
+import LabReport from './Components/BookAppointment/LabReport/LabReport';
 import RegisterPatientDetail from './Components/Registration/RegisterPatientDetail';
 import BookAppointmentLanding from './Components/BookAppointment/BookAppointmentLanding';
 import NewRegistrationBookConsultation from './Components/Registration/NewRegisterBookConsultation';
+import Billing from './Components/BookAppointment/Billing/Billing';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
        <Route path="/BookAppointment" element={<BookAppointment/>} />
        <Route path="/BookAppointmentLanding" element={<BookAppointmentLanding/>} />
        <Route path="/LabReport" element={<LabReport/>} />
+       <Route path="/Billing" element={<Billing/>}/>
        <Route path="/PatientDetailRegister" element ={<RegisterPatientDetail/>} />
        <Route path="/NewRegisterBookConsultation" element ={<NewRegistrationBookConsultation/>} />
 
