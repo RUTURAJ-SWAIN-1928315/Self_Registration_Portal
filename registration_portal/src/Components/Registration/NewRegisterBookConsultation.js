@@ -10,10 +10,13 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import searchIcon from "../../Assests/Images/searchIcon.svg";
 import rightIcon from '../../Assests/Images/rightIcon.svg';
+import { ToastContainer,toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function NewRegisterBookConsultation() {
 
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const [isLoading,setIsLoading] = useState(false);
   const [department,setDepartment] = useState({
     selectedDepartmentId:'',
     selectedDepartment: ''
@@ -65,7 +68,7 @@ const formatDateAsYYYYMMDD = (date) => {
   const month = (`0${d.getMonth() + 1}`).slice(-2); // Add leading 0 and slice last two digits
   const day = (`0${d.getDate()}`).slice(-2); // Add leading 0 and slice last two digits
   return `${year}${month}${day}`;
-};
+};  
 
 
 //To fetch doctor Slots
@@ -74,8 +77,7 @@ const fetchDoctorSlots = async () => {
   console.log("selectedDate",formattedDate,"SelectedDeptId",department.selectedDepartmentId)
 
   try {
-    const response = await axios.get(`${BACKEND_URL}/kiosk/getDoctorSlots?deptId=${department.selectedDepartmentId}&employeeId=${profileData.employeeId}&date=${formattedDate}`, {
-    });
+    const response = await axios.get(`${BACKEND_URL}/kiosk/getDoctorSlots?deptId=${department.selectedDepartmentId}&employeeId=${doctor.selectedDoctorId}&date=${formattedDate}`);
     if (response.data.status === "Success") {
       setDoctorSlots(response.data.data);
     }
@@ -88,6 +90,8 @@ const fetchDoctorSlots = async () => {
 useEffect(() => {
   if (department.selectedDepartment && selectedDate) {
     fetchDoctorSlots();
+  } else {
+    setDoctorSlots([]);
   }
 }, [department.selectedDepartment, selectedDate]);
  
@@ -140,13 +144,21 @@ const handlePrevDay = () => {
   }
 
   const doctorRefs = useRef({});
+  //Selection of doctor based on search Not working. Need to update the below code
   const handleSearchChange = (event) => {
     const { value } = event.target;
     setSearchInput(value);
   
-    // Filter departments based on search input
+    // Reset current doctor selection
+    setDoctor({ selectedDoctorId: '', selectedDoctor: '' });
+    setDoctorSlots([]); // Clear current slots
+  
+    // Filter departments and doctors based on search input
     const filteredDepartments = departmentsData.filter(dept =>
       dept.deptName.toLowerCase().includes(value.toLowerCase())
+    );
+    const filteredDoctors = doctorsData.filter(dtr =>
+      dtr.doctorName.toLowerCase().includes(value.toLowerCase())
     );
   
     // If a department is found, select it and fetch its doctors
@@ -154,37 +166,41 @@ const handlePrevDay = () => {
       const selectedDept = filteredDepartments[0];
       setDepartment({
         selectedDepartment: selectedDept.deptName,
-        selectedDepartmentId: selectedDept.deptId // Store the department ID
+        selectedDepartmentId: selectedDept.deptId
       });
       fetchDoctors(selectedDept.deptName);
   
       // Scroll to the first matched department
-      if (doctorRefs.current[selectedDept.deptId]) {
-        doctorRefs.current[selectedDept.deptId].scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }
-    } else {
-      // If no department found, try filtering doctors directly
-      const filteredDoctors = doctorsData.filter(dtr =>
-        dtr.doctorName.toLowerCase().includes(value.toLowerCase())
-      );
-      if (filteredDoctors.length > 0) {
-        const selectedDoc = filteredDoctors[0];
-        setDoctor({
-          selectedDoctor: selectedDoc.doctorName,
-          selectedDoctorId: selectedDoc.doctorId // Store the doctor ID
-        });
-        setDepartment({
-          selectedDepartment: selectedDoc.departmentName,
-          selectedDepartmentId: selectedDoc.departmentId // Update department ID as well
-        });
+      scrollToElement(selectedDept.deptId);
+    }
+    // If no department found and a doctor is found, select the doctor
+    else if (filteredDoctors.length > 0) {
+      const selectedDoc = filteredDoctors[0];
+      setDoctor({
+        selectedDoctor: selectedDoc.doctorName,
+        selectedDoctorId: selectedDoc.doctorId
+      });
+      setDepartment({
+        selectedDepartment: selectedDoc.departmentName,
+        selectedDepartmentId: selectedDoc.departmentId
+      });
   
-        // Scroll to the first matched doctor
-        if (doctorRefs.current[selectedDoc.doctorId]) {
-          doctorRefs.current[selectedDoc.doctorId].scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
-      }
+      // Fetch slots for the selected doctor
+      fetchDoctorSlots(selectedDoc.doctorId);
+  
+      // Scroll to the first matched doctor
+      scrollToElement(selectedDoc.doctorId);
     }
   };
+  
+  // Helper function to scroll to the department or doctor element
+  const scrollToElement = (elementId) => {
+    const elementRef = doctorRefs.current[elementId];
+    if (elementRef) {
+      elementRef.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  };
+  
 
   const [selectedSlotId, setSelectedSlotId] = useState(null);
 
@@ -211,6 +227,21 @@ const formatSlotTime = (dateTimeStr) => {
   hours = hours ? hours : 12; // the hour '0' should be '12'
   return `${hours}:${minutes} ${ampm}`;
 };
+
+const handleSaveAppointment = () => {
+   
+  const saveAppointmentRequestBody = {
+
+      mrno: "KIMS102312210001",// For the time being no information regarding mrno so hardcoding it for testing
+      eventDate: "22-12-2023 10:30",
+      empno: profileData.empno,
+      empId: Number(profileData.employeeId),
+      departmentId: Number(department.selectedDepartmentId),
+      siteId: Number(profileData.siteId),
+      userId: Number(profileData.userId)
+  }
+  
+}
   
 
 console.log("doctorSlots",doctorSlots)
@@ -239,7 +270,7 @@ console.log("doctorSlots",doctorSlots)
 
        <div className='DtrDeptSearchContainer'>
        <img style={{cursor:"pointer"}} src={searchIcon} alt="searchIcon"/>
-        <input className='DtrDeptSearchInput' type="text" placeholder='Search Doctor/Department'  value={searchInput}
+        <input className='DtrDeptSearchInput' type="text" placeholder='Search Department'  value={searchInput}
         onChange={handleSearchChange} />
        </div>
        </div>
@@ -310,13 +341,19 @@ console.log("doctorSlots",doctorSlots)
        
       </div>
 
-      <button onClick={() => {
+      <div className='newRegistrationButtonGroupRow'>
+      {/* <button className='newRegistrationCancelButton'>Clear All</button> */}
+      <button className='newRegistrationSaveButton' onClick={{}}>{isLoading ? 'Saving...' : 'Save & Next'}</button>
+      </div>
+      <ToastContainer position="top-right" autoClose={2000} />
+
+      {/* <button onClick={() => {
               navigate('/');
             }} 
             className='NewRegistrationSkipButton'
             style={{height:'54px',width:'270px'}}>
               DON'T BOOK CONSULTATION<img src={rightIcon} alt="Right Icon" />
-            </button>
+            </button> */}
 
 
     </div>
