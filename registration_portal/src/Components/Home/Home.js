@@ -9,7 +9,8 @@ import MyLocation from '../../Assests/Images/MyLocation.svg'
 import feedback from '../../Assests/Images/feedback.svg'
 import faq from '../../Assests/Images/faq.svg'
 import axios from 'axios';
-
+import poweredBySoulCare from '../../Assests/Images/poweredBySoulCare.svg';
+import hospitaLogo from '../../Assests/Images/hospitalLogo.svg';
 
 function Home() {
     localStorage.removeItem('aadharData');
@@ -71,6 +72,15 @@ function Home() {
     
     <div className='HomeContainer'>
         <div className='HomeContainerBody'>
+        {/* <div className='poweredBySoulCareImageDiv'>
+        <img src={poweredBySoulCare} alt="poweredBySoulCare" className='poweredBySoulCareImage'/> 
+        </div> */}
+
+        <div className='logoHeaderBox'>
+        <div><img src={hospitaLogo} alt="" className='hospitalLogoImage'/></div>
+        <div><img src={poweredBySoulCare} alt="" className='poweredBySoulCareImage'/> </div>
+
+        </div>
             <div className='HomeContainerRow'>
 
                 <div className='cardBody' onClick={handleRegisterCardClick}>
