@@ -675,7 +675,7 @@ return (
 
                       <div style={{width: "80%"}}>
                       <select className='patientTypeSelectDropdown' placeholder='Select' value={formData.selectedGender} disabled={disableInputFieldAadhar} onChange={(e) => handleGenderChange(e)}>
-                            <option className='patientOptionDropdown' disabled>Select Gender</option>
+                            <option className='patientOptionDropdown' value="" disabled>Select Gender</option>
                             {genderList.map((gender) => (
                             <option key={gender.genderId} value={gender.gender}>
                               {gender.gender}
@@ -946,7 +946,7 @@ return (
       <button className='newRegistrationCancelButton' onClick={handleClearAllInputs} disabled={disableInputFieldAadhar}>Clear All</button>
       
       )}
-      <button className='newRegistrationSaveButton' onClick={handleSaveNewRegistration} >{isLoading ? 'Saving...' : 'Save & Next'}</button>
+      <button className='newRegistrationSaveButton' onClick={handleSaveNewRegistration} disabled={isLoading}>{isLoading ? 'Saving...' : 'Save & Next'}</button>
       </div>
       <ToastContainer position="top-right" autoClose={2000} />
      </div>
