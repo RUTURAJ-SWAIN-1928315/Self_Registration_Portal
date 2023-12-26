@@ -12,6 +12,7 @@ import searchIcon from "../../Assests/Images/searchIcon.svg";
 import rightIcon from '../../Assests/Images/rightIcon.svg';
 import { ToastContainer,toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import slotMarks from "../../Assests/Images/slotMarks.svg"
 
 function NewRegisterBookConsultation() {
 
@@ -36,7 +37,6 @@ const [searchInput, setSearchInput] = useState('');
 const [doctorSlots, setDoctorSlots] = useState([]);
 
 
-
 // Fetch departments data from the API
 useEffect(() => {
   const fetchDepartments = async () => {
@@ -52,14 +52,34 @@ useEffect(() => {
 }, []);
 
  // Function to fetch doctors based on the selected department
- const fetchDoctors = async (departmentName) => {
+//  const fetchDoctors = async (departmentName) => {
+//   try {
+//     const response = await axios.get(`${BACKEND_URL}/kiosk/getDoctorsMaster?siteId=${profileData.siteId}&departmentName=${departmentName}`);
+//     setDoctorsData(response.data.data);
+//   } catch (error) {
+//     console.error('Error fetching doctors:', error);
+//   }
+// };
+
+const fetchDoctors = async (departmentName) => {
   try {
     const response = await axios.get(`${BACKEND_URL}/kiosk/getDoctorsMaster?siteId=${profileData.siteId}&departmentName=${departmentName}`);
     setDoctorsData(response.data.data);
+    // If there's no doctor available for the selected department, reset the doctor selection and slots
+    if (!response.data.data.length) {
+      setDoctor({
+        selectedDoctor: '',
+        selectedDoctorId: ''
+      });
+      setDoctorSlots([]);
+    }
   } catch (error) {
     console.error('Error fetching doctors:', error);
   }
 };
+
+
+
 
 // Helper function to format date as YYYYMMDD
 const formatDateAsYYYYMMDD = (date) => {
@@ -72,28 +92,30 @@ const formatDateAsYYYYMMDD = (date) => {
 
 
 //To fetch doctor Slots
-const fetchDoctorSlots = async (value,doctorId) => {
-  const formattedDate = formatDateAsYYYYMMDD(selectedDate); // Format the date
-  console.log("selectedDate",formattedDate,"SelectedDeptId",department.selectedDepartmentId)
+const fetchDoctorSlots = async (departmentName, doctorId) => {
+  const formattedDate = formatDateAsYYYYMMDD(selectedDate);
 
   try {
     const response = await axios.get(`${BACKEND_URL}/kiosk/getDoctorSlots?deptId=${department.selectedDepartmentId}&employeeId=${doctorId}&date=${formattedDate}`);
     if (response.data.status === "Success") {
       setDoctorSlots(response.data.data);
+    } else {
+      setDoctorSlots([]);
     }
   } catch (error) {
     console.error('Error fetching doctor slots:', error);
   }
 };
 
+
 // Call fetchDoctorSlots whenever the selected department or date changes
-useEffect(() => {
-  if (department.selectedDepartment && selectedDate) {
-    fetchDoctorSlots();
-  } else {
-    setDoctorSlots([]);
-  }
-}, [department.selectedDepartment, selectedDate]);
+// useEffect(() => {
+//   if (department.selectedDepartment && selectedDate) {
+//     fetchDoctorSlots();
+//   } else {
+//     setDoctorSlots([]);
+//   }
+// }, [department.selectedDepartment, selectedDate]);
  
 
 const [disablePrevDayButton,setDisablePrevDayButton] = useState(true);
@@ -120,28 +142,41 @@ const handlePrevDay = () => {
     newDate.setDate(newDate.getDate() + 1);
     setSelectedDate(newDate);
   }
+
+  useEffect(() => {
+    if (department.selectedDepartment && doctor.selectedDoctorId) {
+      fetchDoctorSlots(department.selectedDepartment, doctor.selectedDoctorId);
+    } else {
+      setDoctorSlots([]);
+    }
+  }, [department.selectedDepartment, doctor.selectedDoctorId]);
   
-  const handleDepartmentChange = (event,departmentId) =>{
-    const {value} = event.target;
+  const handleDepartmentChange = (event, departmentId) => {
+    const { value } = event.target;
     setDepartment(prevState => ({
       ...prevState,
-      selectedDepartment:value,
-      selectedDepartmentId:departmentId
-    }))
-     // Fetch doctors for the selected department
-     fetchDoctors(value);
-  }
+      selectedDepartment: value,
+      selectedDepartmentId: departmentId
+    }));
+    fetchDoctors(value);
+    setDoctor({
+      selectedDoctor: '',
+      selectedDoctorId: ''
+    });
+    setDoctorSlots([]); // Reset slots on department change
+  };
   
-  const handleDoctorChange = (event, doctorId) => {
+  const handleDoctorChange = async (event, doctorId) => {
     const { value } = event.target;
-    console.log('doctorValue',value,"doctorId",doctorId);
     setDoctor({
       selectedDoctor: value,
       selectedDoctorId: doctorId
     });
-    // Fetch slots for the selected doctor
-    fetchDoctorSlots(value,doctorId);
+    await fetchDoctorSlots(department.selectedDepartment, doctorId);
+    setDoctorSlots([]);
   };
+  
+
 
   const doctorRefs = useRef({});
   const handleSearchChange = (event) => {
@@ -205,26 +240,81 @@ const formatSlotTime = (dateTimeStr) => {
   return `${hours}:${minutes} ${ampm}`;
 };
 
-const handleSaveAppointment = () => {
-   
-  const saveAppointmentRequestBody = {
+function delay(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
 
+const handleSaveAppointment = async () => {
+  setIsLoading(true);
+  let selectedEventDate;
+   // Check if a slot is selected
+  if (selectedSlotId !== null) {
+    // Get the selected slot
+    const selectedSlot = doctorSlots[selectedSlotId];
+    // Access the eventDate of the selected slot
+    selectedEventDate = selectedSlot.eventDate;
+    // Now, you can use selectedEventDate in your saveAppointmentRequestBody or perform any other actions
+    console.log("Selected Event Date:", selectedEventDate);
+  } else {
+    // No slot selected, handle accordingly
+      toast.error("Please Select a Slot", {
+          position: "top-right",
+          autoClose: 800,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+        return;
+  }
+  const saveAppointmentRequestBody = {
       mrno: "KIMS102312210001",// For the time being no information regarding mrno so hardcoding it for testing
-      eventDate: "22-12-2023 10:30",
+      eventDate: selectedEventDate,
       empno: profileData.empno,
       empId: Number(profileData.employeeId),
       departmentId: Number(department.selectedDepartmentId),
       siteId: Number(profileData.siteId),
       userId: Number(profileData.userId)
   }
-  
+  axios
+  .post(`${BACKEND_URL}/kiosk/saveAppointment`,saveAppointmentRequestBody)
+   .then(async (response) => {
+    setIsLoading(false);
+        if(response.data.status === true){
+        toast.success("Consultation Booked Successfully", {
+       position: "top-right",
+      autoClose: 1000,
+       hideProgressBar: false,
+       closeOnClick: true,
+       pauseOnHover: true,
+       draggable: true,
+       progress: undefined,
+    });
+    // Wait for 2 seconds
+    await delay(2000);
+    navigate('/');
+    }
+    })
+    .catch((error) => {
+    toast.error("Something Went Wrong!!!!", {
+      position: "top-right",
+      autoClose: 1000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+    console.error('Error saving data:', error);
+    });
 }
   
 
 console.log("doctorSlots",doctorSlots)
 
   return (
-    <div style={{background:'#EFF2F7', height:'100vh'}}>
+    <div className='BookConsultationPage'>
       <Navbar pagename={'New Registration'} NewRegisterBookConsultationIsCalled={true}/>
       <PatientCard/>
 
@@ -279,7 +369,7 @@ console.log("doctorSlots",doctorSlots)
        <div className='DoctorContainer'>
         {doctorsData.map((dtr) => (
           <React.Fragment key={dtr.doctorId}>
-            <div style={{ display: 'flex' }} ref={el => doctorRefs.current[dtr.doctorId] = el}>
+            <div style={{ display: 'flex' }}>
               <input
                 type='radio'
                 id={dtr.id}
@@ -300,37 +390,59 @@ console.log("doctorSlots",doctorSlots)
       </div>
 
        {/* Doctor Slots Container */}
-    <div className='AppointmentDateHeader'>
-      SELECT SLOT
-    </div>
-    <div className="slots-container">
-      {doctorSlots.map((slot, index) => (
-        <div
-          key={index}
-          className={`slot ${index === selectedSlotId ? 'selected' : (slot.isBooked ? 'booked' : 'available')}`}
-          onClick={() => !slot.isBooked && selectSlot(index)}
-        >
-          {formatSlotTime(slot.eventStartDateTime)} - {formatSlotTime(slot.eventEndDateTime)}
-        </div>
-      ))}
-    </div>
+        <div>
+          {doctorSlots.length > 0 ? (
+            <div>
+              {/* Available Slots Header */}
+              <div className='Availableslotheader'>
+                <div style={{ display:'flex', gap: '30px', alignItems:'center'}}>
+                  SELECT SLOT
+                  <img src={slotMarks} alt=""  />
+                </div>
+              </div>
 
-       
+              <div className='doctorSlotContainer' >
+                {/* Render slots */}
+                {doctorSlots.map((slot, index) => (
+                  <React.Fragment key={index}>
+                    <input
+                      type='radio'
+                      id={`slot${index}`}
+                      value={index}
+                      className='doctorslot-radio'
+                      checked={index === selectedSlotId}
+                      onChange={() => !slot.isBooked && selectSlot(index)}
+                    />
+                    <label htmlFor={`slot${index}`} className={`doctorslot-label ${index === selectedSlotId ? 'selected' : (slot.isBooked ? 'booked' : 'available')}`}>
+                      {formatSlotTime(slot.eventStartDateTime)} - {formatSlotTime(slot.eventEndDateTime)}
+                    </label>
+                  </React.Fragment>
+                ))}
+              </div>
+            </div>
+          ) : (doctor.selectedDoctorId && (
+            <div className='NoSlotsMessage'>
+              NO SLOTS AVAILABLE
+            </div>
+          ))}
+        </div>
+
+ 
       </div>
 
       <div className='newRegistrationButtonGroupRow'>
       {/* <button className='newRegistrationCancelButton'>Clear All</button> */}
-      <button className='newRegistrationSaveButton' onClick={{handleSaveAppointment}} disabled={isLoading}>{isLoading ? 'Saving...' : 'Save & Next'}</button>
+      <button className='newRegistrationSaveButton' onClick={handleSaveAppointment} disabled={isLoading}>{isLoading ? 'Saving...' : 'Save & Next'}</button>
       </div>
       <ToastContainer position="top-right" autoClose={2000} />
 
-      {/* <button onClick={() => {
-              navigate('/');
-            }} 
-            className='NewRegistrationSkipButton'
-            style={{height:'54px',width:'270px'}}>
-              DON'T BOOK CONSULTATION<img src={rightIcon} alt="Right Icon" />
-            </button> */}
+          {/* <button onClick={() => {
+                  navigate('/');
+                }} 
+                className='NewRegistrationSkipButton'
+                style={{height:'54px',width:'270px'}}>
+                  DON'T BOOK CONSULTATION<img src={rightIcon} alt="Right Icon" />
+                </button> */}
 
 
     </div>

@@ -447,12 +447,15 @@ console.log("aadharData",aadharData)
   const handleSaveNewRegistration = async () =>{
     setIsLoading(true);
 
+    if(aadharData !== null){
     const isValidAadhar = await validateAadhar();
     if (!isValidAadhar) {
         setIsLoading(false);
         return;
     }
+  }
 
+    if(formData.aadharNumber !== ''){
     if (formData.aadharNumber.replace(/\s/g, '').length !== 12) {
       toast.error("Invalid Aadhar number.", {
           position: "top-right",
@@ -463,8 +466,10 @@ console.log("aadharData",aadharData)
           draggable: true,
           progress: undefined,
         });
+        setIsLoading(false);
       return;
   }
+}
     setIsLoading(true);
 
     //Since No information regarding post office and police station available so for now not including 
@@ -475,7 +480,6 @@ console.log("aadharData",aadharData)
     'selectedPrefix',
     'firstName',
     'selectedGender',
-    'aadharNumber',
     'pinCode',
     'mobileNumber',
     'age',
@@ -489,6 +493,10 @@ console.log("aadharData",aadharData)
     mandatoryFields.push('village');
 } else if (formData.selectedArea === 'Urban') {
     mandatoryFields.push('city');
+}
+
+if(aadharData){
+  mandatoryFields.push('aadharNumber');
 }
 
   const missingFields = mandatoryFields.filter(field => !formData[field]);
@@ -640,7 +648,7 @@ console.log("aadharData",aadharData)
 
 
 return (
-  <>
+  <div className='RegisterPatientDetailPage'>
     <Navbar pagename={'New Registration'} registerPatientDetailIsCalled={true}/>
      
      <div className='newRegisterPatientBody'>
@@ -742,7 +750,11 @@ return (
       <div className='newRegisterPatientAdharContent' style={{display:'flex', gap:'20px', paddingTop:'0px', paddingBottom:'0px'}}>
                 <div style={{ width:'50%'}}>
                   <div className="patientTypeDetailBox">
+                    {aadharData ? (
                     <div className='patientTypeDetailLabel'>Aadhar Number<span className='mandatoryField'>*</span></div>
+                    ):(
+                      <div className='patientTypeDetailLabel'>Aadhar Number</div>
+                    )}
                     <div style={{display:'flex'}}>
                     <input className='aadharNumberInput' placeholder='0000 0000 0000' 
                      value={aadharData ? maskedAadharNumber : formData.aadharNumber}  disabled={disableInputFieldAadhar} onChange={handleAadharChange}></input>
@@ -951,7 +963,7 @@ return (
       <ToastContainer position="top-right" autoClose={2000} />
      </div>
     
-  </>
+  </div>
 )
 }
 
