@@ -72,12 +72,12 @@ const formatDateAsYYYYMMDD = (date) => {
 
 
 //To fetch doctor Slots
-const fetchDoctorSlots = async () => {
+const fetchDoctorSlots = async (value,doctorId) => {
   const formattedDate = formatDateAsYYYYMMDD(selectedDate); // Format the date
   console.log("selectedDate",formattedDate,"SelectedDeptId",department.selectedDepartmentId)
 
   try {
-    const response = await axios.get(`${BACKEND_URL}/kiosk/getDoctorSlots?deptId=${department.selectedDepartmentId}&employeeId=${doctor.selectedDoctorId}&date=${formattedDate}`);
+    const response = await axios.get(`${BACKEND_URL}/kiosk/getDoctorSlots?deptId=${department.selectedDepartmentId}&employeeId=${doctorId}&date=${formattedDate}`);
     if (response.data.status === "Success") {
       setDoctorSlots(response.data.data);
     }
@@ -132,68 +132,45 @@ const handlePrevDay = () => {
      fetchDoctors(value);
   }
   
-  const handleDoctorChange = (event,doctorId) =>{
-    const {value} = event.target;
-    setDoctor(prevState => ({
-      ...prevState,
-      selectedDoctor:value,
-      selectedDoctorId:doctorId
-    }))
+  const handleDoctorChange = (event, doctorId) => {
+    const { value } = event.target;
+    console.log('doctorValue',value,"doctorId",doctorId);
+    setDoctor({
+      selectedDoctor: value,
+      selectedDoctorId: doctorId
+    });
     // Fetch slots for the selected doctor
-  fetchDoctorSlots(); 
-  }
+    fetchDoctorSlots(value,doctorId);
+  };
 
   const doctorRefs = useRef({});
-  //Selection of doctor based on search Not working. Need to update the below code
   const handleSearchChange = (event) => {
     const { value } = event.target;
     setSearchInput(value);
   
-    // Reset current doctor selection
+    // Clear current slots and doctor selection
+    setDoctorSlots([]);
     setDoctor({ selectedDoctorId: '', selectedDoctor: '' });
-    setDoctorSlots([]); // Clear current slots
   
-    // Filter departments and doctors based on search input
-    const filteredDepartments = departmentsData.filter(dept =>
+    // Match departments
+    const matchingDepartment = departmentsData.find(dept =>
       dept.deptName.toLowerCase().includes(value.toLowerCase())
     );
-    const filteredDoctors = doctorsData.filter(dtr =>
-      dtr.doctorName.toLowerCase().includes(value.toLowerCase())
-    );
   
-    // If a department is found, select it and fetch its doctors
-    if (filteredDepartments.length > 0) {
-      const selectedDept = filteredDepartments[0];
+    if (matchingDepartment) {
       setDepartment({
-        selectedDepartment: selectedDept.deptName,
-        selectedDepartmentId: selectedDept.deptId
+        selectedDepartment: matchingDepartment.deptName,
+        selectedDepartmentId: matchingDepartment.deptId
       });
-      fetchDoctors(selectedDept.deptName);
-  
-      // Scroll to the first matched department
-      scrollToElement(selectedDept.deptId);
-    }
-    // If no department found and a doctor is found, select the doctor
-    else if (filteredDoctors.length > 0) {
-      const selectedDoc = filteredDoctors[0];
-      setDoctor({
-        selectedDoctor: selectedDoc.doctorName,
-        selectedDoctorId: selectedDoc.doctorId
-      });
-      setDepartment({
-        selectedDepartment: selectedDoc.departmentName,
-        selectedDepartmentId: selectedDoc.departmentId
-      });
-  
-      // Fetch slots for the selected doctor
-      fetchDoctorSlots(selectedDoc.doctorId);
-  
-      // Scroll to the first matched doctor
-      scrollToElement(selectedDoc.doctorId);
+      fetchDoctors(matchingDepartment.deptName);
+      scrollToElement(matchingDepartment.deptId);
+    } else {
+      // If no department matches, reset the department selection
+      setDepartment({ selectedDepartment: '', selectedDepartmentId: '' });
     }
   };
   
-  // Helper function to scroll to the department or doctor element
+  // Helper function to scroll to the department element
   const scrollToElement = (elementId) => {
     const elementRef = doctorRefs.current[elementId];
     if (elementRef) {
@@ -343,7 +320,7 @@ console.log("doctorSlots",doctorSlots)
 
       <div className='newRegistrationButtonGroupRow'>
       {/* <button className='newRegistrationCancelButton'>Clear All</button> */}
-      <button className='newRegistrationSaveButton' onClick={{}}>{isLoading ? 'Saving...' : 'Save & Next'}</button>
+      <button className='newRegistrationSaveButton' onClick={{handleSaveAppointment}} disabled={isLoading}>{isLoading ? 'Saving...' : 'Save & Next'}</button>
       </div>
       <ToastContainer position="top-right" autoClose={2000} />
 
