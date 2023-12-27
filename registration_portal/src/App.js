@@ -11,6 +11,8 @@ import BookAppointmentLanding from './Components/BookAppointment/BookAppointment
 import NewRegistrationBookConsultation from './Components/Registration/NewRegisterBookConsultation';
 import Billing from './Components/BookAppointment/Billing/Billing';
 import BookConsultation from './Components/BookAppointment/BookConsultation/BookConsultation';
+import OpdCheckin from './Components/BookAppointment/OPD_CheckIn/OpdCheckin';
+import AllPatients from './Components/BookAppointment/AllPatients';
 
 function App() {
   return (
@@ -25,8 +27,10 @@ function App() {
        <Route path="/LabReport" element={<LabReport/>} />
        <Route path="/Billing" element={<Billing/>}/>
        <Route path="/BookConsultation" element={<BookConsultation/>}/>
+       <Route path="/OpdCheckin" element={<OpdCheckin/>}/>
        <Route path="/PatientDetailRegister" element ={<RegisterPatientDetail/>} />
        <Route path="/NewRegisterBookConsultation" element ={<NewRegistrationBookConsultation/>} />
+       <Route path="/AllPatients" element ={<AllPatients/>} />
 
 
      </Routes>

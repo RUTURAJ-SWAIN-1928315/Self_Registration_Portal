@@ -1,0 +1,129 @@
+.AllPatientPage{
+    background-color:#EFF2F7;
+    height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.detailBox{
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     width: 100%;
+     height: 86.5vh;
+     /* height: auto; */
+}
+
+.detailboxContainer{
+    display: inline-flex;
+    padding: 16px 0px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    border-radius: 16px;
+    background: var(--White, #FFF);
+    width: 30%; 
+    max-height: 60%;
+    overflow-y: auto;
+}
+
+.detailboxContainer::-webkit-scrollbar {
+    width: 2px; /* Adjust the width to make it thin */
+  }
+  
+  .detailboxContainer::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2); /* Color of the scrollbar thumb */
+  }
+  .detailboxContainer::-webkit-scrollbar-track {
+    background-color: rgba(0, 0, 0, 0.1); /* Color of the scrollbar track */
+  }
+  
+  .detailboxContainer::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(0, 0, 0, 0.3); /* Color of the scrollbar thumb on hover */
+  }
+.cardHeader{
+    display: flex;
+    padding: 0px 0px 8px 16px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    align-self: stretch;
+    border-bottom: 1px solid var(--Scarpa-Flow-300, #B9B9C0);
+}
+
+.cardHeaderBoldText{
+    color: var(--Jade-600, #0FA968);
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.cardHeadersubText{
+    color: var(--Scarpa-Flow-800, #42424A);
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.Patientcard{
+    width: 86%;
+    display: flex;
+    padding: 0px 16px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.innerPatientCard{
+    width: 100%;
+    display: flex;
+    padding: 16px;
+    align-items: center;
+    gap: 11px;
+    align-self: stretch;
+    border-radius: 8px;
+    background: var(--Scarpa-Flow-50, #F7F7F8);
+}
+
+.innerPatientCardBox{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.innerPatientCardBoxNameRow{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    /* gap: 12px; */
+    justify-content: space-between;
+}
+
+.innerPatientCardBoxName{
+    color: var(--Scarpa-Flow-950, #27272A);
+  font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.genderbox{
+    display: flex;
+    padding: 3px 5px;
+    align-items: center;
+    gap: 4px;
+    border-radius: 10px;
+    background: var(--White, #FFF);
+}
+
+
+
+.innerPatientCard.selected {
+    border-radius: 8px;
+    border: 1px solid var(--Jade-600, #0FA968);
+    background: var(--Jade-100, #DAFEEF);
+  }

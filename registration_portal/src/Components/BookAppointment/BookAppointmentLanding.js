@@ -24,6 +24,9 @@ const handleBookConsultationClick = () => {
    navigate('/BookConsultation');
 };
 
+const handleOPDCheckinClick = () => {
+   navigate('/OpdCheckin');
+};
 
 
 
@@ -36,7 +39,7 @@ const handleBookConsultationClick = () => {
      <div className='landingContentBox'>
       <div className='blockContent'>
          <div>
-          <img src={opdCheckin} alt="OPD CheckIn" />
+          <img src={opdCheckin} alt="OPD CheckIn" onClick={handleOPDCheckinClick}/>
          </div>
          <div className='imgTitle'>
          OPD Check-in

@@ -37,6 +37,21 @@ function BookConsultation() {
   const [doctorsData, setDoctorsData] = useState([]);
   const [searchInput, setSearchInput] = useState('');
   const [doctorSlots, setDoctorSlots] = useState([]);
+
+  const [prevdoctorsData, setPrevDoctorsData] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`${BACKEND_URL}/kiosk/getPreviousConsultants?mrno=KIMS.0004212119`);
+        setPrevDoctorsData(response.data.data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
   
   
   // Fetch departments data from the API
@@ -342,7 +357,38 @@ function BookConsultation() {
       </div>
 
 
+
+
+       {/* Previous Doctor Container  */}
+        <div className='doctorStateHeader'>
+        LAST CONSULTED DOCTORS
+        </div>
+
+       <div className='prevDoctorContainer' style={{paddingBottom:'14px',  borderBottom: '1px solid var(--scarpa-flow-200, #D9D9DE)'}}>
+      {prevdoctorsData.map((Prevdtr, index) => (
+        <div key={index} style={{ display: 'flex' }}>
+          <input
+            type='radio'
+            id={`doctor_${index}`}
+            value={`${Prevdtr.firstName} ${Prevdtr.lastName}`}
+            className='prevdoctor-radio'
+          />
+          <label htmlFor={`doctor_${index}`} className='prevdoctor-label'>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', alignItems: 'flex-start' }}>
+              <div>{`${Prevdtr.firstName} ${Prevdtr.lastName}`}</div>
+              <div className='doctorDeptSubtitle'>{Prevdtr.departmentName}</div>
+            </div>
+          </label>
+        </div>
+      ))}
+    </div>
+
+
        {/* Department Container  */}
+
+       <div className='doctorStateHeader'>
+        CONSULT OTHER DOCTORS
+        </div>
         
        <div className='DepartmentContainer'>
         {departmentsData.map((dept) => (
