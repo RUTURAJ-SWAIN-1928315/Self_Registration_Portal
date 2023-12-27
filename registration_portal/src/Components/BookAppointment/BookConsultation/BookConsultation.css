@@ -1,0 +1,16 @@
+.BookConsultationPage{ 
+    background-color:#EFF2F7;
+    height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.AppointmentDateHeader{
+    color: var(--Corduroy-950, #22292A);
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-size: 17px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 18px; /* 112.5% */
+    letter-spacing: 0.2px;
+}

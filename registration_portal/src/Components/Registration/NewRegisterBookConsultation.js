@@ -311,7 +311,6 @@ const handleSaveAppointment = async () => {
 }
   
 
-console.log("doctorSlots",doctorSlots)
 
   return (
     <div className='BookConsultationPage'>
@@ -335,12 +334,12 @@ console.log("doctorSlots",doctorSlots)
          </div>
        </div>
 
-       <div className='DtrDeptSearchContainer'>
-       <img style={{cursor:"pointer"}} src={searchIcon} alt="searchIcon"/>
-        <input className='DtrDeptSearchInput' type="text" placeholder='Search Department'  value={searchInput}
-        onChange={handleSearchChange} />
-       </div>
-       </div>
+        <div className='DtrDeptSearchContainer'>
+        <img style={{cursor:"pointer"}} src={searchIcon} alt="searchIcon"/>
+          <input className='DtrDeptSearchInput' type="text" placeholder='Search Department'  value={searchInput}
+          onChange={handleSearchChange} />
+        </div>
+      </div>
 
      {/* Department Container  */}
         

@@ -10,6 +10,7 @@ import RegisterPatientDetail from './Components/Registration/RegisterPatientDeta
 import BookAppointmentLanding from './Components/BookAppointment/BookAppointmentLanding';
 import NewRegistrationBookConsultation from './Components/Registration/NewRegisterBookConsultation';
 import Billing from './Components/BookAppointment/Billing/Billing';
+import BookConsultation from './Components/BookAppointment/BookConsultation/BookConsultation';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
        <Route path="/BookAppointmentLanding" element={<BookAppointmentLanding/>} />
        <Route path="/LabReport" element={<LabReport/>} />
        <Route path="/Billing" element={<Billing/>}/>
+       <Route path="/BookConsultation" element={<BookConsultation/>}/>
        <Route path="/PatientDetailRegister" element ={<RegisterPatientDetail/>} />
        <Route path="/NewRegisterBookConsultation" element ={<NewRegistrationBookConsultation/>} />
 

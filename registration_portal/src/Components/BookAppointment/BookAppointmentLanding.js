@@ -21,7 +21,7 @@ function BookAppointmentLanding() {
 };
 
 const handleBookConsultationClick = () => {
-   navigate('/BookAppointment');
+   navigate('/BookConsultation');
 };
 
 
