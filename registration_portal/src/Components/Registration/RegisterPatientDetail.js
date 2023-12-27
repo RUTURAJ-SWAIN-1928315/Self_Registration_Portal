@@ -598,6 +598,7 @@ if(aadharData){
       setIsLoading(false);
           if(response.data.status === true){
           localStorage.setItem("newRegistrationHIMSResponse",JSON.stringify(response.data.HimsResponse))
+          getNewRegisterPatientDetail(response.data.HimsResponse.preRegisterId)
           toast.success("Registration Successfull", {
          position: "top-right",
         autoClose: 1000,
@@ -660,6 +661,33 @@ if(aadharData){
       locality: '',
       postOffice: '',
       policeStation: ''
+    });
+  }
+
+  
+
+  function getNewRegisterPatientDetail(preRegisterId){
+    axios
+    .get(`${BACKEND_URL}/getNewRegisteredPatient?preRegisterId=${preRegisterId}`)
+     .then(async (response) => {
+      setIsLoading(false);
+          if(response.data.status === true){
+          localStorage.setItem("NewRegisteredPatientDetails",JSON.stringify(response.data))
+     }
+     })
+    .catch((error) => {
+      setIsLoading(false);
+      toast.error("Something Went Wrong!!!!", {
+        position: "top-right",
+       autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        progress: undefined,
+     });
+      console.error('Error saving data:', error);
     });
   }
 
