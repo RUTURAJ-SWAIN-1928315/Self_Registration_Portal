@@ -332,8 +332,8 @@ function BookAppointment() {
                 text="Time Remaining:"
                 ButtonText="Resend OTP"
                 resend={handleResend}
-                textColor={"green"}
-                buttonColor={"green"}
+                textColor={"var(--Jade-500, #1ACD81)"}
+                buttonColor={"var(--Jade-500, #1ACD81)"}
                 background= {"var(--Scarpa-Flow-800, #42424A)"}               
               />
 
