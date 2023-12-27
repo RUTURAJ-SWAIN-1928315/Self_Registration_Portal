@@ -67,9 +67,9 @@ function BookAppointment() {
           setShowOTPInputs(true); // Set showOTPInputs state to true on arrow button click
           }
           else{
-              toast.error("Invalid MRN Entered.", {
+              toast.info("This MRN is not Registered to our System. Kindly Check the number or Apply for New Registration", {
                   position: "top-right",
-                  autoClose: 800,
+                  autoClose: 3000,
                   hideProgressBar: false,
                   closeOnClick: true,
                   pauseOnHover: true,
@@ -108,9 +108,9 @@ function BookAppointment() {
           setShowOTPInputs(true); // Set showOTPInputs state to true on arrow button click
           }
           else{
-              toast.error("Invalid Mobile Number Entered.", {
+              toast.info("This Mobile Number is not Registered to our System. Kindly Check the number or Apply for New Registration.", {
                   position: "top-right",
-                  autoClose: 800,
+                  autoClose: 3000,
                   hideProgressBar: false,
                   closeOnClick: true,
                   pauseOnHover: true,
@@ -357,7 +357,7 @@ function BookAppointment() {
             </div>
           )}
         </div>
-        <ToastContainer position="top-right" autoClose={2000} />
+        <ToastContainer position="top-right" autoClose={5000} />
       </div>
     </div>
   );

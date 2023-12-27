@@ -23,6 +23,9 @@ function NewRegisterBookConsultation() {
     selectedDepartment: ''
 });
 const profileData = JSON.parse(localStorage.getItem('profileData'));
+const newRegistrationHIMSResponse = JSON.parse(localStorage.getItem('newRegistrationHIMSResponse'));
+
+console.log("newRegistrationHIMSResponse",newRegistrationHIMSResponse)
 
 const BACKEND_URL = process.env.REACT_APP_EMR_BACKEND_BASE_URL;
 const navigate = useNavigate();
@@ -269,7 +272,7 @@ const handleSaveAppointment = async () => {
         return;
   }
   const saveAppointmentRequestBody = {
-      mrno: "KIMS102312210001",// For the time being no information regarding mrno so hardcoding it for testing
+      preRegisterId:newRegistrationHIMSResponse.preRegisterId,
       eventDate: selectedEventDate,
       empno: profileData.empno,
       empId: Number(profileData.employeeId),
@@ -291,6 +294,7 @@ const handleSaveAppointment = async () => {
        draggable: true,
        progress: undefined,
     });
+    localStorage.removeItem('newRegistrationHIMSResponse');
     // Wait for 2 seconds
     await delay(2000);
     navigate('/');

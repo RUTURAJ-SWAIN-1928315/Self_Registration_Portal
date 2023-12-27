@@ -15,6 +15,7 @@ function RegisterPatientDetail() {
   const profileData = JSON.parse(localStorage.getItem('profileData'));
  
  const aadharData = JSON.parse(localStorage.getItem('aadharData'));
+ const [addressMaster,setAddressMaster] = useState([]);
 
  //HardCoded aadharData for testing
 // const aadharData = {
@@ -294,6 +295,7 @@ const calculateAge = (dob) => {
         .then((response) => {
           if (response.data.status === "success" && response.data.data.length > 0) {
             const data = response.data.data;
+            setAddressMaster(response.data.data);
             //  const uniqueCountries = [...new Set(data.map(item => item.countryName))];
             //  const uniqueStates = [...new Set(data.map(item => item.stateName))];
             //  const uniqueDistricts = [...new Set(data.map(item => item.districtName))];
@@ -327,7 +329,7 @@ const calculateAge = (dob) => {
       }
     }
     };
- 
+ console.log("addressMaster",addressMaster)
  
 
   const handleInputChange = (event) => {
@@ -444,6 +446,7 @@ const calculateAge = (dob) => {
 };
   
 console.log("aadharData",aadharData)
+
   const handleSaveNewRegistration = async () =>{
     setIsLoading(true);
 
@@ -540,6 +543,14 @@ if(aadharData){
     formattedDOB = formatDate(aadharData.dob);
     }
 
+   // Find the matching address details from addressMaster
+  const matchingAddress = addressMaster.find(address => 
+    address.districtName.toLowerCase() === formData.district.toLowerCase() &&
+    address.stateName.toLowerCase() === formData.state.toLowerCase() &&
+    address.countryName.toLowerCase() === formData.country.toLowerCase()
+  );
+
+
     const formattedAadharNumber = formData.aadharNumber.replace(/\s/g, ''); // Remove spaces
     setIsLoading(true);
     const newRegistrationRequestBody = {
@@ -554,8 +565,8 @@ if(aadharData){
       lastName:formData.lastName,
       dobStr:formattedDOB,
       age:Number(formData.age),
-      ageUnit:formData.ageUnit,
-      contactNo:Number(formData.mobileNumber),
+      // ageUnit:formData.ageUnit,
+      contactNo:formData.mobileNumber,
       email:formData.emailId,
       userId:Number(profileData.userId),
       aadhaarNumber:formattedAadharNumber,
@@ -566,13 +577,17 @@ if(aadharData){
           isRural:formData.selectedArea === 'Rural'?true:false,
           isUrban:formData.selectedArea === 'Urban'?true:false,
           pin:Number(formData.pinCode),
-          district:formData.district,
-          state:formData.state,
-          country:formData.country,
+          districtId:matchingAddress ? matchingAddress.districtId : null,
+          districtName:formData.district,
+          stateId:matchingAddress ? matchingAddress.stateId : null,
+          stateName:formData.state,
+          countryId: matchingAddress ? matchingAddress.countryId : null,
+          countryName:formData.country,
           village:formData.village,
           locality:formData.locality,
           postOffice:formData.postOffice,
-          policeStation:formData.policeStation
+          policeStation:formData.policeStation,
+          cityName:formData.city
         }
       ]
     }
@@ -582,6 +597,7 @@ if(aadharData){
      .then(async (response) => {
       setIsLoading(false);
           if(response.data.status === true){
+          localStorage.setItem("newRegistrationHIMSResponse",JSON.stringify(response.data.HimsResponse))
           toast.success("Registration Successfull", {
          position: "top-right",
         autoClose: 1000,
@@ -600,6 +616,7 @@ if(aadharData){
      }
      })
     .catch((error) => {
+      setIsLoading(false);
       toast.error("Something Went Wrong!!!!", {
         position: "top-right",
        autoClose: 1000,
@@ -608,12 +625,12 @@ if(aadharData){
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
+        progress: undefined,
      });
       console.error('Error saving data:', error);
     });
     
   }
-
 
   const handleClearAllInputs = () =>{
     setFormData({
