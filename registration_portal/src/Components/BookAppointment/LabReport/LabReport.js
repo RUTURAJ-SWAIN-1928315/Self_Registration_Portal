@@ -1,15 +1,54 @@
-import React from 'react';
+import React, { useState,useEffect } from 'react';
 import './LabReport.css';
 import Navbar from '../../Navbar/Navbar';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Button } from '@mui/material';
+import axios from 'axios';
 
 function LabReport() {
+  const BACKEND_URL = process.env.REACT_APP_EMR_BACKEND_BASE_URL;
+  const [tableData,setTableData] = useState([]);
 
-const handlePrint = () => {
-    // Implement your logic for printing here
-    console.log('Printing...');
+  //For Testing purpose Demo MRNO
+  const mrno = 'KIMS102302010458';
+
+
+  //Fetch TableData for Lab Reports
+ 
+useEffect(() => {
+  const fetchTableData = async () => {
+    try {
+      const response = await axios.get(`${BACKEND_URL}/kiosk/getLabReports?mrno=${mrno}`);
+      setTableData(response.data);
+    } catch (error) {
+      console.error('Error fetching Table Data:', error);
+    }
   };
 
+  fetchTableData();
+}, []);
+
+console.log("TableData",tableData);
+
+const handlePrint = (reportUrl,mrn) => {
+  //setting the new tab name as MRN
+  const windowName = `MRN_${mrn}`;
+  window.open(reportUrl, windowName);
+  //window.open(reportUrl, '_blank');
+    console.log('Printing...',mrn);
+  };
+
+  
+  const formatDateTime = (dateTimeString) => {
+    return new Date(dateTimeString).toLocaleString('en-IN', {
+      day: 'numeric',
+      month: 'numeric',
+      year: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric',
+      hour12: false,
+    });
+  };
 
 
   return (
@@ -27,24 +66,22 @@ const handlePrint = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {/* Replace the dummy data with your actual data */}
-
-              <TableRow>
-                <TableCell>21-12-2023</TableCell>
-                <TableCell>Sample Report</TableCell>
-                <TableCell>
-                    <div className='ChipShape'
-                     style={{background: 'var(--Jade-300, #81F4C3)'}}>
-                      Completed
+              {tableData.map((data, index) => (
+                <TableRow key={index}>
+                  <TableCell>{formatDateTime(data.orderedDate)}</TableCell>
+                  <TableCell>{data.serviceName}</TableCell>
+                  <TableCell>
+                    <div className='ChipShape' style={{ background: data.resultStatus === 'Result Certified' ? 'var(--Jade-300, #81F4C3)' : 'var(--Red-300, #F44336)' }}>
+                      {data.resultStatus}
                     </div>
-                </TableCell>
-                <TableCell>
-                  <Button variant="contained" color="success" onClick={() => handlePrint()}>
-                    Print
-                  </Button>
-                </TableCell>
-              </TableRow>
-             
+                  </TableCell>
+                  <TableCell>
+                    <Button variant="contained" color="success" onClick={() => handlePrint(data.reportUrl,data.mrn)}>
+                      Print
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
             </TableBody>
           </Table>
         </TableContainer>

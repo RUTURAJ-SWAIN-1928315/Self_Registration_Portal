@@ -1,14 +1,40 @@
-import React from 'react'
+import React, { useState,useEffect } from 'react';
 import Navbar from '../../Navbar/Navbar'
 import './Billing.css'
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Button } from '@mui/material';
+import axios from 'axios';
 
 function Billing() {
+  const BACKEND_URL = process.env.REACT_APP_EMR_BACKEND_BASE_URL;
+  const [tableData,setTableData] = useState([]);
+  //For Testing purpose Demo MRNO
+  const mrno = 'KIMS.0004205534';
 
 
-    const handlePrintBilling = () => {
-        // Implement your logic for printing here
-        console.log('Printing...');
+   //Fetch TableData for Lab Reports
+useEffect(() => {
+  const fetchTableData = async () => {
+    try {
+      const response = await axios.get(`${BACKEND_URL}/kiosk/getInvoiceDetails?mrno=${mrno}`);
+      setTableData(response.data.invoiceDetails);
+    } catch (error) {
+      console.error('Error fetching Table Data:', error);
+    }
+  };
+
+  fetchTableData();
+}, []);
+
+console.log("TableData",tableData);
+
+
+    const handlePrintBilling = (invoiceId) => {
+       const reportUrl = `${BACKEND_URL}/kiosk/getInvoice?printType=INVOICE&invoiceId=${invoiceId}`
+       //setting the new tab name as invoiceID
+      const windowName = `InvoiceID_${invoiceId}`;
+      window.open(reportUrl, windowName);
+      //window.open(reportUrl, '_blank');
+        console.log('Printing...',invoiceId);
       };
 
       
@@ -22,7 +48,7 @@ function Billing() {
             <TableHead sx={{ backgroundColor: 'lightGrey' }}>
               <TableRow>
                 <TableCell>Bill Date</TableCell>
-                <TableCell>Bill Type</TableCell>
+                {/* <TableCell>Bill Type</TableCell> */}
                 <TableCell>Invoice Number</TableCell>
                 <TableCell>Amount</TableCell>
                 <TableCell>Bill Status</TableCell>
@@ -30,26 +56,26 @@ function Billing() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {/* Replace the dummy data with your actual data */}
-
-              <TableRow>
-                <TableCell>21-12-2023</TableCell>
-                <TableCell>Pharmacy</TableCell>
-                <TableCell>3425212</TableCell>
-                <TableCell>10,000.00</TableCell>
-                <TableCell>
-                    <div className='ChipShape'
-                     style={{background: 'var(--Jade-300, #81F4C3)'}}>
-                      Final
+              {tableData.map((row, index) => (
+                <TableRow key={index}>
+                  <TableCell>{row.createdDate}</TableCell>
+                  <TableCell>{row.invoiceNo}</TableCell>
+                  <TableCell>{row.totalAmount}</TableCell>
+                  <TableCell>
+                    <div className='ChipShape' style={{ background: row.invoiceStatus === 'Settled' ? 'var(--Jade-300, #81F4C3)' : 'var(--Red-300, #F44336)' }}>
+                      {row.invoiceStatus}
                     </div>
-                </TableCell>
-                <TableCell>
-                  <Button variant="contained" color="success" onClick={() => handlePrintBilling()}>
-                    Print
-                  </Button>
-                </TableCell>
-              </TableRow>
-             
+                  </TableCell>
+                  <TableCell>
+                    <Button 
+                      variant="contained" 
+                      color="success" 
+                      onClick={() => handlePrintBilling(row.invoiceId)}>
+                      Print
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
             </TableBody>
           </Table>
         </TableContainer>
