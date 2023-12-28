@@ -16,8 +16,6 @@ import axios from 'axios';
 function BookConsultation() {
 
 
-
-
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [isLoading,setIsLoading] = useState(false);
     const [department,setDepartment] = useState({
