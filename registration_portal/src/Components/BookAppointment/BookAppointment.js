@@ -280,23 +280,11 @@ function BookAppointment() {
       setIsLoading(false);
       if(response.data.status === 'success') {
         localStorage.setItem("AlreadyRegisteredPatientDetails",JSON.stringify(response.data.data))
-        navigate('/BookAppointmentLanding');
+        navigate('/AllPatients');
         }
     })
     .catch((error) => {
       setIsLoading(false);
-      if(error.response.status === 400){
-        toast.error("Invalid OTP Entered.", {
-          position: "top-right",
-          autoClose: 800,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
-      return;
-      }else{
       toast.error("Something Went Wrong!!!!", {
         position: "top-right",
         autoClose: 800,
@@ -308,7 +296,6 @@ function BookAppointment() {
       });
       console.error('Error fetching data:', error);
     return;
-    }
     });
   }
 
