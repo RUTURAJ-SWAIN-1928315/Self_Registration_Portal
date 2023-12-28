@@ -62,15 +62,12 @@ const profileData = JSON.parse(localStorage.getItem('profileData'));
               <div style={{display:'flex', flexDirection:'row', gap:'20px'}}>
                 <div style={{display:'flex', gap:'8px'}}>
                   <img src={Instagram} alt="" />
-                  <a href={hospitalData.instagramLink} target="_blank" rel="noopener noreferrer">
-                    {extractUsernameInsta(hospitalData.instagramLink)}
-                  </a>
+                 <span>{extractUsernameInsta(hospitalData.instagramLink)}</span>
+                    
                 </div>
                 <div style={{display:'flex', gap:'8px'}}>
                   <img src={Twitter} alt="" />
-                  <a href={hospitalData.twitterLink} target="_blank" rel="noopener noreferrer">
-                  {extractUsernameTwitter(hospitalData.twitterLink)}
-                  </a>
+                   <span>{extractUsernameTwitter(hospitalData.twitterLink)}</span>
                 </div>
               </div>
             </>
