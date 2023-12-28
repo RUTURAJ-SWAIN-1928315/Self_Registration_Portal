@@ -258,6 +258,7 @@ const handleSaveAppointment = async () => {
     // Now, you can use selectedEventDate in your saveAppointmentRequestBody or perform any other actions
     console.log("Selected Event Date:", selectedEventDate);
   } else {
+    setIsLoading(false);
     // No slot selected, handle accordingly
       toast.error("Please Select a Slot", {
           position: "top-right",

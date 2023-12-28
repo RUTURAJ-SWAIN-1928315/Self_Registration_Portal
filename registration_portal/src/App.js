@@ -15,6 +15,7 @@ import OpdCheckin from './Components/BookAppointment/OPD_CheckIn/OpdCheckin';
 import AllPatients from './Components/BookAppointment/AllPatients';
 import AdminPage from './Components/Admin/AdminPage';
 import Faqs from './Components/Faqs/Faqs';
+import HospitalDetails from './Components/HospitalDetail/HospitalDetails';
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
        <Route path="/NewRegisterBookConsultation" element ={<NewRegistrationBookConsultation/>} />
        <Route path="/AllPatients" element ={<AllPatients/>} />
        <Route path="/faqs" element={<Faqs/>}/>
+       <Route path="/hospitalDetails" element={<HospitalDetails/>}/>
 
 
      </Routes>

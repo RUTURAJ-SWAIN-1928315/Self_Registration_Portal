@@ -47,7 +47,7 @@ function Home() {
     };
 
     const handleAboutKimsCardClick = () => {
-        alert(`Clicked on handleAboutKimsCardClick`);
+        navigate('/hospitalDetails');
     };
 
     // const handleMyLocationCardClick = () => {
@@ -99,8 +99,8 @@ function Home() {
             <div className='HomeContainerRow'>
 
                 <div className='cardBody2' onClick={handleAboutKimsCardClick}>
-                    <div><img src={AboutKims} alt="AboutKims" /> </div>
-                    <div className='cardBodyHeader2'>About KIMS</div>
+                    <div><img src={AboutKims} alt="AboutHos" /> </div>
+                    <div className='cardBodyHeader2'>About Hospital</div>
                 </div>
                 {/* <div className='cardBody2' onClick={handleMyLocationCardClick}>
                     <div><img src={MyLocation} alt="MyLocation" /> </div>

@@ -44,7 +44,7 @@ useEffect(() => {
     SetPatientCardDetails({
       //Checking NA here since Sending NA when photo is not available while Registering
       photo:newRegisteredPatientDetails.photo === 'NA' ? null:newRegisteredPatientDetails.photo,
-      headerName:newRegisteredPatientDetails.prefix + " "+ newRegisteredPatientDetails.firstName + " " +middleName +" "+ newRegisteredPatientDetails.lastName,
+      headerName:newRegisteredPatientDetails.firstName + " " +middleName +" "+ newRegisteredPatientDetails.lastName,
       gender:newRegisteredPatientDetails.gender,
       age:newRegisteredPatientDetails.ageStr,
       dob:newRegisteredPatientDetails.dobStr,
@@ -68,14 +68,13 @@ useEffect(() => {
 
   }else{
     console.log("alreadyRegisteredPatientDetails.firstName ",alreadyRegisteredPatientDetails.firstName)
-    const prefix = (alreadyRegisteredPatientDetails.prefix === '' || alreadyRegisteredPatientDetails.prefix === null) ? '' : alreadyRegisteredPatientDetails.prefix;
+    //const prefix = (alreadyRegisteredPatientDetails.prefix === '' || alreadyRegisteredPatientDetails.prefix === null) ? '' : alreadyRegisteredPatientDetails.prefix;
     const middleName = (alreadyRegisteredPatientDetails.middleName === '' || alreadyRegisteredPatientDetails.middleName === null) ? '' : alreadyRegisteredPatientDetails.middleName;
     
-    //const testImageLink = "http://52.66.254.50:9070/soul/fos?type_=55&filename=1703758703185_Photo.jpg";
     const addressList = alreadyRegisteredPatientDetails.addressList[0];
     SetPatientCardDetails({
       photo:alreadyRegisteredPatientDetails.photo === 'NA' ? null:alreadyRegisteredPatientDetails.photo,
-      headerName:prefix + " "+ alreadyRegisteredPatientDetails.firstName + " " +middleName +" "+ alreadyRegisteredPatientDetails.lastName,
+      headerName:alreadyRegisteredPatientDetails.firstName + " " +middleName +" "+ alreadyRegisteredPatientDetails.lastName,
       gender:alreadyRegisteredPatientDetails.gender,
       age:alreadyRegisteredPatientDetails.ageStr,
       dob:alreadyRegisteredPatientDetails.dobStr,

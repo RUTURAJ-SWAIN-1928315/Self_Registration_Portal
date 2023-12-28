@@ -443,6 +443,7 @@ console.log("aadharData",aadharData)
     'district',
     'state',
     'country',
+    'dob'
   ];
 
    // Add 'village' or 'city' to mandatory fields based on selected area
@@ -710,7 +711,7 @@ return (
               <div style={{display:'flex', gap:'20px'}}>
 
                  <div className="patientTypeDetailBox">
-                    <div className='patientTypeDetailLabel'>Date of Birth</div>
+                    <div className='patientTypeDetailLabel'>Date of Birth<span className='mandatoryField'>*</span></div>
                     <div style={{display:'flex'}}>
                     <input className='patientDatePicker' type='date' placeholder='dd-mm-yyyy' value={formData.dob} disabled={disableInputFieldAadhar} onChange={handleInputChange} name='dob'></input>
                     </div>  
