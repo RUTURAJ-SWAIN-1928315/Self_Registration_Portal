@@ -3,7 +3,7 @@ import './AllPatient.css';
 import Navbar from '../Navbar/Navbar';
 import malesign from '../../Assests/Images/malesign.svg';
 import femalesign from '../../Assests/Images/femalesign.svg';
-import defultPatient from '../../Assests/Images/defaultPatient.svg';
+import defaultPatient from '../../Assests/Images/defaultPatient.svg';
 import { ToastContainer,toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
@@ -25,6 +25,7 @@ function AllPatients() {
   const handleCardSelect = (index) => {
     setSelectedCard(index === selectedCard ? null : index);
    // console.log("alreadyRegisteredPatientDetails[index].mrno",alreadyRegisteredPatientDetails[index].mrno)
+   localStorage.setItem("selectedPatientMRNO",alreadyRegisteredPatientDetails[index].mrno);
     fetchPatientDetails(alreadyRegisteredPatientDetails[index].mrno)
   };
 
@@ -82,7 +83,7 @@ function AllPatients() {
                     >
                     <div style={{display:'flex', width:'100%',gap:'20px'}}>
                         <div style={{width:'80px'}}>
-                           <img src={defultPatient} alt="" />
+                           <img style={{height:'77px',width:'77px', borderRadius:'50%'}} src={ patient.photo || defaultPatient} alt="" />
                         </div>
                         <div className='innerPatientCardBox'>
                            <div className='innerPatientCardBoxNameRow'>
@@ -94,7 +95,7 @@ function AllPatients() {
                            </div>
                            <div>
                               <span>Age : </span>
-                              <span>{`${patient.age} Years`}</span>
+                              <span>{`${patient.ageStr}`}</span>
                             </div>
                         </div>
                     </div>

@@ -10,6 +10,7 @@ import labReport from "../../Assests/Images/labReport1.svg"
 
 function BookAppointmentLanding() {
 
+   
    const navigate = useNavigate();
 
    const handleLabReportClick = () => {
