@@ -95,7 +95,7 @@ function NewRegistrationAadhar() {
                   });
                 return;
             }
-            toast.error("Something Went Wrong!!!!", {
+            toast.error("Aadhaar Server Down!!!!", {
               position: "top-right",
               autoClose: 800,
               hideProgressBar: false,
@@ -134,7 +134,7 @@ function NewRegistrationAadhar() {
                   });
                 return;
             }
-            toast.error("Something Went Wrong!!!!", {
+            toast.error("Aadhaar Server Down!!!!", {
               position: "top-right",
               autoClose: 800,
               hideProgressBar: false,
@@ -176,7 +176,7 @@ function NewRegistrationAadhar() {
         })
         .catch((error) => {
           setIsLoading(false);
-          toast.error("Something Went Wrong!!!!", {
+          toast.error("Aadhaar Server Down!!!!", {
             position: "top-right",
             autoClose: 800,
             hideProgressBar: false,

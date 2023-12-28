@@ -34,7 +34,7 @@ const handleOPDCheckinClick = () => {
     <>
     <div style={{background:'#EFF2F7', height:'100vh'}}>    
      <Navbar pagename={'Already Registered'}/>
-     <PatientCard/>
+     <PatientCard BookAppointmentLandingIsCalled={true}/>
 
      <div className='landingContentBox'>
       <div className='blockContent'>
