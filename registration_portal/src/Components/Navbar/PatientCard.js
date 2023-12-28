@@ -70,9 +70,6 @@ useEffect(() => {
     console.log("alreadyRegisteredPatientDetails.firstName ",alreadyRegisteredPatientDetails.firstName)
     const prefix = (alreadyRegisteredPatientDetails.prefix === '' || alreadyRegisteredPatientDetails.prefix === null) ? '' : alreadyRegisteredPatientDetails.prefix;
     const middleName = (alreadyRegisteredPatientDetails.middleName === '' || alreadyRegisteredPatientDetails.middleName === null) ? '' : alreadyRegisteredPatientDetails.middleName;
-    const creationTimeStamp = alreadyRegisteredPatientDetails.creationTimeStamp
-      ? new Date(alreadyRegisteredPatientDetails.creationTimeStamp)
-      : null;
     
     //const testImageLink = "http://52.66.254.50:9070/soul/fos?type_=55&filename=1703758703185_Photo.jpg";
     const addressList = alreadyRegisteredPatientDetails.addressList[0];
@@ -81,9 +78,8 @@ useEffect(() => {
       headerName:prefix + " "+ alreadyRegisteredPatientDetails.firstName + " " +middleName +" "+ alreadyRegisteredPatientDetails.lastName,
       gender:alreadyRegisteredPatientDetails.gender,
       age:alreadyRegisteredPatientDetails.ageStr,
-      registeredOn: creationTimeStamp
-        ? `${creationTimeStamp.toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' })}, ${creationTimeStamp.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric' })}`
-        : '',
+      dob:alreadyRegisteredPatientDetails.dobStr,
+      registeredOn: alreadyRegisteredPatientDetails.registrationDateTime,
       contactNo:alreadyRegisteredPatientDetails.contactNo,
       emailId:alreadyRegisteredPatientDetails.email,
       village:addressList.village,

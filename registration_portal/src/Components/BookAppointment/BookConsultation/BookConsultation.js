@@ -23,6 +23,7 @@ function BookConsultation() {
       selectedDepartment: ''
   });
   const profileData = JSON.parse(localStorage.getItem('profileData'));
+  const selectedPatientMRNO = localStorage.getItem('selectedPatientMRNO');
   
   const BACKEND_URL = process.env.REACT_APP_EMR_BACKEND_BASE_URL;
   const navigate = useNavigate();
@@ -283,7 +284,7 @@ function BookConsultation() {
           return;
     }
     const bookConsultationRequestBody = {
-        mrno: "KIMS102312210001",// For the time being no information regarding mrno so hardcoding it for testing
+        mrno:  selectedPatientMRNO,
         eventDate: selectedEventDate,
         empno: profileData.empno,
         empId: Number(profileData.employeeId),
@@ -292,7 +293,7 @@ function BookConsultation() {
         userId: Number(profileData.userId)
     }
     axios
-    .post(`${BACKEND_URL}/kiosk/saveAppointment`,bookConsultationRequestBody)
+    .post(`${BACKEND_URL}/kiosk/saveAppointment?isAlreadyRegistered=true`,bookConsultationRequestBody)
      .then(async (response) => {
       setIsLoading(false);
           if(response.data.status === true){
@@ -311,6 +312,7 @@ function BookConsultation() {
       }
       })
       .catch((error) => {
+      setIsLoading(false);
       toast.error("Something Went Wrong!!!!", {
         position: "top-right",
         autoClose: 1000,

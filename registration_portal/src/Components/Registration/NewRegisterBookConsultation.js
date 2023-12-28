@@ -25,7 +25,6 @@ function NewRegisterBookConsultation() {
 const profileData = JSON.parse(localStorage.getItem('profileData'));
 const newRegistrationHIMSResponse = JSON.parse(localStorage.getItem('newRegistrationHIMSResponse'));
 
-console.log("newRegistrationHIMSRespnse",newRegistrationHIMSResponse)
 
 const BACKEND_URL = process.env.REACT_APP_EMR_BACKEND_BASE_URL;
 const navigate = useNavigate();
