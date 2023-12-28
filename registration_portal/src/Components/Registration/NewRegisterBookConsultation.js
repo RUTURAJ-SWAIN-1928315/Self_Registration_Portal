@@ -25,7 +25,7 @@ function NewRegisterBookConsultation() {
 const profileData = JSON.parse(localStorage.getItem('profileData'));
 const newRegistrationHIMSResponse = JSON.parse(localStorage.getItem('newRegistrationHIMSResponse'));
 
-console.log("newRegistrationHIMSResponse",newRegistrationHIMSResponse)
+console.log("newRegistrationHIMSRespnse",newRegistrationHIMSResponse)
 
 const BACKEND_URL = process.env.REACT_APP_EMR_BACKEND_BASE_URL;
 const navigate = useNavigate();
@@ -295,6 +295,7 @@ const handleSaveAppointment = async () => {
        progress: undefined,
     });
     localStorage.removeItem('newRegistrationHIMSResponse');
+    localStorage.removeItem('NewRegisteredPatientDetails');
     // Wait for 2 seconds
     await delay(2000);
     navigate('/');

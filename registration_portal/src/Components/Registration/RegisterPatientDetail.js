@@ -14,39 +14,39 @@ function RegisterPatientDetail() {
   const BACKEND_URL = process.env.REACT_APP_EMR_BACKEND_BASE_URL;
   const profileData = JSON.parse(localStorage.getItem('profileData'));
  
- const aadharData = JSON.parse(localStorage.getItem('aadharData'));
+ //const aadharData = JSON.parse(localStorage.getItem('aadharData'));
  const [addressMaster,setAddressMaster] = useState([]);
 
  //HardCoded aadharData for testing
-// const aadharData = {
-//   full_name: "Ruturaj Swain",
-//   aadhaar_number: "537903394779",
-//   dob: "2001-06-04",
-//   gender: "M",
-//   address: {
-//       country: "India",
-//       dist: "Khordha",
-//       state: "Orissa",
-//       po: "",
-//       loc: "Nuasahi,Nayapalli",
-//       vtc: "Bhubaneswar",
-//       subdist: "",
-//       street: "Keshari Enclave",
-//       house: "Flat No-B-305",
-//       landmark: ""
-//   },
-//   face_status: false,
-//   face_score: -1.0,
-//   zip: "751012",
-//    profile_image: "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",
-//   has_image: true,
-//   care_of: "S/O Kruti Uchhwas Swain",
-//   share_code: "3542",
-//   mobile_verified: false,
-//   referenceId: null,
-//   status: "success_aadhaar",
-//   uniqueness_id: "ede5d9acf30b8c308df44d040c54d7e02027df268a2cf8391d0bc5ef18e7b376"
-// }
+const aadharData = {
+  full_name: "Ruturaj Swain",
+  aadhaar_number: "537903394779",
+  dob: "2001-06-04",
+  gender: "M",
+  address: {
+      country: "India",
+      dist: "Khordha",
+      state: "Orissa",
+      po: "",
+      loc: "Nuasahi,Nayapalli",
+      vtc: "Bhubaneswar",
+      subdist: "",
+      street: "Keshari Enclave",
+      house: "Flat No-B-305",
+      landmark: ""
+  },
+  face_status: false,
+  face_score: -1.0,
+  zip: "751012",
+   profile_image: "/9j/4AAQSkZJRgABAgAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCADIAKADASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD0hjUZpSajJrwz2RGNRNTmNRMaYCMeKjY0pNMJoGITTCaGNZepa9pulqhvLqOLfwoJ5P8An1pq72E2aLGoz1rgtU+KNhbsUsbWWc44kY7V/Lqf061g/wDC0r5nj320YRZNzFSclPQe9aKjN9CHViup6ycU0mvLT8VZzuI09RlsgGU8D0+7yffj6Vqaf8T9PnRRewSW7k8lTvUD17VTozXQFVi+p3tIaz9N1rT9Wj32N1HMMZIU/MPqOo/Gr+azs1uXcD0phpe9JTAY3vTDxTzTD9KYCcUhpaSgDr2NRM1KzfnULGsBgzVETQWphOKYAWqnf6hbadbPcXUyRRL1ZjUeqara6RYyXd1JtjQdBySfQDvXhviLxPd6/clpvlhQny4x2Ge/v0rWnTc2ROfKdJ4r+Is88v2fRpPLiHWcfeb6ZHH1/wAnzye5lnffLIzt6s2aYxJ69TUZrvp01FWRxzm2Bck8mmk0HOaStTMXd6UEmm55pKYrluzv7rT7lbi1maKUdGH9fWuz0T4k31vcAasz3UJ4yiKrKPoAM/ia4KjNRKnGW5Uako7H0Xpuq2uq2i3NpJvjb9D6VbNeCeHvEV7oV6skMmYmI8yNvusP8k17VpGr22r2S3FtKjr0YAjKn0I7VxTpuDO2nUU0XzTTTjTT1qbFDTSU7pSEZp2C50xbNRM1BamE9a5SxrGoncKCT2pzMM1zHjXXP7E0OR0ZfPm/dxqRnOep/Af0qoq7shSdlc838beIm1nVmhilzaRcIAThj681yb/hmns+Ru6nvUB4r0IRsrHFN3d2NIB7imsijvTwrMeBUyWTyHgZNacyW5nZspED60mK2I9JY8sw+gqQaSgHzAt7elCqxBxZhdaXbk1uf2OueRgDtUU9gIgPLXJJwCe1P2qFysxyuBnIptWpLZkcrnOKgZCD0q00xNDRXY/D/W/7O1r7LLJtgusLg9A/b+o/EVx1OjcxurqcMDkH0pTjzKxUJcrufSQYMM0hrL8PagdT0S1u2wGkjBbHTcOD+oNahHpXGkdtxKMUClqkgNwmmNSk4qMtmuA2Y1ua8z+Kk+PsMBOQdzgDtjj+v6V6Wx4NebfFMM0WnsI/kVnBf644/Q1pR+NGVT4TzEtxkinwQGZs9qjbOcVtabaHyA5BGeldtSfLG5zwhzMhjtQCOOBV+CIgYCip0tkyBkZq9CsYBHHFcjk5HRypFEwOSP6U5LU1rKiHqBUyWoJ+UVS5ifdMcxHbyvSqlxBJnIHSule024LAc1DLbIByKu0yHynGy27K/wAw+tVHtVZs1091a5YkYArNltee1VGTRLimc7cQeWxx0qDHNat5A204HNZxXPauqErowlGzPYPhzI7+F4lbGEldVx1xnPP4k119cr8P7fyfC1s2CDIzuc/7xH8gK6vFY9Wda+FCUnJpeppDRYLmuTxUefSnMwNROTjivMOmwhY1zfjXTDqfhy4WMZki/erx1x1H5ZrowARUczKkbO5CooyzHoB61cXZ3Jkrqx8+6dafbLxUP3QMsfYVtXErRsLeCPJA69hWrd6bZWWsX8lk8TQSbPJ8pgVUHO5ePQ4rMuWFtl9uSfSt5z5pGcY8sSCPTJ5QS8+0nnC0kumSxci6f6E1XW9vJpgkaFc92IX9TVc6leSyiArtbdgktwPzrWEZmEnHoaULXMRH71mwe5retrxxGBzurmraSfzwjjcCcbk5H51uWjjdwMmlOTiOEOZD7y7lYYD4wfzrOnku5cbJcEAc1JqMjIS2OtUh58xbZIY0UAlypOST04B+v4HmrhJyM5x5dy2mnXsse6S6x7CqNxZ3MLZWTcR2NR3F5eWnnQI7yuHHlyLnaVwc59D939ajmvbxG2ttlGM5WtZJ+RnGw3e7PslXa3r2NULu223KKg+/0HvWlG/2hclcEevarNobWDUrK5u0dooJd5VACSe3Ujvioi+V6Gtro9Z0i0FjpltbYA8qJU49QOavGs7SdYtNWtfOtScA7WVgAVNaHU0RN35BRjmkxS9Kok0SQKYxpW61GWFeUdYmcc1wfxC1O4VrfToSVR08xyP4uSAPw2n867snJrhPHtqzX9jPkbWQpj/dJP8A7NWsGrktGDbq4tIg+C7LvY+55/wqQwiXjaPbinOw3gDpViI89qm73LtoU/sJPQgfhSDTYiem5vpWoASeKAuDmqjOSMZQT3M/7FHCuTgf0qOFCXJQEDsauT4nJQMFVTljTINQtll8hdh29aqzYXSRn39vI4OM5HrTNPVZgU+668Yq/qWo2sb5ThMDrVSJooZ0uoyGRuoBrZJoxck2XDAApUxDnutV305GbvzW2oR4gw71XkGPpTu+oKMdzDls0iGVH41nzJuRk7kcGtu64zWTN8rZ7VaE0jf8EXQt9ReA8faEB+rLk/y3V6J159a8h0q9+z3lvKSVWKUFsdx3r1uNvkAPar6jjsSE5FIDkc0oPFGapIRePPWoiTup5bvTN2a8o7AOetch46BEFnLjIRnz+OK64Nwa5TxWkjzQFyRAF+X0355/TFUnqCV2chE+SB3q9E59ayxmORgMEBsVbglyBzxTsFzSV8gc/lSFs9OlV/MwPb61VuNQW3GTz7U4pmUmRairqkjq4CN94E4rEtpUGQsAHPLr3q5JKbvMtwdsS9E9aSK+QKVVFAH8OOK6YcyVjCXKyrcMybz5fmJjqRkUtjMZlCDavPIHFWZb1FXG0Adgo4qixjkfdEfLk7Y71paVjKyTOutZiIcHqKkkkyPwzXN2mozodsoHHBIrX8wMu7dnIqeV9TRSTWhFcHOTWRdSHbwav3EpwVzmsyYFskj860SJcrj7KPzQPY16tok8l1psMsq4Zl59+cZ/HrXKeG/Df2mwhuJLgqkmWMYTnGSOuf6V3EUSwxqiKFVRgAdhTsi1oiXFJjmlz60E8VdgJ2OBUZfFKxqPPWvIOwkD5FNkjSWMxyIro3BVhkH8KaOOlLk00I4Lxbp0djqEckMSRwTpwqKAAw4IAHA42/maxY2xg44rvvE9gdQ0eTYP3sP71PfA5H5Z/HFecLJyFrVaozbsaKSBlB9ao3iBnLABs9BT1l2kD+fams26bOeOtXDR3Im7qxWSzUzK87syj+DoBV9bjTIY8bdjD1ppRZR8xwPWkOjwyEY5PvWvMupCbirRFm1LTHhwsYZ/aqEscFwwfygPpWh/ZscLj5crSzRxKQEQL7VcZroZzcn8RR+zgOpH3O/tVzIWPGeKrPJhSveo3uQE56gVRmmkPkbJ5xVSRssAuST2pJJ+MGr3hezOoeIIFPKQnzm+i4x+pFX0HHVnqGk2v2PT4YAP9WgU/XvV7vTI12IAOtOJoitDdgSabmlJzTelVYkkJ5pMmkNJmvHR3DgeKFNNzxQKpEsk9+9eV+JrKPTtZlS3ZPKf5wqn7mf4T6f4EV6HrGoDT7B5Af3h+VAfX1/CvIdSunmvwrOSxJySc5Jrqo0nJORzVaiTSJROxPXNKtyNxGefeqIlydpODT3+fGOtVyrqZts2IboJjofrV2O9XjJHPpXL+ZPECMblPpT1vSvrx2NNUyHUOle+Xa3TPasue7DMDuGazWu5Gzz9MVEWkk52856mtVAydQtTXOcEflUJkY8mmBCDlzz1pskigVdkTqJJIRg547Vf0e6mt53mgleN8bcqe3XFY5cyHvxWlpqHYzeprow8FKdmTOdo6Hp2g+IhfKILjC3A79n+nv8A5+nQZBGRXlFvI8TpJGSrKcg+mK73RtXS+t8MQJF4Yf1q8Rh/Zu62N6NbnVnubGcUE8VGW4yKQSbjjNc6NLlgmmZqnNrFhD9+5j/A5/lWbceKbKLOwO5HoMV5EYSeyO1zit2bwNMluIrdC0rhR7965V/E1xcKTCgiU8A4yc1nPcyyMWeRnPqTzW0MPJ7mEq6Wxa8Qaj9tlUJ/q0Hyg/qf5V57fBxqhAOOhrrJizkn1rA1SER3kcgPPQ16EY8kLI45PmndkEkXmjcvDelQb5Ij868etW2DI28DKnrTgUkHIBrlUrGzV9isl1g881J56t1A/GleyiY5U7fpVdrJweHzVLlexm7olaZfYCke4UdMZqE2sndv0pRZD+Jia00M2RyXBY8c0xY3k5bIBq2IY0HakJLNtjBY9gBVJ9EJ+ZEkO5giDk1t20AiQIO1RWFgUTe4/eHtjpWisRB5GK9PC0+VXOepK7EUdB+VWIJXt5BJGxVgeoqMLt+vWopJQhLZ6V1tKSsyFK2xqw+Kr2FmjcJIFJGSMGtO08VQOcTxmM+o5FcVksdzdTyTUgJ/KuCVCPQ6Y1pdRPPeVzg7VznjiprePznIzhF5Y+gqq21QFxjFOiDBj1A61wqJpc2wvQDgAcY7UfKoJOAB1J4xXKXMt5ubF3IPQBzVR4ppTl5C+epJzVxh0JdQ6ibVbFcqJ1Y/7IJH51Ruo4rpAyyHIwynoKyrW3w53dKmnSSD7hJTPK+lbxpxtYzc3uaUMWYgGHIH1pj2SMSUYg+1QWruzKse8liAoUZyewxW9c6TqNhbefd2uISdvmI6yKD7lScdR1rjq4OUXem73OmGIjJe+jDNnOnRgaUQzgfMp/A1pq6/rQwDHt+FcblJO0kdHJFq6ZlGGU/wt+YpBZXMjhY48k9s5rWhRp5fLQhccsx6KPUmp21GC1jMNkPNc/emfhc/1+n611YelUquyRzVnCnuylb+H1fL3Mr4HJVcDHrk1fRtM09SltGGPQsvT8WPX8M1nXN5JLnzpdxz9xRgD8Kz7iUybVUHb2A7169PBwiryOGVZvYuapfiSVGt3IJB3Kp4B+veqKSzK24zSZP+0aI7fjc2SfcUpT5hk10q0VYyd2TW19cb/nJZO7Ht+NDTGeY/3QePemLEMYI4PWpUQIeBipcrlIkAywGOtOXcHC456YNR8nqKUEjgE1i0XcjZt3SpYzhORUBOOM1Ju2x4xz3rzUjqZSnO58fjQqA4/pS5/ekmnKvTB4rVEMVF2vjH0q0yh12n0quevParOSoV1G8E8gHGK15ktSGU4y9ncBkbbhgVIPKkeldZP4vM+lSwvZr57xGMyK+FOeM4x+OM8n0rnZYldTnr2qrH0Knkjjmr5Yys2IuKQV4ORjHNSRq4zyFiAJLkdB3z/SqaJL5qqgJZmAUY6k9KtXUuI/KTBSM8nH329fp6f40VKMK3xIcKkqewyWdplK8xW4ORGOC3u3qage4J+WM7VHfFRuWcdT64pwUn5RXXCMYKy2MJNyd2RHLHCjJqzDb7Rublu5p8cAXkjmpGxjAxQ2KwwY5BoK4GQf0pUKjIK5+hxTs7egXkdSOlQ5DGgA89KUf5NAK4HBpcHIIB/KgY08E0EcfhTsNkgg/iKQr0GfzpaBchX5jnFI2QDn9aKK8uJ1siZBgN+tOGME+nXNFFbRIuKfUDNWIwCvQUUVTdiHtcnFpNJztwPU1Xe0kiZmABGOcUUVywxE3KxxqtJysaGiWjX17FCzBWmdYkYjoWOCf1A/4FVIqkjfLnZ1GevPrRRXbOTUZNG1XSNyD7LJvOAcH2qxHbuOik+x4oorJ4qaSOf2srEwtJW6oFHuak+xH+8M0UVk8XVb3M3WmH2Ak53fpUn2FcfMxP04oorN4mq+pLqz7ii1hHYnHqal8iMc7V/Kiis3OUt2Q5N7k9nYfa5JFSS3i2IXLTSrGp5AxlsDOWH60l3ZvZXCxSPA5KB8wzLKvJIxuUkZBBB96KK05U4XN1Bey5up//2Q==",
+  has_image: true,
+  care_of: "S/O Kruti Uchhwas Swain",
+  share_code: "3542",
+  mobile_verified: false,
+  referenceId: null,
+  status: "success_aadhaar",
+  uniqueness_id: "ede5d9acf30b8c308df44d040c54d7e02027df268a2cf8391d0bc5ef18e7b376"
+}
  
   const [disableInputFieldAadhar,setDisableInputFieldAadhar] = useState(false);
   const [isLoading,setIsLoading] = useState(false);
@@ -55,12 +55,7 @@ function RegisterPatientDetail() {
 
  
   const [prefixMaster,setPrefixMaster] = useState([]);
-  // const [countryList, setCountryList] = useState([]);
-  // const [stateList, setStateList] = useState([]);
-  // const [districtList, setDistrictList] = useState([]);
-  // const [cityList, setCityList] = useState([]);
   const [genderList,setGenderList] = useState([]);
-  // const [villageList, setVillageList] = useState([]);
   const [localityList,setLocalityList] = useState([]);
   const [postOfficeList,setPostOfficeList] = useState([]);
   const [policeStationList,setPoliceStationList] = useState([]);
@@ -68,7 +63,6 @@ function RegisterPatientDetail() {
 
 
   const [patientImage,SetPatientImage] = useState('');
-  // const [selectedGender, setSelectedGender] = useState('female');  
   const [formData, setFormData] = useState({
     firstName:'',
     middleName:'',
@@ -122,7 +116,6 @@ function RegisterPatientDetail() {
       const lastName = fullNameParts.length > 1 ? fullNameParts[fullNameParts.length - 1] : '';
       const middleName = fullNameParts.slice(1, -1).join(' ');
       // Call calculateAge function and update the formData state
-     // Call calculateAge function and update the formData state
   const { age: calculatedAge, unit } = calculateAge(aadharData.dob);
 
       let gender;
@@ -133,6 +126,8 @@ function RegisterPatientDetail() {
       } else {
           gender = 'OTHERS';
       }
+      //Calling handleAddresChange here to load AddressMaster to be while saving
+      handleAddressChange({ target: { name: 'pinCode', value: aadharData.zip } });
       // Set initial form data based on Aadhar data
       setFormData({
         ...formData,
@@ -263,7 +258,7 @@ const calculateAge = (dob) => {
 
 
 
-    const handleAddressChange = (event) => {
+  const handleAddressChange = (event) => {
       const { name, value } = event.target;
 
   setFormData(prevState => ({
@@ -273,53 +268,42 @@ const calculateAge = (dob) => {
 
      // Check if the name of the field is pinCode and its value is empty
   if (name === "pinCode" && value.trim() === "") {
-    // // Reset all lists
-    // setCountryList([]);
-    // setStateList([]);
-    // setDistrictList([]);
-    // setVillageList([]);
-
     setFormData(prevState => ({
       ...prevState,
       district: '',
+      districtId:'',
       state: '',
-      country: ''
+      stateId:'',
+      country: '',
+      countryId:''
     }));
 
 
   }else if (name === "pinCode" && value.length === 6){
 
-      if (value.length === 6) { // Assuming pin code length is 6
+      if (value.length === 6) {
         axios.get(`${BACKEND_URL}/kiosk/getAddressMaster?pinCode=${value}`, {
         })
         .then((response) => {
           if (response.data.status === "success" && response.data.data.length > 0) {
             const data = response.data.data;
             setAddressMaster(response.data.data);
-            //  const uniqueCountries = [...new Set(data.map(item => item.countryName))];
-            //  const uniqueStates = [...new Set(data.map(item => item.stateName))];
-            //  const uniqueDistricts = [...new Set(data.map(item => item.districtName))];
-            //  const uniqueCities = [...new Set(data.map(item => item.cityName).filter(name => name))];
-            // const uniqueVillages = [...new Set(data.map(item => item.villageName).filter(name => name))];
 
+            //Since city village Country state District info. Coming from Aadhar so not setting them while aadhar data is available
+            if(!aadharData){
             const uniqueLocality = [...new Set(data.map(item => item.locality))];
 
-    
-            // setCountryList(uniqueCountries);
-            // setStateList(uniqueStates);
-            // setDistrictList(uniqueDistricts);
-            // setCityList(uniqueCities);
-            // setVillageList(uniqueVillages);
-          setLocalityList(uniqueLocality)
-          setFormData(prevState => ({
-            ...prevState,
-            city:response.data.data[0].cityName,
-            village:response.data.data[0].villageName,
-            country: response.data.data[0].countryName,
-            state: response.data.data[0].stateName,
-            district: response.data.data[0].districtName
+            setLocalityList(uniqueLocality)
+            setFormData(prevState => ({
+              ...prevState,
+              city:response.data.data[0].cityName,
+              village:response.data.data[0].villageName,
+              country: response.data.data[0].countryName,
+              state: response.data.data[0].stateName,
+              district: response.data.data[0].districtName
  
           }));
+        }
           
           }
         })
@@ -329,7 +313,7 @@ const calculateAge = (dob) => {
       }
     }
     };
- console.log("addressMaster",addressMaster)
+ 
  
 
   const handleInputChange = (event) => {
@@ -450,7 +434,7 @@ console.log("aadharData",aadharData)
   const handleSaveNewRegistration = async () =>{
     setIsLoading(true);
 
-    if(aadharData !== null){
+    if(formData.aadharNumber !== ''){
     const isValidAadhar = await validateAadhar();
     if (!isValidAadhar) {
         setIsLoading(false);
@@ -543,13 +527,16 @@ if(aadharData){
     formattedDOB = formatDate(aadharData.dob);
     }
 
-   // Find the matching address details from addressMaster
+   // Find the matching address details from addressMaster.
+   //Used OR condition since for the same district, state and country will be same
+   //For aadharData case Replacing district State Country coming from aadhar with the one
+   //Present in addressMaster since we will be need the Ids for it
   const matchingAddress = addressMaster.find(address => 
-    address.districtName.toLowerCase() === formData.district.toLowerCase() &&
-    address.stateName.toLowerCase() === formData.state.toLowerCase() &&
+    address.districtName.toLowerCase() === formData.district.toLowerCase() ||
+    address.stateName.toLowerCase() === formData.state.toLowerCase() ||
     address.countryName.toLowerCase() === formData.country.toLowerCase()
   );
-
+  console.log("matchingAddress",matchingAddress,"addressMaster",addressMaster,"formData.district",formData.district)
 
     const formattedAadharNumber = formData.aadharNumber.replace(/\s/g, ''); // Remove spaces
     setIsLoading(true);
@@ -611,7 +598,7 @@ if(aadharData){
       handleClearAllInputs();
 
       // Wait for 2 seconds
-      await delay(2000);
+      await delay(3000);
 
       navigate('/NewRegisterBookConsultation');
      }
@@ -625,7 +612,6 @@ if(aadharData){
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-        progress: undefined,
         progress: undefined,
      });
       console.error('Error saving data:', error);
@@ -668,11 +654,11 @@ if(aadharData){
 
   function getNewRegisterPatientDetail(preRegisterId){
     axios
-    .get(`${BACKEND_URL}/getNewRegisteredPatient?preRegisterId=${preRegisterId}`)
+    .get(`${BACKEND_URL}/kiosk/getNewRegisteredPatient?preRegisterId=${preRegisterId}`)
      .then(async (response) => {
       setIsLoading(false);
           if(response.data.status === true){
-          localStorage.setItem("NewRegisteredPatientDetails",JSON.stringify(response.data))
+          localStorage.setItem("NewRegisteredPatientDetails",JSON.stringify(response.data.data))
      }
      })
     .catch((error) => {
@@ -684,7 +670,6 @@ if(aadharData){
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-        progress: undefined,
         progress: undefined,
      });
       console.error('Error saving data:', error);
@@ -771,7 +756,7 @@ return (
                     }}
                     onChange={handleAgeUnitChange}
                     value={formData.ageUnit}
-                    disabled={disableInputFieldAadhar || formData.dob === '' ? false:true}
+                    disabled={formData.dob === '' ? false:true}
                     >
                           <option value="Days">Days</option>
                           <option value="Months">Months</option>
@@ -921,7 +906,7 @@ return (
                className='addressInput'
               placeholder='Village'
                value={formData.village}
-              onChange={handleAddressChange}
+               onChange={handleAddressChange}
              />
             </div>
             ) : (
@@ -933,7 +918,7 @@ return (
                className='addressInput'
               placeholder='City'
                value={formData.city}
-              onChange={handleAddressChange}
+               onChange={handleAddressChange}
              />
             </div>
             )}
@@ -973,7 +958,7 @@ return (
 
               <div className='addressInputRow'>
               <div className='patientTypeDetailLabel'>Post Office</div>
-                      <input style={{borderRadius: '6px',width:'316px'}} className='patientNameInput' placeholder='Post Office' value={formData.postOffice || ' '} disabled={disableInputFieldAadhar} onChange={handleAddressChange} name='postOffice'></input>
+                      <input style={{borderRadius: '6px',width:'316px'}} className='patientNameInput' placeholder='Post Office' value={formData.postOffice || ' '} disabled={disableInputFieldAadhar}  onChange={handleAddressChange} name='postOffice'></input>
                       </div>
 
             )}
@@ -987,7 +972,7 @@ return (
 
               <div className='addressInputRow'>
               <div className='patientTypeDetailLabel'>Police Station</div>
-                      <input style={{borderRadius: '6px',width:'316px'}} className='patientNameInput' placeholder='Police Station' value={formData.policeStation || ' '} disabled={disableInputFieldAadhar} onChange={handleAddressChange} name='policeStation'></input>
+                      <input style={{borderRadius: '6px',width:'316px'}} className='patientNameInput' placeholder='Police Station' value={formData.policeStation || ' '} disabled={disableInputFieldAadhar}   onChange={handleAddressChange} name='policeStation'></input>
                       </div>
           
             )}
