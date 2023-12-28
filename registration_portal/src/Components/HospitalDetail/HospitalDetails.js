@@ -8,11 +8,12 @@ import Twitter from '../../Assests/Images/twitter.svg';
 
 function HospitalDetails() {
 const BACKEND_URL = process.env.REACT_APP_EMR_BACKEND_BASE_URL;
+const profileData = JSON.parse(localStorage.getItem('profileData'));
   const [hospitalData, setHospitalData] = useState(null);
 
   useEffect(() => {
     // Fetch data from the API endpoint
-    axios.get(`${BACKEND_URL}/kiosk/getAboutHospital?siteId=2468`)
+    axios.get(`${BACKEND_URL}/kiosk/getAboutHospital?siteId=${profileData.siteId}`)
       .then(response => {
         // Assuming response.data contains the API response
         setHospitalData(response.data.data[0]);
@@ -61,11 +62,15 @@ const BACKEND_URL = process.env.REACT_APP_EMR_BACKEND_BASE_URL;
               <div style={{display:'flex', flexDirection:'row', gap:'20px'}}>
                 <div style={{display:'flex', gap:'8px'}}>
                   <img src={Instagram} alt="" />
-                  <span>{extractUsernameInsta(hospitalData.instagramLink)}</span>
+                  <a href={hospitalData.instagramLink} target="_blank" rel="noopener noreferrer">
+                    {extractUsernameInsta(hospitalData.instagramLink)}
+                  </a>
                 </div>
                 <div style={{display:'flex', gap:'8px'}}>
                   <img src={Twitter} alt="" />
-                  <span>{extractUsernameTwitter(hospitalData.twitterLink)}</span>
+                  <a href={hospitalData.twitterLink} target="_blank" rel="noopener noreferrer">
+                  {extractUsernameTwitter(hospitalData.twitterLink)}
+                  </a>
                 </div>
               </div>
             </>
