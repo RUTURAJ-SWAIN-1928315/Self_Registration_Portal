@@ -50,16 +50,16 @@ function Home() {
         alert(`Clicked on handleAboutKimsCardClick`);
     };
 
-    const handleMyLocationCardClick = () => {
-        alert(`Clicked on handleMyLocationCardClick`);
-    };
+    // const handleMyLocationCardClick = () => {
+    //     alert(`Clicked on handleMyLocationCardClick`);
+    // };
 
     const handlefeedbackCardClick = () => {
         alert(`Clicked on handlefeedbackCardClick`);
     };
 
     const handlefaqCardClick = () => {
-        alert(`Clicked on handlefaqCardClick`);
+        navigate('/faqs');
     };
 
 
@@ -102,10 +102,10 @@ function Home() {
                     <div><img src={AboutKims} alt="AboutKims" /> </div>
                     <div className='cardBodyHeader2'>About KIMS</div>
                 </div>
-                <div className='cardBody2' onClick={handleMyLocationCardClick}>
+                {/* <div className='cardBody2' onClick={handleMyLocationCardClick}>
                     <div><img src={MyLocation} alt="MyLocation" /> </div>
                     <div className='cardBodyHeader2'>My Location</div>
-                </div>
+                </div> */}
                 <div className='cardBody2'onClick={handlefeedbackCardClick}>
                     <div><img src={feedback} alt="feedback" /> </div>
                     <div className='cardBodyHeader2'> Feedback </div>

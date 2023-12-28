@@ -298,7 +298,7 @@ const handleSaveAppointment = async () => {
     localStorage.removeItem('NewRegisteredPatientDetails');
     // Wait for 2 seconds
     await delay(2000);
-    navigate('/');
+    navigate('/Home');
     }
     })
     .catch((error) => {
@@ -441,7 +441,7 @@ const handleSaveAppointment = async () => {
       <ToastContainer position="top-right" autoClose={2000} />
 
           {/* <button onClick={() => {
-                  navigate('/');
+                  navigate('/Home');
                 }} 
                 className='NewRegistrationSkipButton'
                 style={{height:'54px',width:'270px'}}>

@@ -13,12 +13,15 @@ import Billing from './Components/BookAppointment/Billing/Billing';
 import BookConsultation from './Components/BookAppointment/BookConsultation/BookConsultation';
 import OpdCheckin from './Components/BookAppointment/OPD_CheckIn/OpdCheckin';
 import AllPatients from './Components/BookAppointment/AllPatients';
+import AdminPage from './Components/Admin/AdminPage';
+import Faqs from './Components/Faqs/Faqs';
 
 function App() {
   return (
     <>
      <Routes>
-       <Route path='/' element={<Home/>} />
+      <Route path='/' element={<AdminPage/>}/>
+       <Route path='/Home' element={<Home/>} />
        <Route path="/NewRegistrationAadhar" element={<NewRegistrationAadhar/>} />
        <Route path="/NewRegistration" element={<NewRegistration/>} />
        <Route path="/RegisterPatientDetail" element={<RegisterPatientDetail/>} />
@@ -31,6 +34,7 @@ function App() {
        <Route path="/PatientDetailRegister" element ={<RegisterPatientDetail/>} />
        <Route path="/NewRegisterBookConsultation" element ={<NewRegistrationBookConsultation/>} />
        <Route path="/AllPatients" element ={<AllPatients/>} />
+       <Route path="/faqs" element={<Faqs/>}/>
 
 
      </Routes>

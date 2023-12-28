@@ -27,7 +27,7 @@ function Navbar(props) {
     <div className='NavbarContainer'>
 
      <div style={{gap:'10px', display:'flex', flexDirection:'row', alignItems: 'center'}}>
-      <div> <img src={HomeIcon} alt="Home" onClick={() => navigate('/')} /> </div>
+      <div> <img src={HomeIcon} alt="Home" onClick={() => navigate('/Home')} /> </div>
       {/* <div> <img src={BackButton} alt="BackButton" onClick={handleBackNavigate} /> </div> */}
       <div> <img src={RightArrow} alt="rightArrow" /> </div>
 

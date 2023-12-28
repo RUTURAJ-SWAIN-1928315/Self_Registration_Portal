@@ -307,7 +307,7 @@ function BookConsultation() {
       });
       // Wait for 2 seconds
       await delay(2000);
-      navigate('/');
+      navigate('/Home');
       }
       })
       .catch((error) => {
