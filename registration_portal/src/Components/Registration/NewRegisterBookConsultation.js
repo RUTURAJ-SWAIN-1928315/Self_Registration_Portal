@@ -9,7 +9,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import searchIcon from "../../Assests/Images/searchIcon.svg";
-import rightIcon from '../../Assests/Images/rightIcon.svg';
+// import rightIcon from '../../Assests/Images/rightIcon.svg';
 import { ToastContainer,toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import slotMarks from "../../Assests/Images/slotMarks.svg"
@@ -51,7 +51,7 @@ useEffect(() => {
   };
 
   fetchDepartments();
-}, []);
+}, [BACKEND_URL,profileData.siteId]);
 
  // Function to fetch doctors based on the selected department
 //  const fetchDoctors = async (departmentName) => {

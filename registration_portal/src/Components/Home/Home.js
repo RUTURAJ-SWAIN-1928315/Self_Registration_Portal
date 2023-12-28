@@ -13,27 +13,25 @@ import hospitaLogo from '../../Assests/Images/hospitalLogo.svg';
 
 function Home() {
     localStorage.removeItem('aadharData');
-    //localStorage.removeItem('capturedPhoto');
-    const BACKEND_URL = process.env.REACT_APP_EMR_BACKEND_BASE_URL;
-    const loginUserName = process.env.REACT_APP_USERNAME;
-    const loginPassword = process.env.REACT_APP_PASSWORD;
-    
+    // const BACKEND_URL = process.env.REACT_APP_EMR_BACKEND_BASE_URL;
+    // const loginUserName = process.env.REACT_APP_USERNAME;
+    // const loginPassword = process.env.REACT_APP_PASSWORD;
 
     //For logging into Kiosk
-    useEffect(() => {
-        axios
-          .get(`${BACKEND_URL}/kiosk/login?userName=${loginUserName}&password=${loginPassword}`)
-          .then((response) => {
-            if(response.data) {
-                console.log("response.data.profile",JSON.stringify(response.data.profile));
-                // Store 'siteId' in localStorage
-                localStorage.setItem('profileData', JSON.stringify(response.data.profile));
-              }
-          })
-          .catch((error) => {
-            console.error('Error fetching data:', error);
-          });
-        }, [BACKEND_URL,loginUserName,loginPassword]);
+    // useEffect(() => {
+    //     axios
+    //       .get(`${BACKEND_URL}/kiosk/login?userName=${loginUserName}&password=${loginPassword}`)
+    //       .then((response) => {
+    //         if(response.data) {
+    //             console.log("response.data.profile",JSON.stringify(response.data.profile));
+    //             // Store 'siteId' in localStorage
+    //             localStorage.setItem('profileData', JSON.stringify(response.data.profile));
+    //           }
+    //       })
+    //       .catch((error) => {
+    //         console.error('Error fetching data:', error);
+    //       });
+    //     }, [BACKEND_URL,loginUserName,loginPassword]);
 
     const navigate = useNavigate();
 
