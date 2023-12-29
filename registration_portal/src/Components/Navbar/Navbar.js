@@ -7,11 +7,15 @@ import LeftArrow from "../../Assests/Images/left.svg"
 import { useNavigate } from 'react-router-dom'
 import navBarPatientDetail from "../../Assests/Images/navBarPatientDetail.svg";
 import NewRegisterBookConsultation from "../../Assests/Images/navBarNewRegisterBookConsultation.svg";
+import axios from 'axios';
+import { ToastContainer,toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 function Navbar(props) {
 
   const navigate = useNavigate()
+  const BACKEND_URL = process.env.REACT_APP_EMR_BACKEND_BASE_URL;
   // console.log("pageName", props.pagename)
 
   const handleBackNavigate = () =>{
@@ -26,12 +30,40 @@ function Navbar(props) {
   const handleBackButton = ()=>{
     window.history.back();
   }
+  function delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
 
   const handleCloseSession = ()=>{
-    navigate(`/Home`);
+    axios
+    .post(`${BACKEND_URL}/kiosk/closePatientSession`)
+    .then(async (response) => {
+      if (response.data === true) {
+        for (const key in localStorage) {
+          if (key !== "profileData") {
+            localStorage.removeItem(key);
+          }
+        }
+        await delay(2000);
+        navigate('/Home');
+      } 
+    })
+    .catch((error) => {
+        toast.error("Something Went Wrong!!!!", {
+          position: "top-right",
+          autoClose: 800,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+        console.error('Error fetching data:', error);
+    });
   }
   
   return (
+    <>
     <div className='NavbarContainer'>
 
      <div style={{gap:'10px', display:'flex', flexDirection:'row', alignItems: 'center'}}>
@@ -71,9 +103,9 @@ function Navbar(props) {
         <button className='insideCancelBtn'>Close Session</button>
       </div>
     )}
-
-
     </div>
+    <ToastContainer position="top-right" autoClose={2000} />
+    </>
   )
 }
 

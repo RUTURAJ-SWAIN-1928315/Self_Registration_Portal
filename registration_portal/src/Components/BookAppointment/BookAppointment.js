@@ -183,6 +183,7 @@ function BookAppointment() {
         await delay(2000);
         navigate('/AllPatients');
       } else {
+        setOtp('');
         toast.error("Invalid OTP Entered.", {
           position: "top-right",
           autoClose: 800,
@@ -197,6 +198,7 @@ function BookAppointment() {
       setIsLoading(false);
   
       if (error.response && error.response.status === 400) {
+        setOtp('');
         toast.error("Invalid OTP Entered.", {
           position: "top-right",
           autoClose: 800,
@@ -207,6 +209,7 @@ function BookAppointment() {
           progress: undefined,
         });
       } else {
+        setOtp('');
         toast.error("Something Went Wrong!!!!", {
           position: "top-right",
           autoClose: 800,
@@ -235,6 +238,7 @@ function BookAppointment() {
           await delay(2000);
           navigate('/AllPatients');
         } else {
+          setOtp('');
           toast.error("Invalid OTP Entered.", {
             position: "top-right",
             autoClose: 800,
@@ -250,6 +254,7 @@ function BookAppointment() {
         setIsLoading(false);
   
         if (error.response && error.response.status === 400) {
+          setOtp('');
           toast.error("Invalid OTP Entered.", {
             position: "top-right",
             autoClose: 800,
@@ -260,6 +265,7 @@ function BookAppointment() {
             progress: undefined,
           });
         } else {
+          setOtp('');
           toast.error("Something Went Wrong!!!!", {
             position: "top-right",
             autoClose: 800,
@@ -274,32 +280,7 @@ function BookAppointment() {
       });
   }
   
-  // function loadPatientDetails(){
-  //   setIsLoading(true);
-  //   axios
-  //   .get(`${BACKEND_URL}/kiosk/fetchPatientDetails?input=${MRNMobileNumber}`)
-  //   .then((response) => {
-  //     setIsLoading(false);
-  //     if(response.data.status === 'success') {
-  //       localStorage.setItem("AlreadyRegisteredPatientDetails",JSON.stringify(response.data.data))
-  //       navigate('/AllPatients');
-  //       }
-  //   })
-  //   .catch((error) => {
-  //     setIsLoading(false);
-  //     toast.error("Something Went Wrong!!!!", {
-  //       position: "top-right",
-  //       autoClose: 800,
-  //       hideProgressBar: false,
-  //       closeOnClick: true,
-  //       pauseOnHover: true,
-  //       draggable: true,
-  //       progress: undefined,
-  //     });
-  //     console.error('Error fetching data:', error);
-  //   return;
-  //   });
-  // }
+ 
 
   const handleKeyPress = (e) => {
     if (e.key === 'Enter') {
