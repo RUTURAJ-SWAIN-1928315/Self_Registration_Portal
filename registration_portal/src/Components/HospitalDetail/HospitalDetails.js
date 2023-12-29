@@ -42,7 +42,7 @@ const profileData = JSON.parse(localStorage.getItem('profileData'));
   
   return (
     <div className='hospitalDetail'>
-      <Navbar pagename={"About Hospital"}/>
+      <Navbar pagename={"About Hospital"} hospitalDetails={true}/>
       <div className='detailBody'>
         <div style={{padding:'5px'}}>
           <img className='imgShape' src={AboutKims} alt="AboutKims" />
