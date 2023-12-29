@@ -78,7 +78,8 @@ function Navbar(props) {
       
 
 
-      {!props.registerPatientDetailIsCalled && !props.NewRegisterBookConsultationIsCalled && !props.BookAppointmentLandingIsCalled && ( 
+      {!props.registerPatientDetailIsCalled && !props.NewRegisterBookConsultationIsCalled && !props.BookAppointmentLandingIsCalled && !props.faqIsCalled && 
+      !props.hospitalDetails && ( 
       <>
       <div className='BackBtn' onClick={handleBackButton}>
         <img src={LeftArrow} alt="" />

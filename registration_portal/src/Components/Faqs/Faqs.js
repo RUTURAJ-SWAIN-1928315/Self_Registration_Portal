@@ -35,7 +35,7 @@ const BACKEND_URL = process.env.REACT_APP_EMR_BACKEND_BASE_URL;
 
   return (
     <div className='FaqPage'>
-      <Navbar pagename={"Frequently Asked Questions"} />
+      <Navbar pagename={"Frequently Asked Questions"} faqIsCalled={true}/>
       <div className='faqBody'>
         {faqs.map((faq) => (
           <Accordion key={faq.id}>
