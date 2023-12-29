@@ -60,6 +60,7 @@ function Home() {
         navigate('/faqs');
     };
 
+// console.log("aadharData",localStorage.getItem('aadharData'),"alreadyRegistered:",localStorage.getItem('AlreadyRegisteredPatientDetails'),"profileData",localStorage.getItem('profileData'))
 
     return (
     
