@@ -329,7 +329,7 @@ function BookConsultation() {
       
   return (
     <div className='BookConsultationPage'>
-     <Navbar pagename={"Book Consultation"} />
+     <Navbar pagename={"Book Consultation"} bookConsultationIsCalled={true}/>
      <div className='AppointmentContent'>
 
 

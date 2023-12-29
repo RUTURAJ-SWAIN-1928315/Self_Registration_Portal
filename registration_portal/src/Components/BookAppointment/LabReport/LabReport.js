@@ -57,7 +57,7 @@ const handlePrint = (reportUrl,mrn) => {
   };
   return (
     <div className='LabReportPage'>
-    <Navbar pagename={"Lab Report"} />
+    <Navbar pagename={"Lab Report"} labReportIsCalled={true}/>
     {tableData.length === 0 ? (
       <div style={{ textAlign: 'center', padding: '20px' }}>
         <img src={NoData} alt="No Data" style={{ maxWidth: '100%', height: 'auto' }} />

@@ -53,7 +53,7 @@ console.log("TableData",tableData);
       
   return (
     <div className='BillingPage'>
-      <Navbar pagename={"Billing"} />
+      <Navbar pagename={"Billing"} billingIsCalled={true} />
       <div className='BillingTable'>
       {tableData.length === 0 ? (
       <div style={{ textAlign: 'center', padding: '20px' }}>

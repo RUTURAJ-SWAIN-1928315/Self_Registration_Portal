@@ -319,7 +319,7 @@ const handleSaveAppointment = async () => {
 
   return (
     <div className='BookConsultationPage'>
-      <Navbar pagename={'New Registration'}/>
+      <Navbar pagename={'New Registration'} NewRegisterBookConsultationIsCalled={true}/>
       <PatientCard NewRegisterBookConsultationIsCalled={true}/>
 
     <div className='AppointmentContent'>

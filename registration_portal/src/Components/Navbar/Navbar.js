@@ -35,14 +35,25 @@ function Navbar(props) {
     <div className='NavbarContainer'>
 
      <div style={{gap:'10px', display:'flex', flexDirection:'row', alignItems: 'center'}}>
-      {/* <div> <img src={HomeIcon} alt="Home" onClick={() => navigate('/Home')} /> </div>
-      <div> <img src={RightArrow} alt="rightArrow" /> </div> */}
+
+     {!props.bookAppointmentIsCalled && !props.allPatientsIsCalled && !props.opdCheckinIsCalled && !props.billingIsCalled &&
+     !props.labReportIsCalled && !props.bookConsultationIsCalled && (
+      <>
+      <div> <img src={HomeIcon} alt="Home" onClick={() => navigate('/Home')} /> </div>
+      <div> <img src={RightArrow} alt="rightArrow" /> </div>
+      </>
+      )} 
+      
 
 
+      {!props.registerPatientDetailIsCalled && !props.NewRegisterBookConsultationIsCalled && !props.BookAppointmentLandingIsCalled && ( 
+      <>
       <div className='BackBtn' onClick={handleBackButton}>
         <img src={LeftArrow} alt="" />
         <button className='insideBtn'>Back</button>
       </div>
+      </>
+      )}
 
       <div className='PageNameContainer'> {props.pagename} </div>
       {props.registerPatientDetailIsCalled && (
@@ -54,10 +65,12 @@ function Navbar(props) {
      </div>
       
       
-
+    {!props.newRegistrationAadharIsCalled && !props.newRegistrationCaptureIsCalled && !props.registerPatientDetailIsCalled &&
+    !props.NewRegisterBookConsultationIsCalled && !props.bookAppointmentIsCalled && !props.allPatientsIsCalled &&( 
      <div className='CloseBtn' onClick={handleCloseSession}>
         <button className='insideCancelBtn'>Close Session</button>
       </div>
+    )}
 
 
     </div>

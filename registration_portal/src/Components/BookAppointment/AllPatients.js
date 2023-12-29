@@ -7,7 +7,7 @@ import defaultPatient from '../../Assests/Images/defaultPatient.svg';
 import { ToastContainer,toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
-import { CircularProgress, Box } from '@mui/material';
+import { LinearProgress, Box } from '@mui/material';
 import axios from 'axios';
 
 function AllPatients() {
@@ -101,23 +101,27 @@ function AllPatients() {
 
   return (
     <div className='AllPatientPage'>
-      <Navbar pagename={"Already Registration"} />
+      <Navbar pagename={"Already Registration"} allPatientsIsCalled = {true}/>
       <div className='detailBox'>
         <div className='detailboxContainer'>
           <div className='cardHeader'>
             <div className='cardHeaderBoldText'>
               Select Patient Profile
             </div>
+            {isLoading ? (
             <div className='cardHeadersubText'>
               We found multiple patients registered with this mobile number
+              <LinearProgress />
             </div>
+            ):(
+               <> 
+              <div className='cardHeadersubText'>
+              We found multiple patients registered with this mobile number
+            </div>        
+              </> 
+            )}
           </div>
 
-            {isLoading ? (
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                      <CircularProgress />
-                    </Box>
-            ):(
             <div className='Patientcard'>
             {alreadyRegisteredPatientDetails && alreadyRegisteredPatientDetails.map((patient, index) => (
                     <div
@@ -146,7 +150,6 @@ function AllPatients() {
                 </div>
           ))}
             </div>
-            )}
         </div>
       </div>
     </div>

@@ -45,7 +45,7 @@ function OpdCheckin() {
   };
   return (
     <div className='OpdCheckinPage'>
-      <Navbar pagename={"OPD Check-in"}/>
+      <Navbar pagename={"OPD Check-in"} opdCheckinIsCalled={true}/>
       <div className='opdcheckintable'>
       <TableContainer>
           <Table>

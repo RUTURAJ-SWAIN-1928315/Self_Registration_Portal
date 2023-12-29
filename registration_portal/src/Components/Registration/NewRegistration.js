@@ -141,7 +141,7 @@ function NewRegistration() {
 
   return (
     <div>
-      <Navbar pagename={'New Registration'} />
+      <Navbar pagename={'New Registration'} newRegistrationCaptureIsCalled = {true}/>
       <div className='capturePageBody'>
         <div className='captureContainer'>
           <div className='captureHeader'>Patient Photo</div>
