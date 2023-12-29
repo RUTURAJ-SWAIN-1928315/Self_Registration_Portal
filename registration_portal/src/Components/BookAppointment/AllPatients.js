@@ -14,6 +14,7 @@ function AllPatients() {
   const BACKEND_URL = process.env.REACT_APP_EMR_BACKEND_BASE_URL;
   const storedData = localStorage.getItem('AlreadyRegisteredPatientDetails');
   const alreadyRegisteredPatientDetails = storedData ? JSON.parse(storedData) : { data: [] };
+  const patientLoginOTP = localStorage.getItem('patientLoginOTP');
   const [isLoading,setIsLoading] = useState(false);
   const navigate= useNavigate();
  // const alreadyRegisteredPatientDetails = JSON.parse(localStorage.getItem('AlreadyRegisteredPatientDetails'));
@@ -24,10 +25,53 @@ function AllPatients() {
 
   const handleCardSelect = (index) => {
     setSelectedCard(index === selectedCard ? null : index);
-   // console.log("alreadyRegisteredPatientDetails[index].mrno",alreadyRegisteredPatientDetails[index].mrno)
+   
    localStorage.setItem("selectedPatientMRNO",alreadyRegisteredPatientDetails[index].mrno);
-    fetchPatientDetails(alreadyRegisteredPatientDetails[index].mrno)
+    patientLogin(alreadyRegisteredPatientDetails[index].mrno,patientLoginOTP,alreadyRegisteredPatientDetails[index].contactNo);
+    // fetchPatientDetails(alreadyRegisteredPatientDetails[index].mrno)
   };
+
+  function patientLogin(mrno,otp,contactNo){
+    setIsLoading(true);
+    axios
+    .post(`${BACKEND_URL}/kiosk/patient/login?mrno=${mrno}&otp=${otp}&mobileNo=${contactNo}`)
+    .then((response) => {
+      setIsLoading(false);
+      if(response.data.status === 'success') {
+         fetchPatientDetails(mrno)
+         localStorage.removeItem('patientLoginOTP');
+        }
+    })
+    .catch((error) => {
+      if(error.response.status === 400){
+        toast.error("Invalid Input!!!!", {
+          position: "top-right",
+          autoClose: 800,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+        console.error('Error fetching data:', error);
+      return;
+      }else{
+        toast.error("Something Went Wrong!!!!", {
+          position: "top-right",
+          autoClose: 800,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+        console.error('Error fetching data:', error);
+      return;
+      }
+     
+    });
+    
+  }
 
   function fetchPatientDetails(mrno){
     setIsLoading(true);
@@ -87,7 +131,7 @@ function AllPatients() {
                         </div>
                         <div className='innerPatientCardBox'>
                            <div className='innerPatientCardBoxNameRow'>
-                           <div className='innerPatientCardBoxName'>{`Mr ${patient.firstName} ${patient.middleName ? patient.middleName : ''} ${patient.lastName ? patient.lastName : ''}`}</div>
+                           <div className='innerPatientCardBoxName'>{`${patient.patientName}`}</div>
                            <div className='genderbox'>
                             <span><img src={patient.gender === 'MALE' ? malesign : femalesign} alt="" /></span>
                             <span className='genderRound'>{patient.gender}</span>
@@ -95,7 +139,7 @@ function AllPatients() {
                            </div>
                            <div>
                               <span>Age : </span>
-                              <span>{`${patient.ageStr}`}</span>
+                              <span>{`${patient.ageStr}(${patient.dob})`}</span>
                             </div>
                         </div>
                     </div>

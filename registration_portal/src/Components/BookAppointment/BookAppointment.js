@@ -168,43 +168,45 @@ function BookAppointment() {
     //setShowOTPInputs(true); // Set showOTPInputs state to true on arrow button click
   };
 
-
-  function verifyMRNOTP(){
+  const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+  async function verifyMRNOTP() {
     setIsLoading(true);
-      axios
-      .post(`${BACKEND_URL}/kiosk/verifyOTP?mrno=${MRNMobileNumber}&otp=${otp}`)
-      .then((response) => {
-        setIsLoading(false);
-        if(response.data.status === 'success') {
-          loadPatientDetails();
-          }
-          else{
-              toast.error("Invalid OTP Entered.", {
-                  position: "top-right",
-                  autoClose: 800,
-                  hideProgressBar: false,
-                  closeOnClick: true,
-                  pauseOnHover: true,
-                  draggable: true,
-                  progress: undefined,
-                });
-              return;
-          }
-      })
-      .catch((error) => {
-        setIsLoading(false);
-        if(error.response.status === 400){
-          toast.error("Invalid OTP Entered.", {
-            position: "top-right",
-            autoClose: 800,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-          });
-        return;
-        }else{
+  
+    try {
+      const response = await axios.post(`${BACKEND_URL}/kiosk/verifyOTP?mrno=${MRNMobileNumber}&otp=${otp}`);
+  
+      setIsLoading(false);
+  
+      if (response.data.status === 'success') {
+        localStorage.setItem("AlreadyRegisteredPatientDetails", JSON.stringify(response.data.data));
+        localStorage.setItem("patientLoginOTP", otp);
+        await delay(2000);
+        navigate('/AllPatients');
+      } else {
+        toast.error("Invalid OTP Entered.", {
+          position: "top-right",
+          autoClose: 800,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      }
+    } catch (error) {
+      setIsLoading(false);
+  
+      if (error.response && error.response.status === 400) {
+        toast.error("Invalid OTP Entered.", {
+          position: "top-right",
+          autoClose: 800,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      } else {
         toast.error("Something Went Wrong!!!!", {
           position: "top-right",
           autoClose: 800,
@@ -215,36 +217,24 @@ function BookAppointment() {
           progress: undefined,
         });
         console.error('Error fetching data:', error);
-      return;
       }
-      });
-      
+    }
   }
-  function verifyMobileOTP(){
+
+  function verifyMobileOTP() {
     setIsLoading(true);
-      axios
+  
+    axios
       .post(`${BACKEND_URL}/kiosk/verifyOTP?mobileNo=${MRNMobileNumber}&otp=${otp}`)
-      .then((response) => {
+      .then(async (response) => {
         setIsLoading(false);
-        if(response.data.status === 'success') {
-          loadPatientDetails();
-          }
-          else{
-              toast.error("Invalid OTP Entered.", {
-                  position: "top-right",
-                  autoClose: 800,
-                  hideProgressBar: false,
-                  closeOnClick: true,
-                  pauseOnHover: true,
-                  draggable: true,
-                  progress: undefined,
-                });
-              return;
-          }
-      })
-      .catch((error) => {
-        setIsLoading(false);
-        if(error.response.status === 400){
+  
+        if (response.data.status === 'success') {
+          localStorage.setItem("AlreadyRegisteredPatientDetails", JSON.stringify(response.data.data));
+          localStorage.setItem("patientLoginOTP", otp);
+          await delay(2000);
+          navigate('/AllPatients');
+        } else {
           toast.error("Invalid OTP Entered.", {
             position: "top-right",
             autoClose: 800,
@@ -254,50 +244,62 @@ function BookAppointment() {
             draggable: true,
             progress: undefined,
           });
-        return;
-        }else{
-        toast.error("Something Went Wrong!!!!", {
-          position: "top-right",
-          autoClose: 800,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
-        console.error('Error fetching data:', error);
-      return;
-      }
+        }
+      })
+      .catch((error) => {
+        setIsLoading(false);
+  
+        if (error.response && error.response.status === 400) {
+          toast.error("Invalid OTP Entered.", {
+            position: "top-right",
+            autoClose: 800,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        } else {
+          toast.error("Something Went Wrong!!!!", {
+            position: "top-right",
+            autoClose: 800,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+          console.error('Error fetching data:', error);
+        }
       });
-      
   }
   
-  function loadPatientDetails(){
-    setIsLoading(true);
-    axios
-    .get(`${BACKEND_URL}/kiosk/fetchPatientDetails?input=${MRNMobileNumber}`)
-    .then((response) => {
-      setIsLoading(false);
-      if(response.data.status === 'success') {
-        localStorage.setItem("AlreadyRegisteredPatientDetails",JSON.stringify(response.data.data))
-        navigate('/AllPatients');
-        }
-    })
-    .catch((error) => {
-      setIsLoading(false);
-      toast.error("Something Went Wrong!!!!", {
-        position: "top-right",
-        autoClose: 800,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
-      console.error('Error fetching data:', error);
-    return;
-    });
-  }
+  // function loadPatientDetails(){
+  //   setIsLoading(true);
+  //   axios
+  //   .get(`${BACKEND_URL}/kiosk/fetchPatientDetails?input=${MRNMobileNumber}`)
+  //   .then((response) => {
+  //     setIsLoading(false);
+  //     if(response.data.status === 'success') {
+  //       localStorage.setItem("AlreadyRegisteredPatientDetails",JSON.stringify(response.data.data))
+  //       navigate('/AllPatients');
+  //       }
+  //   })
+  //   .catch((error) => {
+  //     setIsLoading(false);
+  //     toast.error("Something Went Wrong!!!!", {
+  //       position: "top-right",
+  //       autoClose: 800,
+  //       hideProgressBar: false,
+  //       closeOnClick: true,
+  //       pauseOnHover: true,
+  //       draggable: true,
+  //       progress: undefined,
+  //     });
+  //     console.error('Error fetching data:', error);
+  //   return;
+  //   });
+  // }
 
   const handleKeyPress = (e) => {
     if (e.key === 'Enter') {

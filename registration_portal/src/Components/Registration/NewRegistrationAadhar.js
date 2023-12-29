@@ -94,7 +94,7 @@ function NewRegistrationAadhar() {
                     progress: undefined,
                   });
                 return;
-            }
+            }else{
             toast.error("Aadhaar Server Down!!!!", {
               position: "top-right",
               autoClose: 800,
@@ -106,6 +106,7 @@ function NewRegistrationAadhar() {
             });
             console.error('Error fetching data:', error);
           return;
+            }
           
         });
     }
@@ -133,7 +134,7 @@ function NewRegistrationAadhar() {
                     progress: undefined,
                   });
                 return;
-            }
+            }else{
             toast.error("Aadhaar Server Down!!!!", {
               position: "top-right",
               autoClose: 800,
@@ -145,6 +146,7 @@ function NewRegistrationAadhar() {
             });
             console.error('Error fetching data:', error);
           return;
+            }
           
         });
     }
