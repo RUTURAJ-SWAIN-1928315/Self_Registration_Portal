@@ -107,7 +107,6 @@ function NewRegistrationAadhar() {
             console.error('Error fetching data:', error);
           return;
             }
-          
         });
     }
     const [clientId,setClientId] = useState('');
@@ -147,7 +146,6 @@ function NewRegistrationAadhar() {
             console.error('Error fetching data:', error);
           return;
             }
-          
         });
     }
     console.log("OTP",otp)
@@ -232,8 +230,9 @@ function NewRegistrationAadhar() {
               </button>
             )}
              
-              <button onClick={() => navigate('/NewRegistration')} className='NewRegistrationSkipButton'>
-          SKIP<img src={rightIcon} alt="Right Icon" />
+        <button onClick={() => navigate('/NewRegistration')} className='NewRegistrationSkipButton'>
+           Continue Without Aadhar
+              <img src={rightIcon} alt="Right Icon" />
         </button>
             </div>
           ) : (

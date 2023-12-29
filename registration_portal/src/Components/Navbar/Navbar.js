@@ -2,7 +2,8 @@ import React from 'react'
 import './Navbar.css'
 import HomeIcon from "../../Assests/Images/HomeIcon.svg"
 import RightArrow from "../../Assests/Images/right.svg"
-import BackButton from "../../Assests/Images/backButton.svg"
+import LeftArrow from "../../Assests/Images/left.svg"
+// import BackButton from "../../Assests/Images/backButton.svg"
 import { useNavigate } from 'react-router-dom'
 import navBarPatientDetail from "../../Assests/Images/navBarPatientDetail.svg";
 import NewRegisterBookConsultation from "../../Assests/Images/navBarNewRegisterBookConsultation.svg";
@@ -22,14 +23,26 @@ function Navbar(props) {
 
   }
 
+  const handleBackButton = ()=>{
+    window.history.back();
+  }
+
+  const handleCloseSession = ()=>{
+    navigate(`/Home`);
+  }
   
   return (
     <div className='NavbarContainer'>
 
      <div style={{gap:'10px', display:'flex', flexDirection:'row', alignItems: 'center'}}>
-      <div> <img src={HomeIcon} alt="Home" onClick={() => navigate('/Home')} /> </div>
-      {/* <div> <img src={BackButton} alt="BackButton" onClick={handleBackNavigate} /> </div> */}
-      <div> <img src={RightArrow} alt="rightArrow" /> </div>
+      {/* <div> <img src={HomeIcon} alt="Home" onClick={() => navigate('/Home')} /> </div>
+      <div> <img src={RightArrow} alt="rightArrow" /> </div> */}
+
+
+      <div className='BackBtn' onClick={handleBackButton}>
+        <img src={LeftArrow} alt="" />
+        <button className='insideBtn'>Back</button>
+      </div>
 
       <div className='PageNameContainer'> {props.pagename} </div>
       {props.registerPatientDetailIsCalled && (
@@ -41,6 +54,10 @@ function Navbar(props) {
      </div>
       
       
+
+     <div className='CloseBtn' onClick={handleCloseSession}>
+        <button className='insideCancelBtn'>Close Session</button>
+      </div>
 
 
     </div>
