@@ -140,7 +140,7 @@ console.log("newRegistrationPatientDetails",newRegisteredPatientDetails)
 
     <div style={{display:'flex', flexDirection:'row',paddingTop:'8px'}}>
      <div className='subHeader'>
-       Aadhar Number :
+       Aadhaar Number :
      </div>
      <div className='subtitle'>
         {patientCardDetails.aadharNumber}

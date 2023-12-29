@@ -39,13 +39,8 @@ function Navbar(props) {
     .post(`${BACKEND_URL}/kiosk/closePatientSession`)
     .then(async (response) => {
       if (response.data === true) {
-        for (const key in localStorage) {
-          if (key !== "profileData") {
-            localStorage.removeItem(key);
-          }
-        }
         await delay(2000);
-        navigate('/Home');
+        navigate('/SessionClose');
       } 
     })
     .catch((error) => {
@@ -68,8 +63,9 @@ function Navbar(props) {
 
      <div style={{gap:'10px', display:'flex', flexDirection:'row', alignItems: 'center'}}>
 
-     {!props.bookAppointmentIsCalled && !props.allPatientsIsCalled && !props.opdCheckinIsCalled && !props.billingIsCalled &&
-     !props.labReportIsCalled && !props.bookConsultationIsCalled && !props.WorkInProgressIsCalled && (
+     {!props.newRegistrationAadharIsCalled && !props.bookAppointmentIsCalled && !props.allPatientsIsCalled && !props.opdCheckinIsCalled && !props.billingIsCalled &&
+     !props.labReportIsCalled && !props.bookConsultationIsCalled && !props.hospitalDetails && !props.faqIsCalled && !props.newRegistrationCaptureIsCalled && !props.WorkInProgressIsCalled &&
+      (
       <>
       <div> <img src={HomeIcon} alt="Home" onClick={() => navigate('/Home')} /> </div>
       <div> <img src={RightArrow} alt="rightArrow" /> </div>
@@ -78,8 +74,8 @@ function Navbar(props) {
       
 
 
-      {!props.registerPatientDetailIsCalled && !props.NewRegisterBookConsultationIsCalled && !props.BookAppointmentLandingIsCalled && !props.faqIsCalled && 
-      !props.hospitalDetails && ( 
+      {!props.registerPatientDetailIsCalled && !props.NewRegisterBookConsultationIsCalled && !props.BookAppointmentLandingIsCalled && 
+       ( 
       <>
       <div className='BackBtn' onClick={handleBackButton}>
         <img src={LeftArrow} alt="" />
@@ -99,7 +95,8 @@ function Navbar(props) {
       
       
     {!props.newRegistrationAadharIsCalled && !props.newRegistrationCaptureIsCalled && !props.registerPatientDetailIsCalled &&
-    !props.NewRegisterBookConsultationIsCalled && !props.bookAppointmentIsCalled && !props.allPatientsIsCalled && !props.WorkInProgressIsCalled && ( 
+    !props.NewRegisterBookConsultationIsCalled && !props.bookAppointmentIsCalled && !props.allPatientsIsCalled && 
+    !props.hospitalDetails && !props.faqIsCalled && !props.WorkInProgressIsCalled && ( 
      <div className='CloseBtn' onClick={handleCloseSession}>
         <button className='insideCancelBtn'>Close Session</button>
       </div>

@@ -1,0 +1,94 @@
+.SuccessConfirmationPage {
+    background-color: #eff2f7;
+    height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url('../../Assests/Images/Robert.svg');
+    background-size: 50%; /* Set the height to 100% of container height */
+    background-repeat: no-repeat;
+    background-position: 85% 90%; /* Adjust the values for positioning */
+  }
+  
+  
+
+.ConfirmBox{
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 22px;
+    /* background: lightblue; */
+    padding-bottom: 100px;
+}
+
+.ImgMsgBox{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.SuccessMsg{
+    color: var(--Jade-600, #0FA968);
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-size: 36px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: 0.2px;
+}
+
+.DetailMsgBox{
+    display: flex;
+    padding: 20px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    border-radius: 10px;
+    border: 1px solid var(--White, #FFF);
+    background: rgba(255, 255, 255, 0.28);
+    backdrop-filter: blur(7px);
+    width: 65%;
+}
+
+.HeaderMsgText{
+    color: var(--Jade-600, #0FA968);
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 18px; /* 100% */
+    letter-spacing: 0.2px;
+}
+
+.InformationBox{
+     display: flex;
+     flex-direction: column;
+     gap: 8px;
+     width: 100%;
+}
+
+.InfoLine{
+     display: flex;
+     flex-direction: row;
+     gap: 4px;
+}
+
+.TitleInfo{
+    width: 45%;
+    color: var(--Scarpa-Flow-950, #27272A);
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px; /* 142.857% */
+}
+
+.TextInfo{
+    color: var(--Scarpa-Flow-950, #27272A);
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px; /* 142.857% */
+}

@@ -307,15 +307,10 @@ function BookConsultation() {
          progress: undefined,
       });
 
-      for (const key in localStorage) {
-        if (key !== "profileData") {
-          localStorage.removeItem(key);
-        }
-      }
       
       // Wait for 2 seconds
       await delay(2000);
-      navigate('/Home');
+      navigate('/BookAppointmentLanding');
       }
       })
       .catch((error) => {

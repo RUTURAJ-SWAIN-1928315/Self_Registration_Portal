@@ -294,18 +294,17 @@ const handleSaveAppointment = async () => {
        draggable: true,
        progress: undefined,
     });
-    localStorage.removeItem('newRegistrationHIMSResponse');
-    localStorage.removeItem('NewRegisteredPatientDetails');
+    
 
-    for (const key in localStorage) {
-      if (key !== "profileData") {
-        localStorage.removeItem(key);
-      }
-    }
+    // for (const key in localStorage) {
+    //   if (key !== "profileData") {
+    //     localStorage.removeItem(key);
+    //   }
+    // }
     
     // Wait for 2 seconds
     await delay(2000);
-    navigate('/Home');
+    navigate('/SuccessConfirmation');
     }
     })
     .catch((error) => {

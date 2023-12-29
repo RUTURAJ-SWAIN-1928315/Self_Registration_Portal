@@ -38,9 +38,9 @@ const handleOPDCheckinClick = () => {
      <PatientCard BookAppointmentLandingIsCalled={true}/>
 
      <div className='landingContentBox'>
-      <div className='blockContent'>
+      <div className='blockContent' onClick={handleOPDCheckinClick}>
          <div>
-          <img src={opdCheckin} alt="OPD CheckIn" onClick={handleOPDCheckinClick}/>
+          <img src={opdCheckin} alt="OPD CheckIn" />
          </div>
          <div className='imgTitle'>
          OPD Check-in

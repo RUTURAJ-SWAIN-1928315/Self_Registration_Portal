@@ -17,6 +17,8 @@ import AdminPage from './Components/Admin/AdminPage';
 import Faqs from './Components/Faqs/Faqs';
 import HospitalDetails from './Components/HospitalDetail/HospitalDetails';
 import WorkInProgress from './Components/WorkInProgress';
+import SuccessConfirmation from './Components/Home/SuccessConfirmation';
+import CloseSession from './Components/Home/CloseSession';
 
 function App() {
   return (
@@ -39,6 +41,8 @@ function App() {
        <Route path="/faqs" element={<Faqs/>}/>
        <Route path="/hospitalDetails" element={<HospitalDetails/>}/>
        <Route path="/WorkInProgress" element={<WorkInProgress/>}/>
+       <Route path="/SuccessConfirmation" element={<SuccessConfirmation/>}/>
+       <Route path="/SessionClose" element={<CloseSession/>}/>
 
      </Routes>
     </>

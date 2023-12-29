@@ -738,7 +738,7 @@ return (
 
                 <div style={{display:'flex', flexDirection:'column',gap:'6px',width:'100%'}}>
                   <div className='patientTypeDetailLabel'>Mobile Number<span className='mandatoryField'>*</span></div>
-                  <input name = 'mobileNumber' className='patientNumberInput' placeholder='0000000000' value={formData.mobileNumber} onChange={handleInputChange}></input>
+                  <input name = 'mobileNumber' className='patientNumberInput' placeholder='Enter Mobile Number' value={formData.mobileNumber} onChange={handleInputChange}></input>
                 </div> 
 
               </div>
@@ -752,12 +752,12 @@ return (
                 <div style={{ width:'50%'}}>
                   <div className="patientTypeDetailBox">
                     {aadharData ? (
-                    <div className='patientTypeDetailLabel'>Aadhar Number<span className='mandatoryField'>*</span></div>
+                    <div className='patientTypeDetailLabel'>Aadhaar Number<span className='mandatoryField'>*</span></div>
                     ):(
-                      <div className='patientTypeDetailLabel'>Aadhar Number</div>
+                      <div className='patientTypeDetailLabel'>Aadhaar Number</div>
                     )}
                     <div style={{display:'flex'}}>
-                    <input className='aadharNumberInput' placeholder='0000 0000 0000' 
+                    <input className='aadharNumberInput' placeholder='Enter Aadhaar Number' 
                      value={aadharData ? maskedAadharNumber : formData.aadharNumber}  disabled={disableInputFieldAadhar} onChange={handleAadharChange}></input>
                      
                     </div>
