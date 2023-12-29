@@ -7,6 +7,7 @@ import axios from 'axios';
 function Billing() {
   const BACKEND_URL = process.env.REACT_APP_EMR_BACKEND_BASE_URL;
   const [tableData,setTableData] = useState([]);
+  const selectedPatientMRNO = localStorage.getItem('selectedPatientMRNO');
   //For Testing purpose Demo MRNO
   const mrno = 'KIMS.0004205534';
 
