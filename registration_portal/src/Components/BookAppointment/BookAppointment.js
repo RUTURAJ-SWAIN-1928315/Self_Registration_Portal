@@ -310,7 +310,7 @@ function BookAppointment() {
 
   return (
     <div>
-      <Navbar pagename={'Book Appointment'} />
+      <Navbar pagename={'Book Appointment'} bookAppointmentIsCalled={true}/>
 
       <div className='BookAppointmentBody'>
         <div className='OTPcardBody'>

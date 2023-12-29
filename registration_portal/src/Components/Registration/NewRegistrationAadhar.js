@@ -202,7 +202,7 @@ function NewRegistrationAadhar() {
   
   return (
     <div> 
-    <Navbar pagename={'New Registration'} showOTPInputs={true}/>
+    <Navbar pagename={'New Registration'} newRegistrationAadharIsCalled = {true} showOTPInputs={true}/>
     <div className='BookAppointmentBody'>
         <div className='OTPcardBody' style={{width:'45%'}}>
           {!showOTPInputs ? (
