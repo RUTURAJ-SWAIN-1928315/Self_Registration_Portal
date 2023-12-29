@@ -275,7 +275,7 @@ const handleSaveAppointment = async () => {
       preRegisterId:newRegistrationHIMSResponse.preRegisterId,
       eventDate: selectedEventDate,
       empno: profileData.empno,
-      empId: Number(profileData.employeeId),
+      empId: Number(doctor.selectedDoctorId),
       departmentId: Number(department.selectedDepartmentId),
       siteId: Number(profileData.siteId),
       userId: Number(profileData.userId)
@@ -296,6 +296,13 @@ const handleSaveAppointment = async () => {
     });
     localStorage.removeItem('newRegistrationHIMSResponse');
     localStorage.removeItem('NewRegisteredPatientDetails');
+
+    for (const key in localStorage) {
+      if (key !== "profileData") {
+        localStorage.removeItem(key);
+      }
+    }
+    
     // Wait for 2 seconds
     await delay(2000);
     navigate('/Home');
