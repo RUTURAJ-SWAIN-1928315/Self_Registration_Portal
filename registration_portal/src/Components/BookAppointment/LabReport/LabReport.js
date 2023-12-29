@@ -3,6 +3,10 @@ import './LabReport.css';
 import Navbar from '../../Navbar/Navbar';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Button } from '@mui/material';
 import axios from 'axios';
+import { ToastContainer,toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import NoData from "../../../Assests/Images/noData.svg";
+
 function LabReport() {
   const BACKEND_URL = process.env.REACT_APP_EMR_BACKEND_BASE_URL;
   const selectedPatientMRNO = localStorage.getItem('selectedPatientMRNO');
@@ -16,7 +20,18 @@ useEffect(() => {
       const response = await axios.get(`${BACKEND_URL}/kiosk/getLabReports?mrno=${selectedPatientMRNO}`);
       setTableData(response.data);
     } catch (error) {
+      toast.error("Something went wrong!!!!", {
+        position: "top-right",
+        autoClose: 800,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
       console.error('Error fetching Table Data:', error);
+      return;
+     
     }
   };
   fetchTableData();
@@ -42,7 +57,12 @@ const handlePrint = (reportUrl,mrn) => {
   };
   return (
     <div className='LabReportPage'>
-      <Navbar pagename={"Lab Report"} />
+    <Navbar pagename={"Lab Report"} />
+    {tableData.length === 0 ? (
+      <div style={{ textAlign: 'center', padding: '20px' }}>
+        <img src={NoData} alt="No Data" style={{ maxWidth: '100%', height: 'auto' }} />
+      </div>
+    ) : (
       <div className='ReportPageTable'>
         <TableContainer>
           <Table>
@@ -65,7 +85,7 @@ const handlePrint = (reportUrl,mrn) => {
                     </div>
                   </TableCell>
                   <TableCell>
-                    <Button variant="contained" color="success" onClick={() => handlePrint(data.reportUrl,data.mrn)}>
+                    <Button variant="contained" color="success" onClick={() => handlePrint(data.reportUrl, data.mrn)}>
                       Print
                     </Button>
                   </TableCell>
@@ -75,7 +95,9 @@ const handlePrint = (reportUrl,mrn) => {
           </Table>
         </TableContainer>
       </div>
-    </div>
+    )}
+    <ToastContainer position="top-right" autoClose={2000} />
+  </div>
   );
 }
 export default LabReport;
