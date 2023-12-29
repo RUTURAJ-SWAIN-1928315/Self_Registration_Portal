@@ -22,7 +22,7 @@ function AdminPage() {
   const handleLogin = async () => {
     setIsLoading(true);
     try {
-      const response = await axios.get(`${BACKEND_URL}/kiosk/login?userName=${loginUserName}&password=${loginPassword}`);
+      const response = await axios.post(`${BACKEND_URL}/kiosk/login?userName=${loginUserName}&password=${loginPassword}`);
       if (response.data) {
         localStorage.setItem('profileData', JSON.stringify(response.data.profile));
         toast.success("Login Successful", {

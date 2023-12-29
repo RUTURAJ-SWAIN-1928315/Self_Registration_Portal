@@ -3,32 +3,25 @@ import './LabReport.css';
 import Navbar from '../../Navbar/Navbar';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Button } from '@mui/material';
 import axios from 'axios';
-
 function LabReport() {
   const BACKEND_URL = process.env.REACT_APP_EMR_BACKEND_BASE_URL;
+  const selectedPatientMRNO = localStorage.getItem('selectedPatientMRNO');
   const [tableData,setTableData] = useState([]);
-
-  //For Testing purpose Demo MRNO
-  const mrno = 'KIMS102302010458';
-
-
+  // //For Testing purpose Demo MRNO
+  // const mrno = 'KIMS102302010458';
   //Fetch TableData for Lab Reports
- 
 useEffect(() => {
   const fetchTableData = async () => {
     try {
-      const response = await axios.get(`${BACKEND_URL}/kiosk/getLabReports?mrno=${mrno}`);
+      const response = await axios.get(`${BACKEND_URL}/kiosk/getLabReports?mrno=${selectedPatientMRNO}`);
       setTableData(response.data);
     } catch (error) {
       console.error('Error fetching Table Data:', error);
     }
   };
-
   fetchTableData();
 }, []);
-
 console.log("TableData",tableData);
-
 const handlePrint = (reportUrl,mrn) => {
   //setting the new tab name as MRN
   const windowName = `MRN_${mrn}`;
@@ -36,8 +29,6 @@ const handlePrint = (reportUrl,mrn) => {
   //window.open(reportUrl, '_blank');
     console.log('Printing...',mrn);
   };
-
-  
   const formatDateTime = (dateTimeString) => {
     return new Date(dateTimeString).toLocaleString('en-IN', {
       day: 'numeric',
@@ -49,8 +40,6 @@ const handlePrint = (reportUrl,mrn) => {
       hour12: false,
     });
   };
-
-
   return (
     <div className='LabReportPage'>
       <Navbar pagename={"Lab Report"} />
@@ -89,6 +78,4 @@ const handlePrint = (reportUrl,mrn) => {
     </div>
   );
 }
-
-
 export default LabReport;
