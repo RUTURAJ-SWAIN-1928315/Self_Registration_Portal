@@ -69,7 +69,7 @@ function Navbar(props) {
      <div style={{gap:'10px', display:'flex', flexDirection:'row', alignItems: 'center'}}>
 
      {!props.bookAppointmentIsCalled && !props.allPatientsIsCalled && !props.opdCheckinIsCalled && !props.billingIsCalled &&
-     !props.labReportIsCalled && !props.bookConsultationIsCalled && (
+     !props.labReportIsCalled && !props.bookConsultationIsCalled && !props.WorkInProgressIsCalled && (
       <>
       <div> <img src={HomeIcon} alt="Home" onClick={() => navigate('/Home')} /> </div>
       <div> <img src={RightArrow} alt="rightArrow" /> </div>
@@ -99,7 +99,7 @@ function Navbar(props) {
       
       
     {!props.newRegistrationAadharIsCalled && !props.newRegistrationCaptureIsCalled && !props.registerPatientDetailIsCalled &&
-    !props.NewRegisterBookConsultationIsCalled && !props.bookAppointmentIsCalled && !props.allPatientsIsCalled &&( 
+    !props.NewRegisterBookConsultationIsCalled && !props.bookAppointmentIsCalled && !props.allPatientsIsCalled && !props.WorkInProgressIsCalled && ( 
      <div className='CloseBtn' onClick={handleCloseSession}>
         <button className='insideCancelBtn'>Close Session</button>
       </div>

@@ -53,7 +53,7 @@ function Home() {
     // };
 
     const handlefeedbackCardClick = () => {
-        alert(`Clicked on handlefeedbackCardClick`);
+        navigate(`/WorkInProgress`);
     };
 
     const handlefaqCardClick = () => {
