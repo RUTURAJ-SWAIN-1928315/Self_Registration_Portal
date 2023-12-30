@@ -53,7 +53,7 @@
     width: 250px;
     height: 50px;
     border-radius: 10px;
-    background: var(--White, #FFF);
+    background: #cbd6d6;
     color: var(--Scarpa-Flow-950, #27272A);
     font-feature-settings: 'clig' off, 'liga' off;
     font-size: 17px;
@@ -61,7 +61,7 @@
     font-weight: 500;
     line-height: 18px; 
     letter-spacing: 0.2px;
-    cursor: pointer;
+    /* cursor: pointer; */
     transition: background-color 0.3s;
 }
 
