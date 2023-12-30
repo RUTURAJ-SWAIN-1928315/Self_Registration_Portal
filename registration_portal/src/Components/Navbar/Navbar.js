@@ -39,6 +39,12 @@ function Navbar(props) {
     .post(`${BACKEND_URL}/kiosk/closePatientSession`)
     .then(async (response) => {
       if (response.data === true) {
+         // Clear localStorage for all keys except 'profileData'
+         for (const key in localStorage) {
+          if (key !== "profileData") {
+            localStorage.removeItem(key);
+          }
+        }
         await delay(2000);
         navigate('/SessionClose');
       } 
