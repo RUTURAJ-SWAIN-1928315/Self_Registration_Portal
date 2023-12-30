@@ -19,7 +19,7 @@ function AllPatients() {
   const navigate= useNavigate();
  // const alreadyRegisteredPatientDetails = JSON.parse(localStorage.getItem('AlreadyRegisteredPatientDetails'));
 
-  console.log("alreadyRegisteredPatientDetails", alreadyRegisteredPatientDetails);
+  // console.log("alreadyRegisteredPatientDetails", alreadyRegisteredPatientDetails);
 
   const [selectedCard, setSelectedCard] = useState(null);
 
@@ -44,7 +44,7 @@ function AllPatients() {
     })
     .catch((error) => {
       if(error.response.status === 400){
-        toast.error("Invalid Input!!!!", {
+        toast.error("Issue in creating session!!!!", {
           position: "top-right",
           autoClose: 800,
           hideProgressBar: false,
@@ -110,13 +110,13 @@ function AllPatients() {
             </div>
             {isLoading ? (
             <div className='cardHeadersubText'>
-              We found multiple patients registered with this mobile number
+              We found following patient(s) registered with this mobile number
               <LinearProgress />
             </div>
             ):(
                <> 
               <div className='cardHeadersubText'>
-              We found multiple patients registered with this mobile number
+              We found following patient(s) registered with this mobile number
             </div>        
               </> 
             )}

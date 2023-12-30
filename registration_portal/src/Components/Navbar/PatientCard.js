@@ -34,7 +34,6 @@ const [patientCardDetails,SetPatientCardDetails] = useState({
 });
 
 useEffect(() => {
-  console.log("props.NewRegisterBookConsultationIsCalled",props.NewRegisterBookConsultationIsCalled)
   if(props.NewRegisterBookConsultationIsCalled){
     const middleName = newRegisteredPatientDetails.middleName === 'NA' ? '' : newRegisteredPatientDetails.middleName;
     const creationTimeStamp = newRegisteredPatientDetails.creationTimeStamp

@@ -24,6 +24,7 @@ function NewRegisterBookConsultation() {
 });
 const profileData = JSON.parse(localStorage.getItem('profileData'));
 const newRegistrationHIMSResponse = JSON.parse(localStorage.getItem('newRegistrationHIMSResponse'));
+const newRegisteredPatientDetails = JSON.parse(localStorage.getItem('NewRegisteredPatientDetails'));
 
 
 const BACKEND_URL = process.env.REACT_APP_EMR_BACKEND_BASE_URL;
@@ -249,12 +250,16 @@ function delay(ms) {
 const handleSaveAppointment = async () => {
   setIsLoading(true);
   let selectedEventDate;
+  let selectedEventFromDateTime;
+  let selectedEventToDateTime;
    // Check if a slot is selected
   if (selectedSlotId !== null) {
     // Get the selected slot
     const selectedSlot = doctorSlots[selectedSlotId];
     // Access the eventDate of the selected slot
     selectedEventDate = selectedSlot.eventDate;
+    selectedEventFromDateTime = selectedSlot.eventStartDateTime;
+    selectedEventToDateTime = selectedSlot.eventEndDateTime;
     // Now, you can use selectedEventDate in your saveAppointmentRequestBody or perform any other actions
     console.log("Selected Event Date:", selectedEventDate);
   } else {
@@ -301,6 +306,17 @@ const handleSaveAppointment = async () => {
     //     localStorage.removeItem(key);
     //   }
     // }
+    const middleName = newRegisteredPatientDetails.middleName === 'NA' ? '':newRegisteredPatientDetails.middleName
+    const newRegistrationSuccessConfirmation = {
+      patientName:newRegisteredPatientDetails.prefix + " "+newRegisteredPatientDetails.firstName+ " "+ middleName+" "+newRegisteredPatientDetails.lastName,
+      appointmentDate:selectedEventDate,
+      doctorName:doctor.selectedDoctor,
+      department:department.selectedDepartment,
+      slotFromTime:selectedEventFromDateTime,
+      slotToTime:selectedEventToDateTime
+    };
+
+    localStorage.setItem("newRegistrationSuccessConfirmation",JSON.stringify(newRegistrationSuccessConfirmation));
     
     // Wait for 2 seconds
     await delay(2000);

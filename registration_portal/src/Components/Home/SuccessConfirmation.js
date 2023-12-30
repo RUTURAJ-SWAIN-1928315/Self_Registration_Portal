@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useEffect } from 'react';
 import './SuccessConfirmation.css';
 import Correct from '../../Assests/Images/CorrectImg.svg'
@@ -6,22 +6,89 @@ import { useNavigate } from 'react-router-dom';
 
 function SuccessConfirmation() {
 
+const newRegistrationSuccessConfirmation = JSON.parse(localStorage.getItem('newRegistrationSuccessConfirmation'));
+const alreadyRegisteredSuccessConfirmation = JSON.parse(localStorage.getItem('alreadyRegisteredSuccessConfirmation'));
+
+const [tableData,setTableData] = useState({
+    mrno:'',
+    patientName:'',
+    appointmentDate:'',
+    doctorName:'',
+    department:'',
+    slotFromTime:'',
+    slotToTime:'',
+})
+
+useEffect(() => {
+    if(newRegistrationSuccessConfirmation){
+        setTableData({
+            patientName:newRegistrationSuccessConfirmation.patientName,
+            appointmentDate:formatDate(newRegistrationSuccessConfirmation.appointmentDate),
+            doctorName:newRegistrationSuccessConfirmation.doctorName,
+            department:newRegistrationSuccessConfirmation.department,
+            slotFromTime:formatSlotTime(newRegistrationSuccessConfirmation.slotFromTime),
+            slotToTime:formatSlotTime(newRegistrationSuccessConfirmation.slotToTime),
+        });
+    }else{
+        setTableData({
+            mrno:alreadyRegisteredSuccessConfirmation.mrno,
+            patientName:alreadyRegisteredSuccessConfirmation.patientName,
+            appointmentDate:formatDate(alreadyRegisteredSuccessConfirmation.appointmentDate),
+            doctorName:alreadyRegisteredSuccessConfirmation.doctorName,
+            department:alreadyRegisteredSuccessConfirmation.department,
+            slotFromTime:formatSlotTime(alreadyRegisteredSuccessConfirmation.slotFromTime),
+            slotToTime:formatSlotTime(alreadyRegisteredSuccessConfirmation.slotToTime),
+        });
+    }
+
+}, []);
+
+const formatDate = (date) => {
+    const d = new Date(date);
+    const day = (`0${d.getDate()}`).slice(-2); // Add leading 0 and slice last two digits
+    const month = (`0${d.getMonth() + 1}`).slice(-2); // Add leading 0 and slice last two digits
+    const year = d.getFullYear();
+    return `${day}-${month}-${year}`;
+};  
+
+const formatSlotTime = (dateTimeStr) => {
+    const date = new Date(dateTimeStr);
+    let hours = date.getHours();
+    const minutes = `0${date.getMinutes()}`.slice(-2);
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12;
+    hours = hours ? hours : 12; // the hour '0' should be '12'
+    return `${hours}:${minutes} ${ampm}`;
+  };
+  
+
+
  const navigate = useNavigate();
 
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      navigate('/Home');
-
-      for (const key in localStorage) {
-        if (key !== "profileData") {
-          localStorage.removeItem(key);
+ useEffect(() => {
+    let timeout;
+  
+    if (newRegistrationSuccessConfirmation) {
+      timeout = setTimeout(() => {
+        navigate('/Home');
+  
+        // Clear localStorage for all keys except 'profileData'
+        for (const key in localStorage) {
+          if (key !== "profileData") {
+            localStorage.removeItem(key);
+          }
         }
-      }
-      
-    }, 7000); 
-
+      }, 10000);
+    } else {
+      // If newRegistrationSuccessConfirmation is not present, navigate to another route
+      timeout = setTimeout(() => {
+        navigate('/BookAppointmentLanding');
+      }, 10000);
+    }
+  
     return () => clearTimeout(timeout);
-  }, [navigate]);
+  }, [newRegistrationSuccessConfirmation, navigate]);
+  
 
 
 
@@ -50,25 +117,29 @@ function SuccessConfirmation() {
                             Patient Name :
                         </div>
                         <div className='TextInfo'>
-                            Adhishika Dash
+                        {tableData.patientName}
                         </div>
                     </div> 
 
-                    {/* <div className='InfoLine'> 
+                    {!newRegistrationSuccessConfirmation  && (
+                    <>
+                     <div className='InfoLine'> 
                         <div className='TitleInfo'>
                             MRN :
                         </div>
                         <div className='TextInfo'>
-                            KIMS2019415251
+                           {tableData.mrno}
                         </div>
-                    </div>  */}
+                    </div>
+                    </>
+                    )}  
 
                     <div className='InfoLine'> 
                         <div className='TitleInfo'>
                             Appointment Date :
                         </div>
                         <div className='TextInfo'>
-                            23-11-2023
+                            {tableData.appointmentDate}
                         </div>
                     </div> 
 
@@ -77,7 +148,7 @@ function SuccessConfirmation() {
                             Doctor Name :
                         </div>
                         <div className='TextInfo'>
-                            Amresh Misra
+                           {tableData.doctorName}
                         </div>
                     </div> 
 
@@ -86,7 +157,7 @@ function SuccessConfirmation() {
                             Department :
                         </div>
                         <div className='TextInfo'>
-                            Cardiology
+                            {tableData.department}
                         </div>
                     </div> 
 
@@ -95,7 +166,7 @@ function SuccessConfirmation() {
                             Slot :
                         </div>
                         <div className='TextInfo'>
-                            10:00 AM - 10:29 AM
+                            {tableData.slotFromTime} - {tableData.slotToTime}
                         </div>
                     </div> 
 

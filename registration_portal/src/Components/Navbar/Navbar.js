@@ -18,14 +18,14 @@ function Navbar(props) {
   const BACKEND_URL = process.env.REACT_APP_EMR_BACKEND_BASE_URL;
   // console.log("pageName", props.pagename)
 
-  const handleBackNavigate = () =>{
-    const BackShowOTPInputs = props.showOTPInputs;
-    //localStorage.setItem('BackShowOTPInputs', BackShowOTPInputs.toString()); // Convert the boolean to a string
-    if(props.showOTPInputs){
-      navigate(`/NewRegistrationAadhar`);
-    }
+  // const handleBackNavigate = () =>{
+  //   const BackShowOTPInputs = props.showOTPInputs;
+  //   //localStorage.setItem('BackShowOTPInputs', BackShowOTPInputs.toString()); // Convert the boolean to a string
+  //   if(props.showOTPInputs){
+  //     navigate(`/NewRegistrationAadhar`);
+  //   }
 
-  }
+  // }
 
   const handleBackButton = ()=>{
     window.history.back();
@@ -64,7 +64,8 @@ function Navbar(props) {
      <div style={{gap:'10px', display:'flex', flexDirection:'row', alignItems: 'center'}}>
 
      {!props.newRegistrationAadharIsCalled && !props.bookAppointmentIsCalled && !props.allPatientsIsCalled && !props.opdCheckinIsCalled && !props.billingIsCalled &&
-     !props.labReportIsCalled && !props.bookConsultationIsCalled && !props.hospitalDetails && !props.faqIsCalled && !props.newRegistrationCaptureIsCalled && !props.WorkInProgressIsCalled &&
+     !props.labReportIsCalled && !props.bookConsultationIsCalled && !props.hospitalDetails && !props.faqIsCalled && !props.newRegistrationCaptureIsCalled 
+     && !props.WorkInProgressIsCalled && !props.BookAppointmentLandingIsCalled &&
       (
       <>
       <div> <img src={HomeIcon} alt="Home" onClick={() => navigate('/Home')} /> </div>
