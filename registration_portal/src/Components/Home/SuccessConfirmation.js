@@ -78,12 +78,12 @@ const formatSlotTime = (dateTimeStr) => {
             localStorage.removeItem(key);
           }
         }
-      }, 10000);
+      }, 7000);
     } else {
       // If newRegistrationSuccessConfirmation is not present, navigate to another route
       timeout = setTimeout(() => {
         navigate('/BookAppointmentLanding');
-      }, 10000);
+      }, 7000);
     }
   
     return () => clearTimeout(timeout);
