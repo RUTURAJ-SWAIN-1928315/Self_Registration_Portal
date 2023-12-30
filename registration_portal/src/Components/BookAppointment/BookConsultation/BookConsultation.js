@@ -42,7 +42,7 @@ function BookConsultation() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${BACKEND_URL}/kiosk/getPreviousConsultants?mrno=KIMS.0004212119`);
+        const response = await axios.get(`${BACKEND_URL}/kiosk/getPreviousConsultants?mrno=${selectedPatientMRNO}`);
         setPrevDoctorsData(response.data.data);
       } catch (error) {
         console.error('Error fetching data:', error);
