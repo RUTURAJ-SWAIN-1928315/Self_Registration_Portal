@@ -25,14 +25,26 @@ function OpdCheckin() {
   }, []);
 
   console.log("TableData",tableData)
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    const day = date.getDate().toString().padStart(2, '0');
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const year = date.getFullYear();
+  // const formatDate = (dateString) => {
+  //   const date = new Date(dateString);
+  //   const day = date.getDate().toString().padStart(2, '0');
+  //   const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  //   const year = date.getFullYear();
 
-    return `${day}-${month}-${year}`;
+  //   return `${day}-${month}-${year}`;
+  // };
+
+  const formatDate = (dateTimeString) => {
+    const dateString = dateTimeString.split(' ')[0]; // Extract the date part
+ 
+    const [year,day,month] = dateString.split('-');
+  
+    // Format the date as DD-MM-YYYY
+    const formattedDate = `${day}-${month}-${year}`;
+  
+    return formattedDate;
   };
+
   const formatDateTime = (dateTimeString) => {
     const timeString = dateTimeString.split(' ')[1]; // Assuming 'YYYY-DD-MM HH:mm:ss' format
     const [hours, minutes] = timeString.split(':');
@@ -60,7 +72,7 @@ function OpdCheckin() {
             <TableBody>
               {tableData.map((dataItem) => (
                 <TableRow key={dataItem.mrno}>
-                  <TableCell>{formatDate(dataItem.appointmentDate)}</TableCell>
+                <TableCell>{formatDate(dataItem.fromTime)}</TableCell>
                   <TableCell>{`${formatDateTime(dataItem.fromTime)} - ${formatDateTime(dataItem.toTime)}`}</TableCell>
                   <TableCell>{dataItem.doctorName}</TableCell>
                   <TableCell>{dataItem.departmentName}</TableCell>
