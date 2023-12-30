@@ -161,21 +161,21 @@ function NewRegistrationAadhar() {
            navigate('/RegisterPatientDetail');
             setShowOTPInputs(true); // Set showOTPInputs state to true on arrow button click
             }
-            else{
-                toast.error("Invalid OTP entered.", {
-                    position: "top-right",
-                    autoClose: 800,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                  });
-                return;
-            }
         })
         .catch((error) => {
           setIsLoading(false);
+          if(error.response.status === 400){
+            toast.error("Invalid OTP entered.", {
+              position: "top-right",
+              autoClose: 800,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
+          return;
+          }else{
           toast.error("Aadhaar Server Down!!!!", {
             position: "top-right",
             autoClose: 800,
@@ -187,6 +187,7 @@ function NewRegistrationAadhar() {
           });
           console.error('Error fetching data:', error);
         return;
+          }
           
         });
         

@@ -15,7 +15,7 @@ import axios from 'axios';
 
 function BookConsultation() {
 
-
+  const alreadyRegisteredPatientDetails = JSON.parse(localStorage.getItem('AlreadyRegisteredPatientDetails'));
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [isLoading,setIsLoading] = useState(false);
     const [department,setDepartment] = useState({
@@ -263,12 +263,16 @@ function BookConsultation() {
   const handleBookConsultation = async () => {
     setIsLoading(true);
     let selectedEventDate;
+    let selectedEventFromDateTime;
+   let selectedEventToDateTime;
      // Check if a slot is selected
     if (selectedSlotId !== null) {
       // Get the selected slot
       const selectedSlot = doctorSlots[selectedSlotId];
       // Access the eventDate of the selected slot
       selectedEventDate = selectedSlot.eventDate;
+      selectedEventFromDateTime = selectedSlot.eventStartDateTime;
+      selectedEventToDateTime = selectedSlot.eventEndDateTime;
       console.log("Selected Event Date:", selectedEventDate);
     } else {
       // No slot selected, handle accordingly
@@ -310,7 +314,21 @@ function BookConsultation() {
       
       // Wait for 2 seconds
       await delay(2000);
-      navigate('/BookAppointmentLanding');
+      const prefix = (alreadyRegisteredPatientDetails.prefix === '' || alreadyRegisteredPatientDetails === 'NA') ? '':alreadyRegisteredPatientDetails.prefix;
+      const middleName = alreadyRegisteredPatientDetails.middleName === 'NA' ? '':alreadyRegisteredPatientDetails.middleName;
+      const alreadyRegisteredSuccessConfirmation = {
+        mrno:alreadyRegisteredPatientDetails.mrno,
+        patientName:prefix + " "+alreadyRegisteredPatientDetails.firstName+ " "+ middleName+" "+alreadyRegisteredPatientDetails.lastName,
+        appointmentDate:selectedEventDate,
+        doctorName:doctor.selectedDoctor,
+        department:department.selectedDepartment,
+        slotFromTime:selectedEventFromDateTime,
+        slotToTime:selectedEventToDateTime
+      };
+  
+      localStorage.setItem("alreadyRegisteredSuccessConfirmation",JSON.stringify(alreadyRegisteredSuccessConfirmation));
+
+      navigate('/SuccessConfirmation');
       }
       })
       .catch((error) => {
