@@ -36,6 +36,18 @@ function BookAppointment() {
   }
 
   const handleArrowClick = () => {
+    if(MRNMobileNumber === ''){
+      toast.info("Please enter Mobile No/MRNo", {
+        position: "top-right",
+        autoClose: 800,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      return;
+    }
     if (/^\d+$/.test(MRNMobileNumber)) {
       // If MRNMobileNumber contains only numbers
       validateMobileNumber();

@@ -7,6 +7,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer,toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import searchIcon from '../../Assests/Images/searchIcon.svg';
  
 
 function RegisterPatientDetail() {
@@ -16,6 +17,8 @@ function RegisterPatientDetail() {
  
  const aadharData = JSON.parse(localStorage.getItem('aadharData'));
  const [addressMaster,setAddressMaster] = useState([]);
+ const [suggestions, setSuggestions] = useState([]);
+ const [selectedSuggestionIndex, setSelectedSuggestionIndex] = useState(-1);
 
  
   const [disableInputFieldAadhar,setDisableInputFieldAadhar] = useState(false);
@@ -56,6 +59,7 @@ function RegisterPatientDetail() {
     village: '',
     city:'',
     locality: '',
+    localityId:'',
     postOffice: '',
     policeStation: '',
   });
@@ -240,17 +244,19 @@ const calculateAge = (dob) => {
   if (name === "pinCode" && value.trim() === "") {
     setFormData(prevState => ({
       ...prevState,
-      district: '',
-      districtId:'',
-      state: '',
-      stateId:'',
-      country: '',
-      countryId:''
+             district: '',
+            districtId: '',
+            state: '',
+            stateId: '',
+            country: '',
+            countryId: '',
+            locality: '', 
+            localityId: '' 
     }));
 
-
+    setSuggestions([]); // Clear suggestions if pinCode is empty
+    setLocalityList([]);
   }else if (name === "pinCode" && value.length === 6){
-
       if (value.length === 6) {
         axios.get(`${BACKEND_URL}/kiosk/getAddressMaster?pinCode=${value}`, {
         })
@@ -263,7 +269,8 @@ const calculateAge = (dob) => {
             if(!aadharData){
             const uniqueLocality = [...new Set(data.map(item => item.locality))];
 
-            setLocalityList(uniqueLocality)
+            setLocalityList(uniqueLocality);
+            //setSuggestions(uniqueLocality);
             setFormData(prevState => ({
               ...prevState,
               city:response.data.data[0].cityName,
@@ -283,7 +290,79 @@ const calculateAge = (dob) => {
       }
     }
     };
+
+    //This Function Filters out the locality not matching the keyword entered by user from the localityList received from API
+    const handleLocalityInputChange = (event) => {
+      const { value } = event.target;
+  
+      if (suggestions.length > 0 && value !== '') {
+        setSelectedSuggestionIndex(0); // Highlight the first suggestion
+      } else {
+        setSelectedSuggestionIndex(-1); // No suggestion is selected
+      }
+
+       // Update the locality in the formData state
+       setFormData(prevFormData => ({
+        ...prevFormData,
+        locality: value
+    }));
  
+      if (value.trim() === '') {
+          // Clear suggestions if the locality input is empty
+          setSuggestions([]);
+      } else if (value === '%%') {
+          // If user types '%%', show all localities in the suggestions
+          setSuggestions(localityList);
+      } else {
+          // Filter and set suggestions based on the updated value
+          const filteredSuggestions = localityList.filter(locality => 
+              locality.toLowerCase().includes(value.toLowerCase())
+          );
+  
+          setSuggestions(filteredSuggestions);
+      }
+  };
+
+    // const handleKeyDown = (e) => {
+    //   if (e.key === 'ArrowUp') {
+    //     e.preventDefault();
+    //     console.log("selectedSuggestionIndex",selectedSuggestionIndex)
+    //     setSelectedSuggestionIndex((prevIndex) => {
+    //       const newIndex = prevIndex <= 0 ? suggestions.length - 1 : prevIndex - 1;
+    //       scrollSuggestionIntoView(newIndex);
+    //       return newIndex;
+    //     });
+    //   } else if (e.key === 'ArrowDown') {
+    //     e.preventDefault();
+    //     setSelectedSuggestionIndex((prevIndex) => {
+    //       const newIndex = prevIndex >= suggestions.length - 1 ? 0 : prevIndex + 1;
+    //       scrollSuggestionIntoView(newIndex);
+    //       return newIndex;
+    //     });
+    //   } else if (e.key === 'Enter') {
+    //     e.preventDefault();
+    //     console.log("selectedSuggestionIndex",selectedSuggestionIndex)
+    //     if (selectedSuggestionIndex !== -1) {
+    //       setFormData((prevData) => ({
+    //         ...prevData,
+    //         locality: localityList[selectedSuggestionIndex],
+    //       }));
+    //       setSuggestions([]); // Clear suggestions after selection
+    //       setSelectedSuggestionIndex(-1); // Reset suggestion index
+    //     }
+    //   }
+    // };
+    
+  
+    // const scrollSuggestionIntoView = (index) => {
+    //   const selectedSuggestionElement = document.querySelector('.suggestions-container li:nth-child(' + (index + 1) + ')');
+    //   if (selectedSuggestionElement) {
+    //     selectedSuggestionElement.scrollIntoView({
+    //       behavior: 'smooth',
+    //       block: 'nearest',
+    //     });
+    //   }
+    // };
  
 
   const handleInputChange = (event) => {
@@ -505,9 +584,9 @@ if(aadharData){
   const matchingAddress = addressMaster.find(address => 
     address.districtName.toLowerCase() === formData.district.toLowerCase() ||
     address.stateName.toLowerCase() === formData.state.toLowerCase() ||
-    address.countryName.toLowerCase() === formData.country.toLowerCase()
+    address.countryName.toLowerCase() === formData.country.toLowerCase() ||
+    address.locality.toLowerCase() === formData.locality
   );
-  console.log("matchingAddress",matchingAddress,"addressMaster",addressMaster,"formData.district",formData.district)
 
     const formattedAadharNumber = formData.aadharNumber.replace(/\s/g, ''); // Remove spaces
     setIsLoading(true);
@@ -543,6 +622,7 @@ if(aadharData){
           countryName:formData.country,
           village:formData.village,
           locality:formData.locality,
+          localityId:matchingAddress ? matchingAddress.localityId : null,
           postOffice:formData.postOffice,
           policeStation:formData.policeStation,
           cityName:formData.city
@@ -616,6 +696,7 @@ if(aadharData){
       village: '',
       city:'',
       locality: '',
+      localityId:'',
       postOffice: '',
       policeStation: ''
     });
@@ -901,23 +982,48 @@ return (
                       <input style={{borderRadius: '6px',width:'320px'}} className='patientNameInput' placeholder='' value={formData.locality || ''} disabled={aadharData.address.loc === '' ? false:true} onChange={handleInputChange} name='locality'></input>
                       </div>
             ):(
-              <div className='addressInputRow'>
-              <div className='patientTypeDetailLabel'>Locality</div>
-              <select
-                name='locality'
-                className='patientTypeSelectDropdownAddress'
-                value={formData.locality}
-                disabled={disableInputFieldAadhar}
-                onChange={handleAddressChange}
-              >
-                <option value=''>Select Locality</option>
-                {localityList.map((locality, index) => (
-                <option key={index} value={locality}>
-                  {locality}
-                </option>
-              ))}
-              </select>
+              <div className="addressInputRow">
+          <div className="patientTypeDetailLabel">Locality</div> 
+              <div style={{ position: 'relative', display: 'flex', alignItems: 'center', gap: '2px' , background:'var(--White, #FFF)',borderRadius:'6px 6px 6px 6px',width:'93%'
+              }}>
+              <img style={{ cursor: 'pointer' }} src={searchIcon} alt="search Icon" />
+                <input
+                style={{
+                border:'none',
+                outline:'none',
+                }}
+                  className="patientNameInput"
+                  name="locality"
+                  value={formData.locality}
+                  onChange={handleLocalityInputChange}
+                  onPaste={handleLocalityInputChange}
+                  placeholder="Search Locality"
+                  // onKeyDown={handleKeyDown}
+                />
+              
+                {suggestions.length > 0 && (
+                  <div className="suggestions-container">
+                    <ul className="suggestions">
+                      {suggestions.map((suggestion, index) => (
+                        <li
+                          key={index}
+                          className={index === selectedSuggestionIndex ? 'selected' : ''}
+                          onClick={() => {
+                            setFormData({
+                              ...formData,
+                              locality: suggestion,
+                            });
+                            setSuggestions([]); // Clear suggestions after selection
+                          }}
+                        >
+                          {suggestion}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
               </div>
+            </div>
             )}
               
             {disableInputFieldAadhar ? (
