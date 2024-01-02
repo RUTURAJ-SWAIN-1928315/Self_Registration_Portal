@@ -1,39 +1,18 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useNavigate } from 'react-router-dom';
-import './Home.css'
+import './Home.css';
 import NewRegistrationImage from '../../Assests/Images/NewRegistration.svg';
 import BookAppointment from '../../Assests/Images/BookAppointment.svg'
-import AboutKims from '../../Assests/Images/AboutKIMS.svg'
-import MyLocation from '../../Assests/Images/MyLocation.svg'
+import hospitalPic from '../../Assests/Images/AboutKIMS.svg'
 import feedback from '../../Assests/Images/feedback.svg'
 import faq from '../../Assests/Images/faq.svg'
-import axios from 'axios';
-import poweredBySoulCare from '../../Assests/Images/poweredBySoulCare.svg';
-import hospitaLogo from '../../Assests/Images/hospitalLogo.svg';
+import poweredBySOUL from '../../Assests/Images/poweredBySOUL.svg'
 
 function Home() {
-    localStorage.removeItem('aadharData');
-    // const BACKEND_URL = process.env.REACT_APP_EMR_BACKEND_BASE_URL;
-    // const loginUserName = process.env.REACT_APP_USERNAME;
-    // const loginPassword = process.env.REACT_APP_PASSWORD;
-
-    //For logging into Kiosk
-    // useEffect(() => {
-    //     axios
-    //       .get(`${BACKEND_URL}/kiosk/login?userName=${loginUserName}&password=${loginPassword}`)
-    //       .then((response) => {
-    //         if(response.data) {
-    //             console.log("response.data.profile",JSON.stringify(response.data.profile));
-    //             // Store 'siteId' in localStorage
-    //             localStorage.setItem('profileData', JSON.stringify(response.data.profile));
-    //           }
-    //       })
-    //       .catch((error) => {
-    //         console.error('Error fetching data:', error);
-    //       });
-    //     }, [BACKEND_URL,loginUserName,loginPassword]);
 
     const navigate = useNavigate();
+    const profileData = JSON.parse(localStorage.getItem('profileData'));
+    localStorage.removeItem('aadharData');
 
     const handleRegisterCardClick = () => {
         navigate('/NewRegistrationAadhar');
@@ -64,62 +43,84 @@ function Home() {
 
     return (
     
-    <div className='HomeContainer'>
-        <div className='HomeContainerBody'>
-        {/* <div className='poweredBySoulCareImageDiv'>
-        <img src={poweredBySoulCare} alt="poweredBySoulCare" className='poweredBySoulCareImage'/> 
-        </div> */}
+        <div className='HomePage'>
 
-        <div className='logoHeaderBox'>
-        <div><img src={hospitaLogo} alt="" className='hospitalLogoImage'/></div>
-        <div><img src={poweredBySoulCare} alt="" className='poweredBySoulCareImage'/> </div>
-
+        <div className='NavBarContainerBox'>
+            <div className='HospitalNamediv'>
+                <div>
+                    <img style={{height:'90px', width:'90px', borderRadius:'50%' }} src={hospitalPic} alt="Hospital" />
+                </div>
+                <div className='HospitalName'>
+                    <div>
+                       {profileData.siteName}
+                    </div>
+                    <div className='HospitalLoc'>
+                        {profileData.serviceCenterName}
+                    </div>
+                </div> 
+            </div>
+            <div>
+                <img src={poweredBySOUL} alt="" />
+            </div>
         </div>
-            <div className='HomeContainerRow'>
 
-                <div className='cardBody' onClick={handleRegisterCardClick}>
-                    <div><img src={NewRegistrationImage} alt="registion" /> </div>
-                    <div className='cardBodyHeader'>New Registration</div>
-                    <div className='cardBodyTxt'>Registration & appointment booking</div>
-                </div>
-                <div className='cardBody' onClick={handleBookAppointmentCardClick}>
-                    <div><img src={BookAppointment} alt="BookAppointment"/> </div>
-                    <div className='cardBodyHeader'>Already Registered</div>
-                    <div className='cardBodyTxt'>check-in, appointment booking, lab reports, bills</div>
-                </div>
-                {/* <div className='cardBody' onClick={handleLabReportCardClick} >
-                    <div><img src={LabReport} alt="LabReport" /> </div>
-                    <div className='cardBodyHeader'>Lab Reports</div>
-                    <div className='cardBodyTxt'>for patients done lab test</div>
-                </div> */}
-
+        <div className='HomeContainerBox'>
+            <div className='FirstRowBox'>
+               <div className='ModuleContainer' onClick={handleRegisterCardClick} >
+                  <div>
+                    <img src={NewRegistrationImage} alt="registion" />
+                  </div>
+                  <div className='ModuleHeader'>
+                    New Registration
+                  </div>
+                  <div className='ModuleSubTitle'>
+                    Registration & appointment booking
+                  </div>
+               </div>
+               <div className='ModuleContainer' onClick={handleBookAppointmentCardClick} > 
+                  <div>
+                    <img src={BookAppointment} alt="BookAppointment"/>    
+                  </div>
+                  <div className='ModuleHeader'>
+                     Already Registered
+                  </div>
+                  <div className='ModuleSubTitle'>
+                  check-in, appointment booking, lab reports, bills
+                  </div>
+               </div>
+            </div>
+            <div className='SecondRowBox'>
+            <div className='ModuleContainer' onClick={handleAboutKimsCardClick} >
+                  <div>
+                    <img src={hospitalPic} alt="AboutHos"/>
+                  </div>
+                  <div className='ModuleSubTitleSecond'>
+                     About Hospital
+                  </div>
+               </div>
+               <div className='ModuleContainer' onClick={handlefeedbackCardClick}>
+                  <div>
+                     <img src={feedback} alt="feedback" /> 
+                  </div>
+                  <div className='ModuleSubTitleSecond'>
+                       Feedback
+                  </div>
+               </div>
+               <div className='ModuleContainer' onClick={handlefaqCardClick}>
+                  <div>
+                    <img src={faq} alt="faq" />
+                  </div>
+                  <div className='ModuleSubTitleSecond'>
+                    FAQs
+                  </div>
+               </div>
             </div>
 
-            <div className='HomeContainerRow'>
-
-                <div className='cardBody2' onClick={handleAboutKimsCardClick}>
-                    <div><img src={AboutKims} alt="AboutHos" /> </div>
-                    <div className='cardBodyHeader2'>About Hospital</div>
-                </div>
-                {/* <div className='cardBody2' onClick={handleMyLocationCardClick}>
-                    <div><img src={MyLocation} alt="MyLocation" /> </div>
-                    <div className='cardBodyHeader2'>My Location</div>
-                </div> */}
-                <div className='cardBody2'onClick={handlefeedbackCardClick}>
-                    <div><img src={feedback} alt="feedback" /> </div>
-                    <div className='cardBodyHeader2'> Feedback </div>
-                </div>
-                <div className='cardBody2' onClick={handlefaqCardClick}>
-                    <div><img src={faq} alt="faq" /> </div>
-                    <div className='cardBodyHeader2'>FAQs</div>
-                </div>
-
-            </div>
-
         </div>
+
 
     </div>
-    )
-  }
+  )
+}
 
-  export default Home;
+export default Home
