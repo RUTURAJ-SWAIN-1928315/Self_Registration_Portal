@@ -241,7 +241,7 @@ const calculateAge = (dob) => {
   }));
 
      // Check if the name of the field is pinCode and its value is empty
-  if (name === "pinCode" && value.trim() === "") {
+  if (name === "pinCode" && (value.trim() === "" || value.length !==6 )) {
     setFormData(prevState => ({
       ...prevState,
              district: '',
