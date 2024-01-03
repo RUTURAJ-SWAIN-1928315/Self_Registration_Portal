@@ -109,6 +109,9 @@
     line-height: normal;
     width: 100%;
 }
+.verifyBtn:disabled{
+    opacity: 0.5;
+}
 
 .otp-input-root input{
     border-radius: 10px;

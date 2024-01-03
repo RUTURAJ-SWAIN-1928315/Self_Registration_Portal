@@ -1,4 +1,4 @@
-import {React,useState} from 'react'
+import {React,useState,useRef,useEffect} from 'react'
 import Navbar from '../Navbar/Navbar';
 import searchIcon from '../../Assests/Images/searchIcon.svg';
 import EastIcon from '@mui/icons-material/East';
@@ -19,6 +19,19 @@ function NewRegistrationAadhar() {
     const navigate = useNavigate();
     // const aadharData = JSON.parse(localStorage.getItem('aadharData'));
     const [isLoading,setIsLoading] = useState(false);
+    const [otpInputKey, setOtpInputKey] = useState(0); // Initial key
+    const aadharInputRef = useRef(null); // Create a ref for the input
+
+    useEffect(() => {
+      // Set focus on the MRN/Mobile Number input when the component mounts
+      aadharInputRef.current?.focus();
+    }, []);
+
+    const resetOtpAndRefreshInput = () => {
+      setOtp('');
+      // Change the key to force remount the OtpInput component
+      setOtpInputKey(prevKey => prevKey + 1);
+    };
 
 
 
@@ -148,7 +161,7 @@ function NewRegistrationAadhar() {
             }
         });
     }
-    console.log("OTP",otp)
+
     function verifyAadharOTP(){
       setIsLoading(true);
         axios
@@ -165,6 +178,7 @@ function NewRegistrationAadhar() {
         .catch((error) => {
           setIsLoading(false);
           if(error.response.status === 400){
+            resetOtpAndRefreshInput();
             toast.error("Invalid OTP entered.", {
               position: "top-right",
               autoClose: 800,
@@ -192,6 +206,12 @@ function NewRegistrationAadhar() {
         });
         
     }
+
+    useEffect(() => {
+      if (otp.length === 6) {
+        verifyAadharOTP();
+      }
+    }, [otp]);
   
     const handleResend = () => {
         getAadharOTP();
@@ -216,6 +236,8 @@ function NewRegistrationAadhar() {
                      placeholder='Enter Patient Aadhar Number'
                      value={aadharNumber}
                      onChange={handleAadharChange}
+                     onKeyDown={handleKeyPress}
+                     ref={aadharInputRef}
                  />
               </div>
 
@@ -226,7 +248,7 @@ function NewRegistrationAadhar() {
                     </Box>
                   </div>
             ):(
-              <button className='ArrowBtn' onClick={handleArrowClick} onInput={handleKeyPress} disabled={isLoading}>
+              <button className='ArrowBtn' onClick={handleArrowClick} disabled={isLoading}>
                   <EastIcon />
               </button>
             )}
@@ -250,6 +272,7 @@ function NewRegistrationAadhar() {
               style={{ margin: "5%", gap:'10%',justifyContent:'space-evenly'  }}
               OTPLength={6}
               value={otp}
+              key={otpInputKey}
               onChange={setOtp}
               otpType="number"
               disabled={false}
@@ -270,11 +293,11 @@ function NewRegistrationAadhar() {
               />
 
             {isLoading ? (
-              <div className='ArrowBtn' style={{ width: '60%',background:'transparent' }}>
-                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                      <CircularProgress />
-                    </Box>
-                  </div>
+              <div style={{width:'60%'}}>
+              <button className='verifyBtn' disabled={isLoading}>
+              VERIFYING.....
+              </button>
+             </div>
             ):(
              <div style={{width:'60%'}}>
               <button className='verifyBtn' onClick={verifyAadharOTP}>

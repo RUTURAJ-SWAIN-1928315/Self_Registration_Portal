@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect,useState,useRef } from 'react';
 import Navbar from '../Navbar/Navbar';
 import './BookAppointment.css';
 import searchIcon from '../../Assests/Images/searchIcon.svg';
@@ -20,6 +20,14 @@ function BookAppointment() {
   const [isLoading,setIsLoading] = useState(false);
   const navigate= useNavigate();
   const [otp, setOtp] = useState('');
+  const [otpInputKey, setOtpInputKey] = useState(0); // Initial key
+  const mrnInputRef = useRef(null); // Create a ref for the input
+
+  useEffect(() => {
+    // Set focus on the MRN/Mobile Number input when the component mounts
+    mrnInputRef.current?.focus();
+  }, []);
+
 
 
   const [showOTPInputs, setShowOTPInputs] = useState(false);
@@ -154,10 +162,13 @@ function BookAppointment() {
     handleArrowClick();
   };
 
-  // const handleVerifyClick = () => {
-  //   navigate('/BookAppointmentLanding');
-  // };
+  const resetOtpAndRefreshInput = () => {
+    setOtp('');
+    // Change the key to force remount the OtpInput component
+    setOtpInputKey(prevKey => prevKey + 1);
+  };
 
+ 
   const handleVerifyClick = () => {
     if (/^\d+$/.test(MRNMobileNumber)) {
       // If MRNMobileNumber contains only numbers
@@ -210,7 +221,7 @@ function BookAppointment() {
       setIsLoading(false);
   
       if (error.response && error.response.status === 400) {
-        setOtp('');
+        resetOtpAndRefreshInput();
         toast.error("Invalid OTP Entered.", {
           position: "top-right",
           autoClose: 800,
@@ -221,7 +232,7 @@ function BookAppointment() {
           progress: undefined,
         });
       } else {
-        setOtp('');
+        resetOtpAndRefreshInput();
         toast.error("Something Went Wrong!!!!", {
           position: "top-right",
           autoClose: 800,
@@ -266,7 +277,7 @@ function BookAppointment() {
         setIsLoading(false);
   
         if (error.response && error.response.status === 400) {
-          setOtp('');
+          resetOtpAndRefreshInput();
           toast.error("Invalid OTP Entered.", {
             position: "top-right",
             autoClose: 800,
@@ -277,7 +288,7 @@ function BookAppointment() {
             progress: undefined,
           });
         } else {
-          setOtp('');
+          resetOtpAndRefreshInput();
           toast.error("Something Went Wrong!!!!", {
             position: "top-right",
             autoClose: 800,
@@ -298,8 +309,13 @@ function BookAppointment() {
     if (e.key === 'Enter') {
         handleArrowClick();
     }
-};
+}
 
+useEffect(() => {
+  if (otp.length === 4) {
+    handleVerifyClick();
+  }
+}, [otp]);
 
   return (
     <div>
@@ -311,7 +327,7 @@ function BookAppointment() {
             <div className='OTPcard'>
               <div style={{ display: 'flex', alignItems: 'center' }} className='searchBarBox'>
                 <img style={{ cursor: 'pointer', paddingLeft: '10px' }} src={searchIcon} alt='search' />
-                <input className='searchBarInput' placeholder='Enter MRN/Mobile Number' value={MRNMobileNumber} onChange={handleMRNMobileNumberChange}/>
+                <input className='searchBarInput' placeholder='Enter MRN/Mobile Number' value={MRNMobileNumber}  name = 'ValidateMobileNoMRN' onChange={handleMRNMobileNumberChange} onKeyDown={handleKeyPress} ref={mrnInputRef}/>
               </div>
 
               {isLoading ? (
@@ -321,7 +337,7 @@ function BookAppointment() {
                     </Box>
                   </div>
             ):(
-              <button className='ArrowBtn' onClick={handleArrowClick} onInput={handleKeyPress} disabled={isLoading}>
+              <button className='ArrowBtn' onClick={handleArrowClick} disabled={isLoading}>
                   <EastIcon />
               </button>
             )}
@@ -339,6 +355,7 @@ function BookAppointment() {
               <OtpInput
               style={{ margin: "5%", gap:'10%',justifyContent:'space-evenly'  }}
               OTPLength={4}
+              key={otpInputKey}
               value={otp}
               onChange={setOtp}
               otpType="number"
@@ -360,11 +377,11 @@ function BookAppointment() {
               />
 
               {isLoading ? (
-              <div className='ArrowBtn' style={{ width: '60%',background:'transparent' }}>
-                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                      <CircularProgress />
-                    </Box>
-                  </div>
+                <div style={{width:'60%'}}>
+              <button className='verifyBtn' disabled={isLoading}>
+               VERIFYING.....
+              </button>
+             </div>
             ):(
              <div style={{width:'60%'}}>
               <button className='verifyBtn' onClick={handleVerifyClick}>
