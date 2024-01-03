@@ -12,14 +12,15 @@ import axios from 'axios';
 
 function AllPatients() {
   const BACKEND_URL = process.env.REACT_APP_EMR_BACKEND_BASE_URL;
+  //here checking if alreadyRegisteredPatientDetails is null or not if null setting empty array
   const storedData = localStorage.getItem('AlreadyRegisteredPatientDetails');
   const alreadyRegisteredPatientDetails = storedData ? JSON.parse(storedData) : { data: [] };
   const patientLoginOTP = localStorage.getItem('patientLoginOTP');
   const [isLoading,setIsLoading] = useState(false);
   const navigate= useNavigate();
- // const alreadyRegisteredPatientDetails = JSON.parse(localStorage.getItem('AlreadyRegisteredPatientDetails'));
 
-  // console.log("alreadyRegisteredPatientDetails", alreadyRegisteredPatientDetails);
+  console.log("alreadyRegisteredPatientDetails",alreadyRegisteredPatientDetails)
+ 
 
   const [selectedCard, setSelectedCard] = useState(null);
 
@@ -135,6 +136,7 @@ function AllPatients() {
                         </div>
                         <div className='innerPatientCardBox'>
                            <div className='innerPatientCardBoxNameRow'>
+                           {/* Since NA is being set in middleName from HIMS side so getting NA in middleName */}
                            <div className='innerPatientCardBoxName'>{`${patient.patientName}`}</div>
                            <div className='genderbox'>
                             <span><img src={patient.gender === 'MALE' ? malesign : femalesign} alt="" /></span>

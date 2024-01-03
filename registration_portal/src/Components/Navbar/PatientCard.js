@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useRef,useEffect, useState } from 'react'
 import './PatientCard.css'
 import DefaultPatient from  "../../Assests/Images/defaultPatient.svg";
 import phoneIcon from "../../Assests/Images/phoneIcon.svg";
@@ -8,8 +8,6 @@ function PatientCard(props) {
 
 const newRegisteredPatientDetails = JSON.parse(localStorage.getItem('NewRegisteredPatientDetails'));
 const alreadyRegisteredPatientDetails = JSON.parse(localStorage.getItem('AlreadyRegisteredPatientDetails'));
-
-console.log("alreadyRegisteredPatientDetails in patient Card",alreadyRegisteredPatientDetails)
 
 const [patientCardDetails,SetPatientCardDetails] = useState({
   photo:'',
@@ -43,7 +41,7 @@ useEffect(() => {
     SetPatientCardDetails({
       //Checking NA here since Sending NA when photo is not available while Registering
       photo:newRegisteredPatientDetails.photo === 'NA' ? null:newRegisteredPatientDetails.photo,
-      headerName:newRegisteredPatientDetails.firstName + " " +middleName +" "+ newRegisteredPatientDetails.lastName,
+      headerName:newRegisteredPatientDetails.prefix + " "+ newRegisteredPatientDetails.firstName + " " +middleName +" "+ newRegisteredPatientDetails.lastName,
       gender:newRegisteredPatientDetails.gender,
       age:newRegisteredPatientDetails.ageStr,
       dob:newRegisteredPatientDetails.dobStr,
@@ -66,14 +64,13 @@ useEffect(() => {
     })
 
   }else{
-    console.log("alreadyRegisteredPatientDetails.firstName ",alreadyRegisteredPatientDetails.firstName)
-    //const prefix = (alreadyRegisteredPatientDetails.prefix === '' || alreadyRegisteredPatientDetails.prefix === null) ? '' : alreadyRegisteredPatientDetails.prefix;
-    const middleName = (alreadyRegisteredPatientDetails.middleName === '' || alreadyRegisteredPatientDetails.middleName === null) ? '' : alreadyRegisteredPatientDetails.middleName;
+    const prefix = (alreadyRegisteredPatientDetails.prefix === '' || alreadyRegisteredPatientDetails.prefix === null) ? '' : alreadyRegisteredPatientDetails.prefix;
+    const middleName = (alreadyRegisteredPatientDetails.middleName === '' || alreadyRegisteredPatientDetails.middleName === null || alreadyRegisteredPatientDetails.middleName === 'NA') ? '' : alreadyRegisteredPatientDetails.middleName;
     
     const addressList = alreadyRegisteredPatientDetails.addressList[0];
     SetPatientCardDetails({
       photo:alreadyRegisteredPatientDetails.photo === 'NA' ? null:alreadyRegisteredPatientDetails.photo,
-      headerName:alreadyRegisteredPatientDetails.firstName + " " +middleName +" "+ alreadyRegisteredPatientDetails.lastName,
+      headerName:prefix + " "+ alreadyRegisteredPatientDetails.firstName + " " +middleName +" "+ alreadyRegisteredPatientDetails.lastName,
       gender:alreadyRegisteredPatientDetails.gender,
       age:alreadyRegisteredPatientDetails.ageStr,
       dob:alreadyRegisteredPatientDetails.dobStr,
@@ -93,7 +90,16 @@ useEffect(() => {
   }
 }, []);
 
-console.log("newRegistrationPatientDetails",newRegisteredPatientDetails)
+// //Adding this section to check if the name is of larger length to roll it over
+// const headerRef = useRef(null);
+// const [isMarquee, setIsMarquee] = useState(false);
+
+// useEffect(() => {
+//   if (headerRef.current) {
+//     const isOverflowing = headerRef.current.scrollWidth > headerRef.current.clientWidth;
+//     setIsMarquee(isOverflowing);
+//   }
+// }, [patientCardDetails.headerName]); // Recheck when headerName changes
 
   return (
     <div className='mainPatientCard'>
@@ -109,9 +115,13 @@ console.log("newRegistrationPatientDetails",newRegisteredPatientDetails)
       <div className='PatientInfo'>
 
       <div style={{display:'flex', flexDirection:'row', gap:'17px'}}>  
-        <div className='HeaderName'>
-            {patientCardDetails.headerName}
-        </div>
+      {/* <div className={`HeaderName ${isMarquee ? 'marquee' : ''}`} ref={headerRef}>
+      {patientCardDetails.headerName}
+    </div> */}
+    <div className='HeaderName'>
+      {patientCardDetails.headerName}
+    </div>
+    
         <div className='genderShow'>
           <div className='genderShowround'>
           {patientCardDetails.gender}

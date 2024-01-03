@@ -26,7 +26,20 @@
     font-style: normal;
     font-weight: 700;
     line-height: normal;
+    white-space: nowrap;
+    overflow: hidden;
+    /* width: 200px; */
 }
+
+/* @keyframes marquee {
+  0%   { transform: translateX(0%); }
+  100% { transform: translateX(-100%); }
+}
+
+.marquee {
+  display: block;
+  animation: marquee 10s linear infinite;
+} */
 
 .patientImageCard{
     height: 150px;
@@ -96,3 +109,4 @@
     line-height: normal;
     width: 146px;
   }
+
