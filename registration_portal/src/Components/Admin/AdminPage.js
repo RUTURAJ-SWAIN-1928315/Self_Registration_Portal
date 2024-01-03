@@ -65,6 +65,12 @@ function AdminPage() {
     }
   };
 
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+        handleLogin();
+    }
+};
+
   return (
     <div className='AdminPage'>
       <div className='AdminContainer'>
@@ -88,6 +94,7 @@ function AdminPage() {
               placeholder='Enter your Password'
               value={loginPassword}
               onChange={(e) => setLoginPassword(e.target.value)}
+              onKeyDown={handleKeyPress}
             />
             <label>
               <input
