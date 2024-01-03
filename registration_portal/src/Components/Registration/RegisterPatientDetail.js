@@ -30,8 +30,8 @@ function RegisterPatientDetail() {
   const [prefixMaster,setPrefixMaster] = useState([]);
   const [genderList,setGenderList] = useState([]);
   const [localityList,setLocalityList] = useState([]);
-  const [postOfficeList,setPostOfficeList] = useState([]);
-  const [policeStationList,setPoliceStationList] = useState([]);
+  // const [postOfficeList,setPostOfficeList] = useState([]);
+  // const [policeStationList,setPoliceStationList] = useState([]);
   const [maskedAadharNumber, setMaskedAadharNumber] = useState('');
 
 
@@ -92,13 +92,15 @@ function RegisterPatientDetail() {
       // Call calculateAge function and update the formData state
   const { age: calculatedAge, unit } = calculateAge(aadharData.dob);
 
+      //Adding the below condition for gender, since need to send genderId & genderCode in post.
+      //Since no info. regarding what gender we will be receiving for other gender so setting it to unknown from genderMaster
       let gender;
-      if (aadharData.gender === 'M') {
+      if ((aadharData.gender).toLowerCase() === 'M'.toLowerCase()) {
           gender = 'MALE';
-      } else if (aadharData.gender === 'F') {
+      } else if ((aadharData.gender).toLowerCase() === 'F'.toLowerCase()) {
           gender = 'FEMALE';
       } else {
-          gender = 'OTHERS';
+          gender = 'Unknown';
       }
       //Calling handleAddresChange here to load AddressMaster to be while saving
       handleAddressChange({ target: { name: 'pinCode', value: aadharData.zip } });
@@ -192,10 +194,13 @@ const calculateAge = (dob) => {
             genderCode:item.lookupCode
           }));
           setGenderList(genders);
-          
+
+
+          //Added this gender comparison for aadharCase.
           if(aadharData){
-            //Now only comparing male and female gender
-            const selectedGender = aadharData.gender === 'M' ? 'MALE': aadharData.gender === 'F' ? 'FEMALE':'';
+            //here only comparing male and female gender
+            //Since no info. regarding what gender we will be receiving for other gender so setting it to unknown from genderMaster
+            const selectedGender = (aadharData.gender).toLowerCase() === 'M'.toLowerCase() ? 'MALE': (aadharData.gender).toLowerCase() === 'F'.toLowerCase() ? 'FEMALE':'Unknown';
             const selectedGenderId = response.data.data.find(item => item.lookupValue === selectedGender)?.lookupId;
             const selectedGenderCode = response.data.data.find(item => item.lookupValue === selectedGender)?.lookupCode;
             setFormData(prevState => ({
@@ -251,7 +256,9 @@ const calculateAge = (dob) => {
             country: '',
             countryId: '',
             locality: '', 
-            localityId: '' 
+            localityId: '',
+            postOffice:'',
+            policeStation:'',
     }));
 
     setSuggestions([]); // Clear suggestions if pinCode is empty
@@ -270,6 +277,18 @@ const calculateAge = (dob) => {
             const uniqueLocality = [...new Set(data.map(item => item.locality))];
 
             setLocalityList(uniqueLocality);
+
+            // Automatically select the locality if there's only one
+            // For Temporary Purpose Setting selected Locality in Post Office as suggested by HIMS Team.
+            //For Post Office as suggested by HIMS Team, selected Locality will be set in post Office,until otherwise
+            //Changed by user.
+              if (uniqueLocality.length === 1) {
+                setFormData(prevFormData => ({
+                  ...prevFormData,
+                  locality: uniqueLocality[0],
+                  postOffice:uniqueLocality[0]
+                }));
+              }
             //setSuggestions(uniqueLocality);
             setFormData(prevState => ({
               ...prevState,
@@ -302,9 +321,12 @@ const calculateAge = (dob) => {
       }
 
        // Update the locality in the formData state
+       // For Temporary Purpose Setting selected Locality in Post Office as suggested by HIMS Team.
+       //For Post Office as suggested by HIMS Team, selected Locality will be set in post Office,until otherwise
+       //Changed by user.
        setFormData(prevFormData => ({
         ...prevFormData,
-        locality: value
+        locality: value,
     }));
  
       if (value.trim() === '') {
@@ -323,6 +345,7 @@ const calculateAge = (dob) => {
       }
   };
 
+//Not Including keyDown since KIOSK will be a touch screen and no need of keydown
     // const handleKeyDown = (e) => {
     //   if (e.key === 'ArrowUp') {
     //     e.preventDefault();
@@ -510,7 +533,7 @@ console.log("aadharData",aadharData)
 
     //Since No information regarding post office and police station available so for now not including 
     //post office and police station as mandatory field
-
+    //On suggestion of HIMS Team Setting locality selected by user in post office
      // Validate mandatory fields
   let mandatoryFields = [
     'selectedPrefix',
@@ -1012,6 +1035,7 @@ return (
                             setFormData({
                               ...formData,
                               locality: suggestion,
+                              postOffice: suggestion
                             });
                             setSuggestions([]); // Clear suggestions after selection
                           }}
@@ -1029,13 +1053,13 @@ return (
             {disableInputFieldAadhar ? (
               <div className='addressInputRow'>
               <div className='patientTypeDetailLabel'>Post Office<span className='mandatoryField'>*</span></div>
-                      <input style={{borderRadius: '6px',width:'316px'}} className='patientNameInput' placeholder='Post Office' value={formData.postOffice || ' '} disabled={disableInputFieldAadhar}></input>
+                      <input style={{borderRadius: '6px',width:'316px'}} className='patientNameInput' placeholder='Enter Post Office' value={formData.postOffice || ' '} disabled={disableInputFieldAadhar}></input>
                       </div>
             ):(
 
               <div className='addressInputRow'>
               <div className='patientTypeDetailLabel'>Post Office</div>
-                      <input style={{borderRadius: '6px',width:'316px'}} className='patientNameInput' placeholder='Post Office' value={formData.postOffice || ' '} disabled={disableInputFieldAadhar}  onChange={handleAddressChange} name='postOffice'></input>
+                      <input style={{borderRadius: '6px',width:'316px'}} className='patientNameInput' placeholder='Enter Post Office' value={formData.postOffice} disabled={disableInputFieldAadhar}  onChange={handleAddressChange} name='postOffice'></input>
                       </div>
 
             )}
@@ -1049,7 +1073,7 @@ return (
 
               <div className='addressInputRow'>
               <div className='patientTypeDetailLabel'>Police Station</div>
-                      <input style={{borderRadius: '6px',width:'316px'}} className='patientNameInput' placeholder='Police Station' value={formData.policeStation || ' '} disabled={disableInputFieldAadhar}   onChange={handleAddressChange} name='policeStation'></input>
+                      <input style={{borderRadius: '6px',width:'316px'}} className='patientNameInput' placeholder='Enter Police Station' value={formData.policeStation} disabled={disableInputFieldAadhar}   onChange={handleAddressChange} name='policeStation'></input>
                       </div>
           
             )}
