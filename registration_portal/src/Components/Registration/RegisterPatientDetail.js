@@ -20,6 +20,7 @@ function RegisterPatientDetail() {
  const [localitySuggestions, setLocalitySuggestions] = useState([]);
  const [pinCodeSuggestions,setPinCodeSuggestions] = useState([]);
  const [selectedSuggestionIndex, setSelectedSuggestionIndex] = useState(-1);
+ const [isWhatsAppSameAsMobile, setIsWhatsAppSameAsMobile] = useState(false);
 
  
   const [disableInputFieldAadhar,setDisableInputFieldAadhar] = useState(false);
@@ -49,6 +50,7 @@ function RegisterPatientDetail() {
     selectedPrefixId:'',
     aadharNumber:'',
     mobileNumber:'',
+    whatsAppNumber:'',
     dob:'',
     age:'',
     ageUnit:'Years',
@@ -264,6 +266,15 @@ const calculateAge = (dob) => {
   const handleAddressChange = (event) => {
       const { name, value } = event.target;
 
+  // Check if the field being changed is the pinCode
+  if (name === "pinCode") {
+    // Allow only numbers in the pin code field
+    if (!/^\d*$/.test(value)) {
+        return; // If the input is not a number, return without updating the state
+    }
+  }
+
+  //Setting formData for fields other than pincode
   setFormData(prevState => ({
     ...prevState,
     [name]: value
@@ -287,6 +298,7 @@ const calculateAge = (dob) => {
 
     setLocalitySuggestions([]); // Clear suggestions if pinCode is empty
     setLocalityList([]);
+    setPinCodeSuggestions([]); // Clear pin code suggestions
   }else if (name === "pinCode" && value.length === 6){
       if (value.length === 6) {
         axios.get(`${BACKEND_URL}/kiosk/getAddressMaster?pinCode=${value}`, {
@@ -374,7 +386,7 @@ const calculateAge = (dob) => {
 
 
   //Function for handling PinCode suggestions
-  const handleSuggestionSelect = (suggestion) => {
+  const handlePinCodeSuggestionSelect = (suggestion) => {
     const locality = suggestion.split(' - ')[1];
     setFormData(prevFormData => ({
       ...prevFormData,
@@ -430,17 +442,24 @@ const calculateAge = (dob) => {
   const handleInputChange = (event) => {
     const { name, value } = event.target;
 
-    // Allow only numeric values or an empty string for mobileNumber
-    if (name === 'mobileNumber' && value !== '' && !/^\d+$/.test(value)) {
+    // Allow only numeric values or an empty string for mobileNumber or whatsAppNumber
+    if ((name === 'mobileNumber' || name === 'whatsAppNumber') && value !== '' && !/^\d+$/.test(value)) {
         return; // Ignore non-numeric input, except for empty string
     }
 
-    // Handle mobile number input with length restriction
+    // Handle mobile number/WhatsApp Number input with length restriction
     if (name === 'mobileNumber') {
         setFormData(prevState => ({
             ...prevState,
             [name]: value.slice(0, 10) // Restrict to max 10 digits
         }));
+        //Added this condition so that if "same as mobile number" is checked so that when user types mobile number whatsapp number will be automatically filled
+        if(isWhatsAppSameAsMobile){
+          setFormData(prevState => ({
+            ...prevState,
+           whatsAppNumber: value.slice(0, 10) // Restrict to max 10 digits
+        }));
+        }
     } else if (name === 'dob') {
         // Handle DOB change and calculate age
         const { age, unit } = calculateAge(value);
@@ -553,9 +572,11 @@ console.log("aadharData",aadharData)
     }
   }
 
+    //Added this condition for manual registration case. Checking if the aadhaar number entered by user is empty or not equal to 12 
+    //characters then showing invalid aadhaar Number message
     if(formData.aadharNumber !== ''){
     if (formData.aadharNumber.replace(/\s/g, '').length !== 12) {
-      toast.error("Invalid Aadhar number.", {
+      toast.error("Invalid Aadhaar number.", {
           position: "top-right",
           autoClose: 800,
           hideProgressBar: false,
@@ -594,6 +615,7 @@ console.log("aadharData",aadharData)
     mandatoryFields.push('city');
 }
 
+//If aadharData is present make aadharNumber a mandatory Fields
 if(aadharData){
   mandatoryFields.push('aadharNumber');
 }
@@ -647,7 +669,8 @@ if(aadharData){
     address.districtName.toLowerCase() === formData.district.toLowerCase() ||
     address.stateName.toLowerCase() === formData.state.toLowerCase() ||
     address.countryName.toLowerCase() === formData.country.toLowerCase() ||
-    address.locality.toLowerCase() === formData.locality
+    address.locality.toLowerCase() === formData.locality ||
+    address.cityName.toLowerCase() === formData.city
   );
 
     const formattedAadharNumber = formData.aadharNumber.replace(/\s/g, ''); // Remove spaces
@@ -666,6 +689,7 @@ if(aadharData){
       age:Number(formData.age),
       // ageUnit:formData.ageUnit,
       contactNo:formData.mobileNumber,
+      whatsAppNumber:formData.whatsAppNumber,
       email:formData.emailId,
       userId:Number(profileData.userId),
       aadhaarNumber:formattedAadharNumber,
@@ -687,7 +711,8 @@ if(aadharData){
           localityId:matchingAddress ? matchingAddress.localityId : null,
           postOffice:formData.postOffice,
           policeStation:formData.policeStation,
-          cityName:formData.city
+          cityName:formData.city,
+          cityId:matchingAddress ? matchingAddress.cityId : null,
         }
       ]
     }
@@ -747,6 +772,7 @@ if(aadharData){
       aadharNumber:'',
       maskedAadharNumber:'',
       mobileNumber:'',
+      whatsAppNumber:'',
       dob:'',
       age:'',
       ageUnit:'Years',
@@ -851,7 +877,7 @@ return (
                   <input style={{borderRadius: '0px 6px 6px 0px'}} className='patientNameInput' placeholder='Last Name' value={formData.lastName} disabled={disableInputFieldAadhar} onChange={handleInputChange} name="lastName"></input>
                 </div>
               </div>
-              <div style={{display:'flex', gap:'20px'}}>
+              <div style={{display:'flex', gap:'20px',alignItems:'baseline'}}>
 
                  <div className="patientTypeDetailBox">
                     <div className='patientTypeDetailLabel'>Date of Birth<span className='mandatoryField'>*</span></div>
@@ -883,6 +909,20 @@ return (
                   <div className='patientTypeDetailLabel'>Mobile Number<span className='mandatoryField'>*</span></div>
                   <input name = 'mobileNumber' className='patientNumberInput' placeholder='Enter Mobile Number' value={formData.mobileNumber} onChange={handleInputChange}></input>
                 </div> 
+
+                <div style={{display:'flex', flexDirection:'column', gap:'6px', width:'100%'}}>
+                <div className='patientTypeDetailLabel'>WhatsApp Number</div>
+                <input name='whatsAppNumber' className='patientNumberInput' placeholder='Enter WhatsApp Number' value={formData.whatsAppNumber} onChange={handleInputChange} disabled={isWhatsAppSameAsMobile}></input>
+                <div style={{display:'flex',alignItems:'center'}}>
+                  <input type="checkbox" checked={isWhatsAppSameAsMobile} onChange={(e) => {
+                    setIsWhatsAppSameAsMobile(e.target.checked);
+                    if (e.target.checked) {
+                      setFormData({ ...formData, whatsAppNumber: formData.mobileNumber });
+                    }
+                  }} />
+                  <label className='sameAsMNLabel'>Same as Mobile Number</label>
+                </div>
+                </div>
 
               </div>
 
@@ -957,23 +997,27 @@ return (
      <div style={{ width:'100%', height:'133px'}}>
           <div className='addressDetailsContentRow'>
           <div className='addressInputRow'>
-                  <div className='patientTypeDetailLabel'>Pin Code<span className='mandatoryField'>*</span></div>
-                  <input
-                    type="text"
-                    name="pinCode"
-                    className='addressInput'
-                    placeholder='Pin Code'
-                    value={formData.pinCode}
-                    disabled={disableInputFieldAadhar}
-                    onChange={handleAddressChange}
-                  />
+            <div className='patientTypeDetailLabel'>Pin Code<span className='mandatoryField'>*</span></div>
+            <div style={{ position: 'relative', display: 'flex', alignItems: 'center', gap: '2px', borderRadius: '6px 6px 6px 6px', width: '93%' }}>
+                <input
+                  type="text"
+                  name="pinCode"
+                  className='addressInput'
+                  placeholder='Pin Code'
+                  value={formData.pinCode}
+                  disabled={disableInputFieldAadhar}
+                  onChange={handleAddressChange}
+                  style={{width:'94%'}}
+                />
 
-                  {/* Display suggestions below the pin code input */}
-                  {pinCodeSuggestions.length > 0 && (
+                  {/* Pin code suggestions */}
+                  {/* pinCodeSuggestions.length > 1 this condition is added to show suggestions when the length is > 1, since in 
+                  handleAddressChange mapping the locality,postOffice fields directly when there is only one locality*/}
+                  {pinCodeSuggestions && pinCodeSuggestions.length > 1 && (
                     <div className="suggestions-container">
                       <ul className="suggestions">
                         {pinCodeSuggestions.map((suggestion, index) => (
-                          <li key={index} onClick={() => handleSuggestionSelect(suggestion)}>
+                          <li key={index} onClick={() => handlePinCodeSuggestionSelect(suggestion)}>
                             {suggestion}
                           </li>
                         ))}
@@ -981,6 +1025,8 @@ return (
                     </div>
                   )}
                 </div>
+              </div>
+
 
                 <div className='addressInputRow'>
                 <div className='patientTypeDetailLabel'>District<span className='mandatoryField'>*</span></div>
@@ -1118,7 +1164,7 @@ return (
 
             {disableInputFieldAadhar ? (
               <div className='addressInputRow'>
-              <div className='patientTypeDetailLabel'>Police Station<span className='mandatoryField'>*</span></div>
+              <div className='patientTypeDetailLabel'>Police Station</div>
                       <input style={{borderRadius: '6px',width:'316px'}} className='patientNameInput' placeholder='Police Station' value={formData.policeStation || ' '} disabled={disableInputFieldAadhar}></input>
                       </div>
             ):(
@@ -1134,6 +1180,15 @@ return (
          </div> 
 
       </div>
+
+      {/* Notes Div */}
+      {disableInputFieldAadhar && (
+      <div className='aadhaarNotesDiv'>
+      <div className='patientTypeDetailLabel' style={{color:'red', fontStyle: 'italic',fontSize:'14px'}}>
+      <span className='mandatoryField'>*</span>Note: Aadhaar data is non-editable. To make changes, please register without Aadhaar. If you wish to update Aadhaar-related information, kindly re-register with the correct Aadhaar details.<span className='mandatoryField'>*</span>
+      </div>
+      </div>
+      )}
 
       <div className='newRegistrationButtonGroupRow'>
       {!disableInputFieldAadhar && (

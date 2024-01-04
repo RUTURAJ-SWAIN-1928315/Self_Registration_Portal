@@ -95,9 +95,8 @@ const formatDateAsYYYYMMDD = (date) => {
 
 
 //To fetch doctor Slots
-const fetchDoctorSlots = async (departmentName, doctorId) => {
+const fetchDoctorSlots = async (doctorId) => {
   const formattedDate = formatDateAsYYYYMMDD(selectedDate);
-
   try {
     const response = await axios.get(`${BACKEND_URL}/kiosk/getDoctorSlots?deptId=${department.selectedDepartmentId}&employeeId=${doctorId}&date=${formattedDate}`);
     if (response.data.status === "Success") {
@@ -148,7 +147,7 @@ const handlePrevDay = () => {
 
   useEffect(() => {
     if (department.selectedDepartment && doctor.selectedDoctorId) {
-      fetchDoctorSlots(department.selectedDepartment, doctor.selectedDoctorId);
+      fetchDoctorSlots(doctor.selectedDoctorId);
     } else {
       setDoctorSlots([]);
     }
@@ -175,7 +174,7 @@ const handlePrevDay = () => {
       selectedDoctor: value,
       selectedDoctorId: doctorId
     });
-    await fetchDoctorSlots(department.selectedDepartment, doctorId);
+    await fetchDoctorSlots(doctorId);
     setDoctorSlots([]);
   };
   
