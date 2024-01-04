@@ -106,7 +106,7 @@ function AdminPage() {
           </div>
           <div style={{ display: 'flex', justifyContent: 'center' }}>
             <button className='SigninButton' onClick={handleLogin}>
-              Log-in
+              LogIn
             </button>
           </div>
         </div>

@@ -85,23 +85,28 @@ function RegisterPatientDetail() {
       if (aadharData && aadharData.aadhaar_number) {
         setMaskedAadharNumber(maskAadharNumber(aadharData.aadhaar_number));
       }
+
       const fullNameParts = aadharData.full_name.split(' ');
       const firstName = fullNameParts[0];
       const lastName = fullNameParts.length > 1 ? fullNameParts[fullNameParts.length - 1] : '';
       const middleName = fullNameParts.slice(1, -1).join(' ');
-      // Call calculateAge function and update the formData state
-  const { age: calculatedAge, unit } = calculateAge(aadharData.dob);
 
-      //Adding the below condition for gender, since need to send genderId & genderCode in post.
-      //Since no info. regarding what gender we will be receiving for other gender so setting it to unknown from genderMaster
+      // Call calculateAge function and update the formData state
+       const { age: calculatedAge, unit } = calculateAge(aadharData.dob);
+
+      //Adding the below condition for gender, so as the display the gender value in UI.
+      //If we receive M in aadhar gender, we will be displaying MALE in UI. 
       let gender;
       if ((aadharData.gender).toLowerCase() === 'M'.toLowerCase()) {
           gender = 'MALE';
       } else if ((aadharData.gender).toLowerCase() === 'F'.toLowerCase()) {
           gender = 'FEMALE';
-      } else {
-          gender = 'Unknown';
+      } else if((aadharData.gender).toLowerCase() ===  'T'.toLowerCase() ){
+          gender = 'Transgender';
+      }else{
+        gender = 'Unknown';
       }
+  
       //Calling handleAddresChange here to load AddressMaster to be while saving
       handleAddressChange({ target: { name: 'pinCode', value: aadharData.zip } });
       // Set initial form data based on Aadhar data
@@ -127,25 +132,26 @@ function RegisterPatientDetail() {
     }
   }, []);
  
-    // Function to handle changes in the age input
-    const handleAgeChange = (event) => {
-      const ageValue = event.target.value;
+// Function to handle changes in the age input
+ const handleAgeChange = (event) => {
+  const ageValue = event.target.value;
     
-      // Allow only numbers in the age field
-      if (/^\d*$/.test(ageValue)) {
-        setFormData(prevState => ({
-          ...prevState,
-          age: ageValue
+  // Allow only numbers in the age field
+  if (/^\d*$/.test(ageValue)) {
+    setFormData(prevState => ({
+       ...prevState,
+      age: ageValue
         }));
-      }
-    };
-    // Function to handle changes in the age unit selection
-    const handleAgeUnitChange = (e) => {
-      setFormData({ ...formData, ageUnit: e.target.value });
-    };
+  }
+ };
+
+// Function to handle changes in the age unit selection
+const handleAgeUnitChange = (e) => {
+  setFormData({ ...formData, ageUnit: e.target.value });
+};
  
 
-  // Function to calculate age
+// Function to calculate age
 
 const calculateAge = (dob) => {
   if (!dob) {
@@ -198,13 +204,30 @@ const calculateAge = (dob) => {
 
           //Added this gender comparison for aadharCase.
           if(aadharData){
-            //here only comparing male and female gender
-            //Since no info. regarding what gender we will be receiving for other gender so setting it to unknown from genderMaster
-            const selectedGender = (aadharData.gender).toLowerCase() === 'M'.toLowerCase() ? 'MALE': (aadharData.gender).toLowerCase() === 'F'.toLowerCase() ? 'FEMALE':'Unknown';
-            const selectedGenderId = response.data.data.find(item => item.lookupValue === selectedGender)?.lookupId;
-            const selectedGenderCode = response.data.data.find(item => item.lookupValue === selectedGender)?.lookupCode;
+            let selectedGenderId;
+            //Since lookUpId In genderMaster will remain constant as confirmed by HIMS Team, so hardcoding genderId based on gender received from aadhar
+           //Setting genderId = 580(genderId for gender=Both) for aadharData.gender = Transgender as confirmed by HIMS Team
+            if(aadharData.gender.toLowerCase() === 'M'.toLowerCase()){
+              selectedGenderId = 1;
+            }else if(aadharData.gender.toLowerCase() === 'F'.toLowerCase()){
+              selectedGenderId = 2;
+            }else if(aadharData.gender.toLowerCase() === 'T'.toLowerCase()){
+              selectedGenderId = 580;
+            }else{
+              selectedGenderId = 1063;
+            }
+            
+           
+            // const selectedGender = (aadharData.gender).toLowerCase() === 'M'.toLowerCase() ? 'MALE': (aadharData.gender).toLowerCase() === 'F'.toLowerCase() ? 'FEMALE':(aadharData.gender).toLowerCase() === 'T'.toLowerCase() ? 'Both':'Unknown';
+            // const selectedGenderId = response.data.data.find(item => item.lookupValue === selectedGender)?.lookupId;
+            // const selectedGenderCode = response.data.data.find(item => item.lookupValue === selectedGender)?.lookupCode;
+
+            //Finding selectedGender and selectedGenderCode based on the the selectedGenderId
+            const selectedGender = response.data.data.find(item => item.lookupId === selectedGenderId)?.lookupValue;
+            const selectedGenderCode = response.data.data.find(item =>item.lookupId === selectedGenderId)?.lookupCode;
             setFormData(prevState => ({
               ...prevState,
+              selectedGender:selectedGender,
               selectedGenderId: selectedGenderId,
               selectedGenderCode: selectedGenderCode
             }));
