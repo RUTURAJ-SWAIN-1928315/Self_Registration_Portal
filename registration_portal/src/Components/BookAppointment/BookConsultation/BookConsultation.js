@@ -107,8 +107,8 @@ function BookConsultation() {
   };  
   
   
-  //To fetch doctor Slots
-  const fetchDoctorSlots = async (departmentName, doctorId) => {
+  //To fetch doctor Slots depending upon the selected departmentId and doctorId
+  const fetchDoctorSlots = async (doctorId) => {
     const formattedDate = formatDateAsYYYYMMDD(selectedDate);
   
     try {
@@ -122,18 +122,7 @@ function BookConsultation() {
       console.error('Error fetching doctor slots:', error);
     }
   };
-  
-  
-  // Call fetchDoctorSlots whenever the selected department or date changes
-  // useEffect(() => {
-  //   if (department.selectedDepartment && selectedDate) {
-  //     fetchDoctorSlots();
-  //   } else {
-  //     setDoctorSlots([]);
-  //   }
-  // }, [department.selectedDepartment, selectedDate]);
-   
-  
+
   const [disablePrevDayButton,setDisablePrevDayButton] = useState(true);
   const handlePrevDay = () => {
     const newDate = new Date(selectedDate);
@@ -161,7 +150,7 @@ function BookConsultation() {
   
     useEffect(() => {
       if (department.selectedDepartment && doctor.selectedDoctorId) {
-        fetchDoctorSlots(department.selectedDepartment, doctor.selectedDoctorId);
+        fetchDoctorSlots(doctor.selectedDoctorId);
       } else {
         setDoctorSlots([]);
       }
@@ -188,14 +177,46 @@ function BookConsultation() {
         selectedDoctor: value,
         selectedDoctorId: doctorId
       });
-      await fetchDoctorSlots(department.selectedDepartment, doctorId);
+      await fetchDoctorSlots(doctorId);
       setDoctorSlots([]);
     };
+
+    const handlePrevDoctorSelect = (Prevdtr) => {
+      console.log("PrevDtr",Prevdtr)
+      // Set the selected doctor's details
+
+      // Clear current slots and doctor selection
+      setDoctorSlots([]);
+      setDoctor({ selectedDoctorId: '', selectedDoctor: '' });
+
+      setDoctor({
+          selectedDoctor: `${Prevdtr.firstName} ${Prevdtr.lastName}`,
+          selectedDoctorId: Prevdtr.employeeId
+      });
+
+      fetchDoctorSlots(Prevdtr.employeeId);
+  
+      // Match departments
+      const matchingDepartment = departmentsData.find(dept =>
+        dept.deptName.toLowerCase().includes(Prevdtr.departmentName.toLowerCase())
+      );
+    
+      if (matchingDepartment) {
+        setDepartment({
+          selectedDepartment: matchingDepartment.deptName,
+          selectedDepartmentId: matchingDepartment.deptId
+        });
+      } else {
+        // If no department matches, reset the department selection
+        setDepartment({ selectedDepartment: '', selectedDepartmentId: '' });
+      }
+  };
     
   
   
     const doctorRefs = useRef({});
     const handleSearchChange = (event) => {
+      console.log("event",event.target)
       const { value } = event.target;
       setSearchInput(value);
     
@@ -392,6 +413,7 @@ function BookConsultation() {
             id={`doctor_${index}`}
             value={`${Prevdtr.firstName} ${Prevdtr.lastName}`}
             className='prevdoctor-radio'
+            onClick={() => handlePrevDoctorSelect(Prevdtr)}
           />
           <label htmlFor={`doctor_${index}`} className='prevdoctor-label'>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', alignItems: 'flex-start' }}>
