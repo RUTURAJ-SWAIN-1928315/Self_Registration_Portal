@@ -150,7 +150,7 @@
   border-radius: 6px 6px 6px 6px;
   border: 1px solid var(--Scarpa-Flow-300, #B9B9C0);
   background: var(--White, #FFF);
-  width: 179px;
+  width: 40px;
 }
 .patientAgeInput:disabled{
   background-color: lightgrey;
@@ -460,4 +460,13 @@
   background: var(--Jade-600, #0FA968);
   margin: 1px;
   color: var(--White, #FFF);
+}
+.aadhaarNotesDiv{
+  display: flex;
+  justify-content: center;
+}
+.sameAsMNLabel{
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
 }

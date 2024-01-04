@@ -8,6 +8,7 @@ function SuccessConfirmation() {
 
 const newRegistrationSuccessConfirmation = JSON.parse(localStorage.getItem('newRegistrationSuccessConfirmation'));
 const alreadyRegisteredSuccessConfirmation = JSON.parse(localStorage.getItem('alreadyRegisteredSuccessConfirmation'));
+const [seconds, setSeconds] = useState(5);
 
 const [tableData,setTableData] = useState({
     mrno:'',
@@ -65,29 +66,41 @@ const formatSlotTime = (dateTimeStr) => {
 
  const navigate = useNavigate();
 
+ //Added this useEffect to update the seconds shown in "You will be redirected... line"
  useEffect(() => {
-    let timeout;
-  
+  const countdownInterval = setInterval(() => {
+    setSeconds((prevSeconds) => (prevSeconds > 0 ? prevSeconds - 1 : 0));
+  }, 1000);
+
+  return () => clearInterval(countdownInterval);
+}, []);
+
+
+//Added this useEffect to redirect in 5 seconds
+useEffect(() => {
+  let timeout;
+
+  const redirectToDestination = () => {
     if (newRegistrationSuccessConfirmation) {
-      timeout = setTimeout(() => {
-        navigate('/Home');
-  
-        // Clear localStorage for all keys except 'profileData'
-        for (const key in localStorage) {
-          if (key !== "profileData") {
-            localStorage.removeItem(key);
-          }
+      // Clear localStorage for all keys except 'profileData'
+      for (const key in localStorage) {
+        if (key !== "profileData") {
+          localStorage.removeItem(key);
         }
-      }, 7000);
+      }
+      navigate('/Home');
     } else {
       // If newRegistrationSuccessConfirmation is not present, navigate to another route
-      timeout = setTimeout(() => {
-        navigate('/BookAppointmentLanding');
-      }, 7000);
+      navigate('/BookAppointmentLanding');
     }
-  
-    return () => clearTimeout(timeout);
-  }, [newRegistrationSuccessConfirmation, navigate]);
+  };
+
+  timeout = setTimeout(() => {
+    redirectToDestination();
+  }, seconds * 1000);
+
+  return () => clearTimeout(timeout);
+}, [newRegistrationSuccessConfirmation, navigate, seconds]);
   
 
 
@@ -101,10 +114,15 @@ const formatSlotTime = (dateTimeStr) => {
           <div className='ImgMsgBox'>
             <img src={Correct} alt="Correct" />
           </div>
+          {newRegistrationSuccessConfirmation ? (
           <div className='SuccessMsg'>
             Consultation Booked Successfully!
           </div>
-          
+          ) : (
+            <div className='SuccessMsg'>
+            Appointment Booked Successfully!
+          </div>
+          )} 
         </div>
         <div className='DetailMsgBox'>
             <div className='HeaderMsgText'> 
@@ -172,6 +190,9 @@ const formatSlotTime = (dateTimeStr) => {
 
 
             </div>
+        </div>
+        <div className='RedirectMessage'>
+          You will be redirected in {seconds} seconds.
         </div>
 
        </div>
