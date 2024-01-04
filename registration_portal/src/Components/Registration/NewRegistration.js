@@ -6,6 +6,7 @@ import rightIcon from '../../Assests/Images/rightIcon.svg';
 import { useNavigate } from 'react-router-dom';
 import ReplayIcon from '@mui/icons-material/Replay';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import { ToastContainer,toast } from 'react-toastify';
 
 function NewRegistration() {
   const navigate = useNavigate();
@@ -44,6 +45,10 @@ function NewRegistration() {
       });
     }
   } catch (err) {
+    toast.error("Error Opening Camera!!!!", {
+      position: "top-right",
+      autoClose: 2000,
+    });
     console.error("Error opening camera:", err);
   }
   };
@@ -57,6 +62,7 @@ function NewRegistration() {
   const capturePhoto = () => {
     // Clear previous image in localStorage, if any
     localStorage.removeItem('capturedPhoto');
+    console.log("Close Camera called");
     if (videoRef.current && videoRef.current.readyState >= 2) {
       const video = videoRef.current;
       const canvas = document.createElement('canvas');
@@ -177,6 +183,7 @@ function NewRegistration() {
               SKIP<img src={rightIcon} alt="Right Icon" />
             </button>
       </div>
+      <ToastContainer position="top-right" autoClose={2000} />
     </div>
   );
 }

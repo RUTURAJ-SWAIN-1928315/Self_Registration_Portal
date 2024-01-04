@@ -17,7 +17,8 @@ function RegisterPatientDetail() {
  
  const aadharData = JSON.parse(localStorage.getItem('aadharData'));
  const [addressMaster,setAddressMaster] = useState([]);
- const [suggestions, setSuggestions] = useState([]);
+ const [localitySuggestions, setLocalitySuggestions] = useState([]);
+ const [pinCodeSuggestions,setPinCodeSuggestions] = useState([]);
  const [selectedSuggestionIndex, setSelectedSuggestionIndex] = useState(-1);
 
  
@@ -284,7 +285,7 @@ const calculateAge = (dob) => {
             policeStation:'',
     }));
 
-    setSuggestions([]); // Clear suggestions if pinCode is empty
+    setLocalitySuggestions([]); // Clear suggestions if pinCode is empty
     setLocalityList([]);
   }else if (name === "pinCode" && value.length === 6){
       if (value.length === 6) {
@@ -312,7 +313,10 @@ const calculateAge = (dob) => {
                   postOffice:uniqueLocality[0]
                 }));
               }
-            //setSuggestions(uniqueLocality);
+            // Create suggestions for pinCode - locality
+            const pinCodeSuggestions = data.map(item => `${value} - ${item.locality}`);
+            setPinCodeSuggestions(pinCodeSuggestions);
+            
             setFormData(prevState => ({
               ...prevState,
               city:response.data.data[0].cityName,
@@ -337,7 +341,7 @@ const calculateAge = (dob) => {
     const handleLocalityInputChange = (event) => {
       const { value } = event.target;
   
-      if (suggestions.length > 0 && value !== '') {
+      if (localitySuggestions.length > 0 && value !== '') {
         setSelectedSuggestionIndex(0); // Highlight the first suggestion
       } else {
         setSelectedSuggestionIndex(-1); // No suggestion is selected
@@ -354,18 +358,30 @@ const calculateAge = (dob) => {
  
       if (value.trim() === '') {
           // Clear suggestions if the locality input is empty
-          setSuggestions([]);
+          setLocalitySuggestions([]);
       } else if (value === '%%') {
           // If user types '%%', show all localities in the suggestions
-          setSuggestions(localityList);
+          setLocalitySuggestions(localityList);
       } else {
           // Filter and set suggestions based on the updated value
           const filteredSuggestions = localityList.filter(locality => 
               locality.toLowerCase().includes(value.toLowerCase())
           );
   
-          setSuggestions(filteredSuggestions);
+          setLocalitySuggestions(filteredSuggestions);
       }
+  };
+
+
+  //Function for handling PinCode suggestions
+  const handleSuggestionSelect = (suggestion) => {
+    const locality = suggestion.split(' - ')[1];
+    setFormData(prevFormData => ({
+      ...prevFormData,
+      locality: locality,
+      postOffice: locality
+    }));
+    setPinCodeSuggestions([]); // Clear suggestions after selection
   };
 
 //Not Including keyDown since KIOSK will be a touch screen and no need of keydown
@@ -940,17 +956,30 @@ return (
 
      <div style={{ width:'100%', height:'133px'}}>
           <div className='addressDetailsContentRow'>
-                <div className='addressInputRow'>
-                <div className='patientTypeDetailLabel'>Pin Code<span className='mandatoryField'>*</span></div>
-                <input
-                  type="text"
-                  name="pinCode"
-                  className='addressInput'
-                  placeholder='Pin Code'
-                  value={formData.pinCode}
-                  disabled={disableInputFieldAadhar}
-                  onChange={handleAddressChange}
-                />
+          <div className='addressInputRow'>
+                  <div className='patientTypeDetailLabel'>Pin Code<span className='mandatoryField'>*</span></div>
+                  <input
+                    type="text"
+                    name="pinCode"
+                    className='addressInput'
+                    placeholder='Pin Code'
+                    value={formData.pinCode}
+                    disabled={disableInputFieldAadhar}
+                    onChange={handleAddressChange}
+                  />
+
+                  {/* Display suggestions below the pin code input */}
+                  {pinCodeSuggestions.length > 0 && (
+                    <div className="suggestions-container">
+                      <ul className="suggestions">
+                        {pinCodeSuggestions.map((suggestion, index) => (
+                          <li key={index} onClick={() => handleSuggestionSelect(suggestion)}>
+                            {suggestion}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
                 </div>
 
                 <div className='addressInputRow'>
@@ -1047,10 +1076,10 @@ return (
                   // onKeyDown={handleKeyDown}
                 />
               
-                {suggestions.length > 0 && (
+                {localitySuggestions.length > 0 && (
                   <div className="suggestions-container">
                     <ul className="suggestions">
-                      {suggestions.map((suggestion, index) => (
+                      {localitySuggestions.map((suggestion, index) => (
                         <li
                           key={index}
                           className={index === selectedSuggestionIndex ? 'selected' : ''}
@@ -1060,7 +1089,7 @@ return (
                               locality: suggestion,
                               postOffice: suggestion
                             });
-                            setSuggestions([]); // Clear suggestions after selection
+                            setLocalitySuggestions([]); // Clear suggestions after selection
                           }}
                         >
                           {suggestion}
