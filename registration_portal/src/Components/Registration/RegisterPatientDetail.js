@@ -134,25 +134,73 @@ function RegisterPatientDetail() {
       });
     }
   }, []);
+
+  const getCurrentDate = () => {
+    const today = new Date();
+    const year = today.getFullYear();
+    let month = today.getMonth() + 1;
+    let day = today.getDate();
+  
+    // Pad month and day with leading zeros if needed
+    month = month < 10 ? `0${month}` : month;
+    day = day < 10 ? `0${day}` : day;
+  
+    return `${year}-${month}-${day}`;
+  };
+  
+
+  const calculateDateFromAge = (age, ageUnit) => {
+    const today = new Date();
+    let calculatedDate;
+  
+    if (ageUnit === 'Days') {
+      calculatedDate = new Date(today.getTime() - age * 24 * 60 * 60 * 1000);
+    } else if (ageUnit === 'Months') {
+      calculatedDate = new Date(today.getFullYear(), today.getMonth() - age, today.getDate());
+    } else if (ageUnit === 'Years') {
+      calculatedDate = new Date(today.getFullYear() - age, today.getMonth(), today.getDate());
+    }
+  
+    const year = calculatedDate.getFullYear();
+    const month = String(calculatedDate.getMonth() + 1).padStart(2, '0'); // Adding 1 to month because it's zero-indexed
+    const day = String(calculatedDate.getDate()).padStart(2, '0');
+  
+    return `${year}-${month}-${day}`;
+  };
  
 // Function to handle changes in the age input
- const handleAgeChange = (event) => {
+const handleAgeChange = (event) => {
   const ageValue = event.target.value;
-    
-  // Allow only numbers in the age field
-  if (/^\d*$/.test(ageValue)) {
-    setFormData(prevState => ({
-       ...prevState,
-      age: ageValue
-        }));
-  }
- };
 
-// Function to handle changes in the age unit selection
+  if (/^\d*$/.test(ageValue)) {
+    const calculatedDob = calculateDateFromAge(ageValue, formData.ageUnit);
+
+    setFormData((prevState) => ({
+      ...prevState,
+      age: ageValue,
+      dob: calculatedDob,
+    }));
+  } else {
+    // If the age input is not a valid number or empty, handle this case
+    setFormData((prevState) => ({
+      ...prevState,
+      age: '', // Reset age to empty
+      dob: '', // Clear dob as age input is invalid
+    }));
+  }
+};
+
+
 const handleAgeUnitChange = (e) => {
-  setFormData({ ...formData, ageUnit: e.target.value });
+  const { value } = e.target;
+
+  setFormData((prevState) => ({
+    ...prevState,
+    ageUnit: value,
+  }));
 };
  
+
 
 // Function to calculate age
 
@@ -288,6 +336,7 @@ const calculateAge = (dob) => {
             districtId: '',
             state: '',
             stateId: '',
+            city:'',
             country: '',
             countryId: '',
             locality: '', 
@@ -882,7 +931,7 @@ return (
                  <div className="patientTypeDetailBox">
                     <div className='patientTypeDetailLabel'>Date of Birth<span className='mandatoryField'>*</span></div>
                     <div style={{display:'flex'}}>
-                    <input className='patientDatePicker' type='date' placeholder='dd-mm-yyyy' value={formData.dob} disabled={disableInputFieldAadhar} onChange={handleInputChange} name='dob'></input>
+                    <input className='patientDatePicker' type='date' placeholder='dd-mm-yyyy' value={formData.dob} max={getCurrentDate()} disabled={disableInputFieldAadhar} onChange={handleInputChange} name='dob'></input>
                     </div>  
                  </div>
 
@@ -896,12 +945,12 @@ return (
                     }}
                     onChange={handleAgeUnitChange}
                     value={formData.ageUnit}
-                    disabled={formData.dob === '' ? false:true}
+                    // disabled={formData.dob === '' ? false:true}
                     >
                           <option value="Days">Days</option>
                           <option value="Months">Months</option>
                           <option value="Years">Years</option>
-                        </select>
+                  </select>
                   </div>
                 </div>
 
@@ -1185,7 +1234,7 @@ return (
       {disableInputFieldAadhar && (
       <div className='aadhaarNotesDiv'>
       <div className='patientTypeDetailLabel' style={{color:'red', fontStyle: 'italic',fontSize:'14px'}}>
-      <span className='mandatoryField'>*</span>Note: Aadhaar data is non-editable. To make changes, please register without Aadhaar. If you wish to update Aadhaar-related information, kindly re-register with the correct Aadhaar details.<span className='mandatoryField'>*</span>
+      <span className='mandatoryField'>*</span>Note: Aadhaar data is non-editable.<span className='mandatoryField'>*</span>
       </div>
       </div>
       )}

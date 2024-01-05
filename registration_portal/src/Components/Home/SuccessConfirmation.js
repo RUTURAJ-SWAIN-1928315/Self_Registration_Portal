@@ -8,7 +8,7 @@ function SuccessConfirmation() {
 
 const newRegistrationSuccessConfirmation = JSON.parse(localStorage.getItem('newRegistrationSuccessConfirmation'));
 const alreadyRegisteredSuccessConfirmation = JSON.parse(localStorage.getItem('alreadyRegisteredSuccessConfirmation'));
-const [seconds, setSeconds] = useState(5);
+const [seconds, setSeconds] = useState(8);
 
 const [tableData,setTableData] = useState({
     mrno:'',
@@ -114,15 +114,9 @@ useEffect(() => {
           <div className='ImgMsgBox'>
             <img src={Correct} alt="Correct" />
           </div>
-          {newRegistrationSuccessConfirmation ? (
           <div className='SuccessMsg'>
-            Consultation Booked Successfully!
-          </div>
-          ) : (
-            <div className='SuccessMsg'>
             Appointment Booked Successfully!
           </div>
-          )} 
         </div>
         <div className='DetailMsgBox'>
             <div className='HeaderMsgText'> 
@@ -192,7 +186,7 @@ useEffect(() => {
             </div>
         </div>
         <div className='RedirectMessage'>
-          You will be redirected in {seconds} seconds.
+          You will be redirected in {seconds} seconds...
         </div>
 
        </div>

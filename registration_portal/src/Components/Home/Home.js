@@ -32,7 +32,8 @@ function Home() {
     // };
 
     const handlefeedbackCardClick = () => {
-        navigate(`/WorkInProgress`);
+        // navigate(`/WorkInProgress`);
+        window.open('https://iamkhedut.com/feedback/2', '_blank');
     };
 
     const handlefaqCardClick = () => {
@@ -53,9 +54,11 @@ function Home() {
                 <div className='HospitalName'>
                     <div>
                        {profileData.siteName}
+                       {/* Hospital Name */}
                     </div>
                     <div className='HospitalLoc'>
                         {profileData.serviceCenterName}
+                        {/* Location */}
                     </div>
                 </div> 
             </div>
