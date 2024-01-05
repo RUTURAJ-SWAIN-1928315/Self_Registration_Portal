@@ -1,0 +1,39 @@
+.LabReportPage{
+    background-color:#EFF2F7;
+    height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+
+.ReportPageTable{
+     margin: 10px 20px;
+     overflow-y: auto;
+     overflow-x: hidden;
+     height: 80vh;
+     /* background: lightblue; */
+}
+.ReportPageTable::-webkit-scrollbar {
+    width: 6px;
+    /* display: none;  */
+}
+
+.ReportPageTable::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2); /* Color of the scrollbar thumb */
+}
+.ReportPageTable::-webkit-scrollbar-track {
+    background-color: rgba(0, 0, 0, 0.1); /* Color of the scrollbar track */
+}
+
+.ReportPageTable::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(0, 0, 0, 0.3); /* Color of the scrollbar thumb on hover */
+}
+
+.ChipShape {
+    border-radius: 10px;
+    height: 23px;
+    align-items: center;
+    display: flex;
+    padding: 2px 6px;
+    width: max-content;
+}

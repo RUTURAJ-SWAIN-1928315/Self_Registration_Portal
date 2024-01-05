@@ -1,0 +1,318 @@
+.BookConsultationPage{
+  background-color:#EFF2F7;
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+}
+
+.BookConsultationPage::-webkit-scrollbar {
+  width: 6px; /* Adjust the width to make it thin */
+}
+
+.BookConsultationPage::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2); /* Color of the scrollbar thumb */
+}
+.BookConsultationPage::-webkit-scrollbar-track {
+  background-color: rgba(0, 0, 0, 0.1); /* Color of the scrollbar track */
+}
+
+.BookConsultationPage::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0, 0, 0, 0.3); /* Color of the scrollbar thumb on hover */
+}
+
+
+.AppointmentContent{
+     padding: 10px 20px;
+     display: flex;
+     flex-direction: column;
+     align-items: flex-start;
+     gap: 13px;
+}
+
+.DateContainer{
+     display: flex;
+     flex-direction: row;
+
+}
+
+.AppointmentDateHeader{
+    color: var(--Corduroy-950, #22292A);
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 18px; /* 112.5% */
+    letter-spacing: 0.2px;
+}
+
+.datepicker-container{
+    display: flex;
+    /* width: 192px; */
+    align-items: center;
+    gap: 5px;
+    padding-top: 7px;
+}
+
+.datepicker-arrow{
+    border: none;
+    background: none;
+}
+/* had kept this empty class to make date-picker-arrow opacity to 0.5 on disable */
+.datepicker-arrow:disabled{
+    
+}
+
+.datepicker-arrow:disabled .datepicker-arrow-image {
+     
+    filter: grayscale(100%); /* makes the image grey */
+    opacity: 0.5;
+  }
+
+.datepicker-input{
+    margin-bottom: 4px;
+    width: 110px;
+    border: none;
+    display: flex;
+    padding: 4px 8px;
+    align-items: center;
+    gap: 4px;
+    border-radius: 8px;
+    background: var(--Jade-600, #0FA968);
+    color: var(--White, #FFF);
+    text-align: center;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 25px;
+}
+
+.DepartmentContainer{
+    width: 98%;
+    height: 48px;
+    /* background-color: bisque; */
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    padding: 0px 10px;
+    gap: 10px;
+    overflow-x: auto;
+}
+
+.DepartmentContainer::-webkit-scrollbar {
+    width: 6px;
+    display: none; /* Adjust the width to make it thin */
+}
+
+.DepartmentContainer::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2); /* Color of the scrollbar thumb */
+}
+.DepartmentContainer::-webkit-scrollbar-track {
+    background-color: rgba(0, 0, 0, 0.1); /* Color of the scrollbar track */
+}
+
+.DepartmentContainer::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(0, 0, 0, 0.3); /* Color of the scrollbar thumb on hover */
+}
+
+.roundContain{ 
+    display: flex;
+    padding: 8px;
+    align-items: flex-start;
+    gap: 10px;
+    border-radius: 20px;
+    background: var(--White, #FFF);
+}
+
+.DeptName{
+    color: var(--Scarpa-Flow-950, #27272A);
+    text-align: center;
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 18px; /* 128.571% */
+    letter-spacing: 0.2px;
+}
+
+.dept-radio {
+    display: none;
+  }
+
+.dept-label { 
+    display: flex;
+    padding: 8px;
+    gap: 10px;
+    width: max-content;
+    border-radius: 20px;
+    background: var(--White, #FFF);
+    color: var(--Scarpa-Flow-950, #27272A);
+    text-align: center;
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 18px; 
+    letter-spacing: 0.2px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+.dept-label.selected {
+    background-color:var(--Jade-600, #0FA968);
+    color: white;
+    border-color: var(--Jade-600, #0FA968);
+  }
+
+  .DoctorContainer{
+    width: 98%;
+    height: 66px;
+    /* background-color: bisque; */
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    padding: 0px 10px;
+    gap: 10px;
+    overflow-x: auto;  
+  }
+  .DoctorContainer::-webkit-scrollbar {
+    width: 6px;
+    display: none; /* Adjust the width to make it thin */
+}
+
+.DoctorContainer::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2); /* Color of the scrollbar thumb */
+}
+.DoctorContainer::-webkit-scrollbar-track {
+    background-color: rgba(0, 0, 0, 0.1); /* Color of the scrollbar track */
+}
+
+.DoctorContainer::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(0, 0, 0, 0.3); /* Color of the scrollbar thumb on hover */
+}
+
+.doctor-radio{
+    display: none;
+}
+
+.doctor-label{
+    display: flex;
+    padding: 8px;
+    gap: 10px;
+    width: 250px;
+    height: 50px;
+    border-radius: 10px;
+    background: var(--White, #FFF);
+    color: var(--Scarpa-Flow-950, #27272A);
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-size: 17px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 18px; 
+    letter-spacing: 0.2px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.doctor-label.selected {
+    background-color:var(--Jade-600, #0FA968);
+    color: white;
+    border-color: var(--Jade-600, #0FA968);
+  }
+
+.doctorDeptSubtitle{ 
+    color: var(--Scarpa-Flow-500, #757582);
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 0.2px;
+}
+.doctor-label.selected .doctorDeptSubtitle {
+    color: white;
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 0.2px;
+}
+.DtrDeptSearchContainer{
+    display: flex;
+    height: 11px;
+    width: 290px;
+    padding: 12px 20px 14px 8px;
+    align-items: center;
+    gap: 4px;
+    align-self: stretch;
+    border-radius: 8px;
+    border: 1px solid var(--Scarpa-Flow-300, #B9B9C0);
+    background: var(--White, #FFF);
+    margin: 25px 0px 0px 10px;
+}
+.DtrDeptSearchInput{
+    border: none;
+    outline: none;
+    height: 11px;
+    width: 290px;
+}
+
+
+  
+  .doctorSlotContainer{
+    width: 98%;
+    /* height: 66px; */
+    /* background-color: bisque; */
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    padding: 0px 10px;
+    gap: 10px;
+    flex-wrap: wrap
+    /* overflow-x: auto;   */
+  }
+  
+
+.doctorslot-radio{
+    display: none;
+}
+
+.doctorslot-label{
+    display: flex;
+    padding: 12px;
+    gap: 10px;
+    /* width: 150px; */
+    /* height: 50px; */
+    border-radius: 10px;
+    background: var(--White, #FFF);
+    color: var(--Scarpa-Flow-950, #27272A);
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-size: 17px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 18px; 
+    letter-spacing: 0.2px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.doctorslot-label.selected {
+    background-color:var(--Jade-600, #0FA968);
+    color: white;
+    border-color: var(--Jade-600, #0FA968);
+  }
+
+  .Availableslotheader{
+    padding: 0px 10px;
+    padding-bottom: 5px;
+    color: var(--Scarpa-Flow-500, #757582);
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-size: 17px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 18px; /* 112.5% */
+    letter-spacing: 0.2px;
+  }
+
+

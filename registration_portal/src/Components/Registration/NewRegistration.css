@@ -1,0 +1,69 @@
+.capturePageBody{
+    height: 86.5vh;
+    background-color:#EFF2F7;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.captureContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    width: 27%;
+    border: 2px dashed rgba(0, 0, 0, 0.20);
+    border-radius: 20PX;
+}
+
+.captureHeader{
+    color: var(--Scarpa-Flow-600, #565661);
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    margin-top: 10px;
+}
+
+.capturePhoto{
+    height: 300px;
+    width: 100%;
+    background-color: rgb(213, 220, 220);
+}
+
+.capureButton{
+    display: flex;
+    width: 180px;
+    height: 54px;
+    padding: 10px 20px;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    border-radius: 10px;
+    background: var(--Jade-600, #0FA968);
+    color: var(--White, #FFF);
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    border: none;
+    margin-bottom: 10px;
+}
+.NewRegistrationSkipButton{
+    border: none;
+    outline: none;
+    position: fixed;
+    bottom: 3vh;
+    right:10vh;
+    display: flex;
+    /* width: 180px; */
+    height: 54px;
+    padding: 10px 20px;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+    border-radius: 10px;
+    font-size: larger;
+    background-color:#EFF2F7;
+}

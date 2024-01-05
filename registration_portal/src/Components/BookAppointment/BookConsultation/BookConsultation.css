@@ -1,0 +1,74 @@
+.BookConsultationPage{ 
+    background-color:#EFF2F7;
+    height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.AppointmentDateHeader{
+    color: var(--Corduroy-950, #22292A);
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-size: 17px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 18px; /* 112.5% */
+    letter-spacing: 0.2px;
+}
+
+.prevDoctorContainer{
+    width: 98%;
+    height: 66px;
+    /* background-color: bisque; */
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    padding: 0px 10px;
+    gap: 10px;
+    overflow-x: auto;  
+  }
+  .prevDoctorContainer::-webkit-scrollbar {
+    width: 6px;
+    display: none; /* Adjust the width to make it thin */
+}
+
+.prevDoctorContainer::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2); /* Color of the scrollbar thumb */
+}
+.prevDoctorContainer::-webkit-scrollbar-track {
+    background-color: rgba(0, 0, 0, 0.1); /* Color of the scrollbar track */
+}
+
+.prevDoctorContainer::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(0, 0, 0, 0.3); /* Color of the scrollbar thumb on hover */
+}
+
+.prevdoctor-radio{
+    display: none;
+}
+
+.prevdoctor-label{
+    display: flex;
+    padding: 8px;
+    gap: 10px;
+    width: 250px;
+    height: 50px;
+    border-radius: 10px;
+    background: #cbd6d6;
+    color: var(--Scarpa-Flow-950, #27272A);
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-size: 17px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 18px; 
+    letter-spacing: 0.2px;
+    /* cursor: pointer; */
+    transition: background-color 0.3s;
+}
+
+.doctorStateHeader{
+    color: var(--Scarpa-Flow-500, #757582);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}

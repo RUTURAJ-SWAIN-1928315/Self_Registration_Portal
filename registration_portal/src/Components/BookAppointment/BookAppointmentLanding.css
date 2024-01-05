@@ -1,0 +1,35 @@
+.landingContentBox{
+     padding: 10px 20px;
+     display: flex;
+     flex-direction: row;
+     gap: 40px;
+}
+
+.blockContent{
+    display: flex;
+    padding: 20px 40px;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    flex: 1 0 0;
+    align-self: stretch;
+    border-radius: 20px;
+    border: 1px solid #EAECF2;
+    background: var(--White, #FFF);
+}
+.imgTitle{
+    color: var(--Scarpa-Flow-950, #27272A);
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+.imgSubTitle{
+    color: var(--Scarpa-Flow-600, #565661);
+    text-align: center;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}

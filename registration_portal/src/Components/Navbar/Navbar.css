@@ -1,0 +1,62 @@
+.NavbarContainer{
+    display: flex;
+    width: 94%;
+    padding: 46px 46px 5px;    /* top, leftRight , Buttom  */ 
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid var(--scarpa-flow-200, #D9D9DE);
+    background: #EFF2F7;
+    justify-content: space-between;
+    
+}
+
+.PageNameContainer{
+    color: var(--jade-950, #03301F);
+    font-size: 28px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    padding-bottom: 5px;
+}
+
+.BackBtn{
+    display: flex;
+    height: 40px;
+    padding: 0px 10px;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    border-radius: 10px;
+    background: var(--Jade-600, #0FA968);
+    cursor: pointer;
+}
+
+.insideBtn{
+    background: var(--Jade-600, #0FA968);
+    color: #fff;
+    outline: none;
+    border: none;
+    font-size: medium;
+    cursor: pointer;
+}
+
+.CloseBtn{
+    display: flex;
+    height: 40px;
+    padding: 0px 10px;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    border-radius: 8px;
+    background: #F03E53;
+    cursor: pointer;
+}
+
+.insideCancelBtn{
+    background: #F03E53;
+    color: #fff;
+    outline: none;
+    border: none;
+    font-size: medium;
+    cursor: pointer;
+}

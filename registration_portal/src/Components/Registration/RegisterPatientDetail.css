@@ -1,0 +1,472 @@
+.RegistrationFormBody{
+    height: 86.5vh;
+    background-color:#EFF2F7;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.mandatoryField {
+    color: red;
+}
+.patientTypeDetailBox{
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    justify-content: center;
+    width: 100%;
+    padding-bottom: 12px;
+}
+.patientTypeDetailLabel{
+    color: #292b37;
+    color: var(--Text1,#292b37);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 22px;
+}
+.patientTypeSelectDropdown{
+    gap: 8px;
+    height: 40px;
+    padding: 4px 10px;
+    width: 16rem;
+    border-radius: 8px;
+    border: 1px solid var(--Scarpa-Flow-300, #B9B9C0);
+    background: var(--White, #FFF);
+}
+.patientTypeSelectDropdown:disabled{
+  background-color: lightgrey;
+}
+/* Customize the scrollbar */
+.patientTypeSelectDropdown::-webkit-scrollbar {
+  width: 8px; 
+}
+.patientTypeSelectDropdown::-webkit-scrollbar-thumb {
+  background-color: #888;  
+  border-radius: 4px;  
+}
+
+.patientTypeSelectDropdown::-webkit-scrollbar-track {
+  background-color: #f1f1f1;  
+}
+
+.patientTypeSelectDropdownAddress{
+  gap: 8px;
+  height: 40px;
+  padding: 4px 10px;
+  width: 93%;
+  border-radius: 8px;
+  border: 1px solid var(--Scarpa-Flow-300, #B9B9C0);
+  background: var(--White, #FFF);
+}
+.patientTypeSelectDropdownAddress:disabled{
+  background-color: lightgrey;
+}
+
+.patientTypeSelectDropdown1{
+  height: 43px;
+  padding: 4px 10px;
+  width: 16rem;
+  border-radius: 8px;
+  border: 1px solid var(--Scarpa-Flow-300, #B9B9C0);
+  background: var(--White, #FFF);
+}
+.patientOptionDropdown{
+    font-size: 14px;
+    line-height: 20px;
+    padding: 15px;
+}
+
+.newRegistrationBody{
+    /* height: 80vh;
+    width: 95vw; */
+    height: 100%;
+    width: 100%;
+    background: #EFF2F7;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+.newRegistrationContent{
+    display: flex;
+    align-items: flex-start;
+    gap: 34px;
+    border-bottom: 1px solid var(--Scarpa-Flow-200, #D9D9DE);
+    margin:10px 0px 0px 20px;
+    background: #EFF2F7;
+    width: 100%;
+    border-radius: 10px;
+}
+
+.newRegistrationContentSection{
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+}
+.newRegistrationHeaderRow{
+    display: flex;
+    flex-direction: column;
+    width:100%;
+    gap:20px;
+    margin: 10px;
+    justify-content: space-between;
+}
+.newRegistrationHeaderRow1{
+    display: flex;
+    width:100%;
+    flex-direction: column;
+    gap:10px;
+    margin: 10px;
+    justify-content: space-between;
+}
+.newRegistrationAadharHeaderRow{
+    display: flex;
+    width:100%;
+    gap:10px;
+    margin: 10px;
+    margin: 0px 136px;
+}
+.patientNameInput{
+    display: flex;
+    padding: 12px 8px;
+    flex-direction: column;
+    align-items: flex-start;
+    flex: 1 0 0;
+    border-radius: 6px 6px 6px 6px;
+    border: 1px solid var(--Scarpa-Flow-300, #B9B9C0);
+    background: var(--White, #FFF);
+    width: 93%;
+}
+.patientNameInput:disabled{
+  background-color: lightgrey;
+}
+.patientAgeInput{
+  display: flex;
+  padding: 12px 8px;
+  flex-direction: column;
+  align-items: flex-start;
+  flex: 1 0 0;
+  border-radius: 6px 6px 6px 6px;
+  border: 1px solid var(--Scarpa-Flow-300, #B9B9C0);
+  background: var(--White, #FFF);
+  width: 40px;
+}
+.patientAgeInput:disabled{
+  background-color: lightgrey;
+}
+.addressInput{
+    display: flex;
+    padding: 12px 8px;
+    flex-direction: column;
+    align-items: flex-start;
+    height: 14px;
+    border-radius: 6px 6px 6px 6px;
+    border: 1px solid var(--Scarpa-Flow-300, #B9B9C0);
+    background: var(--White, #FFF);
+    width: 89%;
+}
+.addressInput:disabled{
+  background-color: lightgrey;
+}
+.aadharNumberInput{
+    display: flex;
+    padding: 12px 8px;
+    flex-direction: column;
+    align-items: flex-start;
+    flex: 1 0;
+    border-radius: 6px 6px 6px 6px;
+    border: 1px solid var(--Scarpa-Flow-300, #B9B9C0);
+    background: var(--White, #FFF);
+    width: 175px;
+}
+.aadharNumberInput:disabled{
+  background-color: lightgrey;
+}
+.gender-selection {
+    display: flex-start;
+    justify-content: center;
+    padding-bottom: 2px;
+    width: 100%;
+  }
+  
+  .gender-radio {
+    display: none;
+  }
+  
+  .gender-label {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100px; /* or whatever width you want */
+    padding: 10px;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    margin: 0 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    background: var(--White, #FFF);
+  }
+  
+  .gender-label.selected {
+    background-color:var(--Jade-600, #0FA968);
+    color: white;
+    border-color: var(--Jade-600, #0FA968);
+  }
+  .genderSelectionBox{
+    align-items: flex-start;
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    justify-content: center;
+    width: 32%;
+   
+  }
+  .areaSelectionBox{
+    align-items: flex-start;
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    justify-content: center;
+    width: 100%;
+    margin-top:10px;
+  }
+  .patientDatePicker{
+    color: #000;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    height: 22px;
+    line-height: normal;
+    padding: 4px 10px;
+    border-radius: 10px;
+    width: 98%;
+    height: 29px;
+    border: 1px solid var(--Scarpa-Flow-300, #B9B9C0);
+  }
+  .patientDatePicker:disabled{
+    background-color: lightgrey;
+  }
+  .patientAgeContainer{
+    display: flex;
+    height: 39px;
+  }
+  .patientNumberInput{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    height: 36px;
+    border-radius: 6px 6px 6px 6px;
+    border: 1px solid var(--Scarpa-Flow-300, #B9B9C0);
+    background: var(--White, #FFF);
+  }
+  .addressDetailsSection{
+    padding: 10px 10px 10px 30px;
+    /* background: #EFF2F7; */
+    width: 100%;
+    margin: 0px 0px 0px 10px;
+    border-radius: 10px;
+  }
+  .addressDetailsContent{
+    display: flex;
+    gap:10px;
+    flex-direction: column;
+  }
+  .addressDetailsContentRow{
+    display: flex;
+    gap:10px;
+    width: 100%;
+    justify-content: space-evenly;
+  }
+  .addressDetailsContentRow1{
+    display: flex;
+    gap: 20px;
+    width: 100%;
+    justify-content: space-evenly;
+  }
+  .addressInputRow{
+    display: flex;
+    gap:5px;
+    flex-direction: column;
+    width: 100%;
+  }
+  .newRegistrationButtonGroupRow{
+    display: flex;
+    padding: 16px 0px;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    align-self: stretch;
+}
+.newRegistrationCancelButton{
+  display: flex;
+  padding: 4px 12px 4px 10px;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  border-radius: 5px;
+  border: 1px solid var(--Jade-600, #0FA968);
+  background: var(--Jade-50, #EFFEF7);
+  box-shadow: 6px 10px 12px 0px rgba(0, 63, 141, 0.10);
+  color: var(--Jade-600, #0FA968);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 24px;
+  cursor: pointer;
+}
+.newRegistrationCancelButton:disabled{
+  background-color: lightgrey;
+}
+.newRegistrationSaveButton{
+  display: flex;
+  padding: 4px 12px 4px 10px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  background: var(--Jade-600, #0FA968);
+  box-shadow: 6px 10px 12px 0px rgba(0, 63, 141, 0.10);
+  border: none;
+  color: var(--White, #FFF);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 24px; /* 150% */
+  cursor: pointer;
+}
+.newRegistrationSaveButton:disabled{
+  opacity: 0.5;
+}
+
+.patientImage{
+  height: 150px;
+  width: auto;
+  border-radius: 20px;
+}
+
+.newRegisterPatientBody{
+  height: 86.5vh;
+  background-color:#EFF2F7;
+
+}
+
+
+.RegisterPatientDetailPage{
+  background-color:#EFF2F7;
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+}
+
+.RegisterPatientDetailPage::-webkit-scrollbar {
+  width: 6px; /* Adjust the width to make it thin */
+}
+
+.RegisterPatientDetailPage::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2); /* Color of the scrollbar thumb */
+}
+.RegisterPatientDetailPage::-webkit-scrollbar-track {
+  background-color: rgba(0, 0, 0, 0.1); /* Color of the scrollbar track */
+}
+
+.RegisterPatientDetailPage::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0, 0, 0, 0.3); /* Color of the scrollbar thumb on hover */
+}
+
+
+.newRegisterPatientContent{
+  padding: 10px 20px;
+}
+.detailContainer1{
+  padding: 5px;
+  padding-left: 64px;
+  display: flex;
+  flex-direction: row;
+}
+
+.newRegisterPatientAdharContent{
+  padding: 10px 48px;
+  border-bottom: 1px solid var(--Scarpa-Flow-200, #D9D9DE);
+}
+
+.AddressContainer{
+  padding: 10px 20px;
+}
+
+
+/* Suggestion box Css start here*/
+
+.suggestions-container {
+  position: absolute;
+  top: 100%; 
+  left: 0;
+  width: 100%;
+  max-height: 75px; 
+  overflow-y: auto; 
+  background-color: #fff; 
+  border: 1px solid #ccc; 
+  z-index: 1; 
+}
+
+.suggestions-container::-webkit-scrollbar {
+  width: 6px; /* Adjust the width to make it thin */
+  height: 6px;
+}
+.suggestions-container::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2); /* Color of the scrollbar thumb */
+}
+.suggestions-container::-webkit-scrollbar-track {
+  background-color: rgba(0, 0, 0, 0.1); /* Color of the scrollbar track */
+}
+.suggestions-container::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0, 0, 0, 0.3); /* Color of the scrollbar thumb on hover */
+}
+.suggestions {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.suggestions li {
+  padding: 5px 10px 5px 10px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  background: var(--Blue5, rgb(185, 222, 193));
+  margin: 1px;
+  color: var(--Blue-1, #008d1f);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  border-bottom: 1px solid #C8CFDC;
+}
+
+.suggestions li:hover {
+  padding: 5px 10px 5px 10px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  background: var(--Jade-600, #0FA968);
+  margin: 1px;
+  color: var(--White, #FFF);
+}
+
+.suggestions li.selected {
+  padding: 5px 10px 5px 10px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  background: var(--Jade-600, #0FA968);
+  margin: 1px;
+  color: var(--White, #FFF);
+}
+.aadhaarNotesDiv{
+  display: flex;
+  justify-content: center;
+}
+.sameAsMNLabel{
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+}

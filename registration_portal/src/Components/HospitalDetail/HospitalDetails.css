@@ -1,0 +1,53 @@
+.hospitalDetail{
+    background-color:#EFF2F7;
+    height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.detailBody{
+    margin: 1% 5%;
+    background: #fff;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    border-radius: 10px;
+
+}
+
+.imgShape{
+     height: 120px;
+     width: 120px;
+}
+
+.HospitalName{
+    color: var(--Jade-600, #0FA968);
+    font-size: 28px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.LocName{
+    color: var(--Scarpa-Flow-800, #42424A);
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.InfoContain{
+    color: var(--Scarpa-Flow-800, #42424A);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    padding-bottom: 5px;
+}
+
+.detailTextArea{
+    width: 100%;
+    display: flex;
+    gap: 1px;
+    flex-direction: column;
+}
