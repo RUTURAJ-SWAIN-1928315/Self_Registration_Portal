@@ -14,7 +14,7 @@ function OpdCheckin() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${BACKEND_URL}/kiosk/opdCheckIn?mrno=${selectedPatientMRNO}`);
+        const response = await axios.get(`${BACKEND_URL}/kiosk/opdCheckIn?mrno=${selectedPatientMRNO}&isFuture=true`);
         setTableData(response.data.mapList);
       } catch (error) {
         console.error('Error fetching data:', error);
