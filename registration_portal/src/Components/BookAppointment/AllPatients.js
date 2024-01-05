@@ -44,6 +44,7 @@ function AllPatients() {
         }
     })
     .catch((error) => {
+      setIsLoading(false);
       if(error.response.status === 400){
         toast.error("Issue in creating session!!!!", {
           position: "top-right",
