@@ -608,7 +608,7 @@ const calculateAge = (dob) => {
     });
 };
   
-console.log("aadharData",aadharData)
+// console.log("aadharData",aadharData)
 
   const handleSaveNewRegistration = async () =>{
     setIsLoading(true);
@@ -773,7 +773,7 @@ if(aadharData){
           if(response.data.status === true){
           localStorage.setItem("newRegistrationHIMSResponse",JSON.stringify(response.data.HimsResponse))
           getNewRegisterPatientDetail(response.data.HimsResponse.preRegisterId)
-          toast.success("Registration Successfull", {
+          toast.success("Self Registration Successfull", {
          position: "top-right",
         autoClose: 1000,
          hideProgressBar: false,
@@ -787,7 +787,7 @@ if(aadharData){
       // Wait for 2 seconds
       await delay(3000);
 
-      navigate('/NewRegisterBookConsultation');
+      navigate('/SelfConfirmation');
      }
      })
     .catch((error) => {
