@@ -401,21 +401,24 @@ function BookConsultation() {
 
 
        {/* Previous Doctor Container  */}
+       {prevdoctorsData.length > 0 && (
+      <>
         <div className='doctorStateHeader'>
         LAST CONSULTED DOCTORS
         </div>
 
-       <div className='prevDoctorContainer' style={{paddingBottom:'14px',  borderBottom: '1px solid var(--scarpa-flow-200, #D9D9DE)'}}>
+       <div className='DoctorContainer' style={{paddingBottom:'14px',  borderBottom: '1px solid var(--scarpa-flow-200, #D9D9DE)'}}>
       {prevdoctorsData.map((Prevdtr, index) => (
         <div key={index} style={{ display: 'flex' }}>
           <input
             type='radio'
             id={`doctor_${index}`}
             value={`${Prevdtr.firstName} ${Prevdtr.lastName}`}
-            className='prevdoctor-radio'
+            className='doctor-radio'
+            checked={doctor.selectedDoctor === Prevdtr.doctorName}
             onClick={() => handlePrevDoctorSelect(Prevdtr)}
           />
-          <label htmlFor={`doctor_${index}`} className='prevdoctor-label'>
+          <label htmlFor={`doctor_${index}`}className={`doctor-label ${doctor.selectedDoctor === Prevdtr.doctorName ? 'selected' : ''}`}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', alignItems: 'flex-start' }}>
               <div>{`${Prevdtr.firstName} ${Prevdtr.lastName}`}</div>
               <div className='doctorDeptSubtitle'>{Prevdtr.departmentName}</div>
@@ -424,7 +427,8 @@ function BookConsultation() {
         </div>
       ))}
     </div>
-
+    </> 
+    )}
 
        {/* Department Container  */}
 

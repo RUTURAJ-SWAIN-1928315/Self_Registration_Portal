@@ -48,7 +48,7 @@ function SelfRegistrationConfirmation() {
                             Patient Name :
                         </div>
                         <div className='SubText'>
-                            Sikha Kumari Nayak
+                          {newRegistrationHIMSResponse.patientName}
                         </div>
                     </div>
                     <div style={{display:'flex', flexDirection:'row'}}>

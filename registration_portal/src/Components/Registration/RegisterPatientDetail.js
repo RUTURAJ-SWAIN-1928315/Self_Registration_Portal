@@ -732,7 +732,7 @@ if(aadharData){
       prefixId:Number(formData.selectedPrefixId),
       prefix:formData.selectedPrefix,
       firstName:formData.firstName,
-      middleName:formData.middleName === '' ? 'NA': formData.middleName,
+      middleName:formData.middleName,
       lastName:formData.lastName,
       dobStr:formattedDOB,
       age:Number(formData.age),

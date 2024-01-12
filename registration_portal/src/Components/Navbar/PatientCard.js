@@ -33,7 +33,7 @@ const [patientCardDetails,SetPatientCardDetails] = useState({
 
 useEffect(() => {
   if(props.NewRegisterBookConsultationIsCalled){
-    const middleName = newRegisteredPatientDetails.middleName === 'NA' ? '' : newRegisteredPatientDetails.middleName;
+    const middleName = newRegisteredPatientDetails.middleName === null ? '' : newRegisteredPatientDetails.middleName;
     const creationTimeStamp = newRegisteredPatientDetails.creationTimeStamp
       ? new Date(newRegisteredPatientDetails.creationTimeStamp)
       : null;
@@ -118,9 +118,13 @@ useEffect(() => {
       {/* <div className={`HeaderName ${isMarquee ? 'marquee' : ''}`} ref={headerRef}>
       {patientCardDetails.headerName}
     </div> */}
-    <div className='HeaderName'>
-      {patientCardDetails.headerName}
+      <div className='HeaderName'>
+      {patientCardDetails.headerName.length > 23 ?
+        `${patientCardDetails.headerName.slice(0, 23)}...` :
+        patientCardDetails.headerName
+      }
     </div>
+
     
         <div className='genderShow'>
           <div className='genderShowround'>

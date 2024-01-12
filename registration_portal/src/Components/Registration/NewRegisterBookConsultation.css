@@ -100,19 +100,22 @@
 }
 
 .DepartmentContainer::-webkit-scrollbar {
-    width: 6px;
-    display: none; /* Adjust the width to make it thin */
+    height: 3px;
+    /* display: none;  */
 }
 
 .DepartmentContainer::-webkit-scrollbar-thumb {
-    background-color: rgba(0, 0, 0, 0.2); /* Color of the scrollbar thumb */
+  /* Color of the scrollbar thumb  */
+     /* background-color: rgba(0, 0, 0, 0.2);  */
+    background-color: #42424A;
+    border-radius: 50px;
 }
 .DepartmentContainer::-webkit-scrollbar-track {
-    background-color: rgba(0, 0, 0, 0.1); /* Color of the scrollbar track */
+    background-color: rgba(0, 0, 0, 0.0); /* Color of the scrollbar track */
 }
 
 .DepartmentContainer::-webkit-scrollbar-thumb:hover {
-    background-color: rgba(0, 0, 0, 0.3); /* Color of the scrollbar thumb on hover */
+    background-color: rgba(0, 0, 0, 0.2); /* Color of the scrollbar thumb on hover */
 }
 
 .roundContain{ 
