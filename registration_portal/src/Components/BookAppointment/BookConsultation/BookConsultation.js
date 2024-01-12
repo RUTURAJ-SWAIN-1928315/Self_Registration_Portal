@@ -196,7 +196,6 @@ function BookConsultation() {
 
       fetchDoctorSlots(Prevdtr.employeeId);
   
-      // Match departments
       const matchingDepartment = departmentsData.find(dept =>
         dept.deptName.toLowerCase().includes(Prevdtr.departmentName.toLowerCase())
       );
@@ -416,9 +415,9 @@ function BookConsultation() {
             value={`${Prevdtr.firstName} ${Prevdtr.lastName}`}
             className='doctor-radio'
             checked={doctor.selectedDoctor === Prevdtr.doctorName}
-            onClick={() => handlePrevDoctorSelect(Prevdtr)}
+            onChange={() => handlePrevDoctorSelect(Prevdtr)}
           />
-          <label htmlFor={`doctor_${index}`}className={`doctor-label ${doctor.selectedDoctor === Prevdtr.doctorName ? 'selected' : ''}`}>
+          <label htmlFor={`doctor_${index}`}  className={`doctor-label ${doctor.selectedDoctorId === Prevdtr.employeeId ? 'selected' : ''}`}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', alignItems: 'flex-start' }}>
               <div>{`${Prevdtr.firstName} ${Prevdtr.lastName}`}</div>
               <div className='doctorDeptSubtitle'>{Prevdtr.departmentName}</div>
