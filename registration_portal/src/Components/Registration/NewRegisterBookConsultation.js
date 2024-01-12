@@ -95,8 +95,16 @@ const formatDateAsYYYYMMDD = (date) => {
 
 
 //To fetch doctor Slots
-const fetchDoctorSlots = async (doctorId) => {
-  const formattedDate = formatDateAsYYYYMMDD(selectedDate);
+const fetchDoctorSlots = async (doctorId,date) => {
+//Case - 1 -passing date to formatDateAsYYYYMMDD when user changes the date after selecting department and doctor
+//Case - 2 - And passing selectedDate formatDateAsYYYYMMDD when the user changes the date without selecting any doctor and department
+//Passing Date for case 1 as previously selected Date was getting passed when using selectedDate.
+let formattedDate;
+if(date === undefined){
+  formattedDate = formatDateAsYYYYMMDD(selectedDate);
+}else{
+  formattedDate = formatDateAsYYYYMMDD(date);
+}
   try {
     const response = await axios.get(`${BACKEND_URL}/kiosk/getDoctorSlots?deptId=${department.selectedDepartmentId}&employeeId=${doctorId}&date=${formattedDate}`);
     if (response.data.status === "Success") {
@@ -133,6 +141,10 @@ const handlePrevDay = () => {
   if (newDate >= today) {
     setDisablePrevDayButton(false);
     setSelectedDate(newDate);
+    //Calling doctorSlots here to update the slot details when user changes the date
+    if(doctor.selectedDoctorId){
+      fetchDoctorSlots(doctor.selectedDoctorId,newDate)
+    }
   }else{
     setDisablePrevDayButton(true);
   }
@@ -143,6 +155,10 @@ const handlePrevDay = () => {
     const newDate = new Date(selectedDate);
     newDate.setDate(newDate.getDate() + 1);
     setSelectedDate(newDate);
+    //Calling doctorSlots here to update the slot details when user changes the date
+    if(doctor.selectedDoctorId){
+      fetchDoctorSlots(doctor.selectedDoctorId,newDate)
+    }
   }
 
   useEffect(() => {
@@ -305,9 +321,9 @@ const handleSaveAppointment = async () => {
     //     localStorage.removeItem(key);
     //   }
     // }
-    const middleName = newRegisteredPatientDetails.middleName === 'NA' ? '':newRegisteredPatientDetails.middleName
+    const middleName = (newRegisteredPatientDetails.middleName === 'NA' || newRegisteredPatientDetails.middleName === null) ? '':newRegisteredPatientDetails.middleName
     const newRegistrationSuccessConfirmation = {
-      patientName:newRegisteredPatientDetails.prefix + " "+newRegisteredPatientDetails.firstName+ " "+ middleName+" "+newRegisteredPatientDetails.lastName,
+      patientName:newRegisteredPatientDetails.prefix + " "+newRegisteredPatientDetails.firstName+ " "+middleName+" "+newRegisteredPatientDetails.lastName,
       appointmentDate:selectedEventDate,
       doctorName:doctor.selectedDoctor,
       department:department.selectedDepartment,
@@ -353,7 +369,15 @@ const handleSaveAppointment = async () => {
 
             <div className="datepicker-container">
               <button className="datepicker-arrow" onClick={handlePrevDay} disabled={disablePrevDayButton}><img src={DateLeftArrow} alt="" className='datepicker-arrow-image'/></button>
-              <DatePicker selected={selectedDate} onChange={date => setSelectedDate(date)} dateFormat="dd / MM / yyyy"className="datepicker-input"/>
+              <DatePicker selected={selectedDate} 
+              onChange={date => {
+              setSelectedDate(date);
+              if (doctor.selectedDoctorId) {
+                  fetchDoctorSlots(doctor.selectedDoctorId,date);
+               }
+              }} 
+              dateFormat="dd / MM / yyyy" 
+              className="datepicker-input"/>
               <button className="datepicker-arrow" onClick={handleNextDay}><img src={DateRightArrow} alt=""  /></button>
             </div>
 
