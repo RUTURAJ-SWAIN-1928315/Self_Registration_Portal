@@ -15,7 +15,7 @@ function OpdCheckin() {
     const fetchData = async () => {
       try {
         const response = await axios.get(`${BACKEND_URL}/kiosk/opdCheckIn?mrno=${selectedPatientMRNO}&isFuture=true`);
-        setTableData(response.data.mapList);
+        setTableData(response.data.data);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -37,7 +37,7 @@ function OpdCheckin() {
   const formatDate = (dateTimeString) => {
     const dateString = dateTimeString.split(' ')[0]; // Extract the date part
  
-    const [year,day,month] = dateString.split('-');
+    const [day,month,year] = dateString.split('-');
   
     // Format the date as DD-MM-YYYY
     const formattedDate = `${day}-${month}-${year}`;
