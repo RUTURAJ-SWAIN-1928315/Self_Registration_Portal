@@ -34,6 +34,7 @@ const [patientCardDetails,SetPatientCardDetails] = useState({
 useEffect(() => {
   if(props.NewRegisterBookConsultationIsCalled){
     const middleName = newRegisteredPatientDetails.middleName === null ? '' : newRegisteredPatientDetails.middleName;
+    const lastName = newRegisteredPatientDetails.lastName === null ? '': newRegisteredPatientDetails.lastName;
     const creationTimeStamp = newRegisteredPatientDetails.creationTimeStamp
       ? new Date(newRegisteredPatientDetails.creationTimeStamp)
       : null;
@@ -41,7 +42,7 @@ useEffect(() => {
     SetPatientCardDetails({
       //Checking NA here since Sending NA when photo is not available while Registering
       photo:newRegisteredPatientDetails.photo === 'NA' ? null:newRegisteredPatientDetails.photo,
-      headerName:newRegisteredPatientDetails.prefix + " "+ newRegisteredPatientDetails.firstName + " " +middleName +" "+ newRegisteredPatientDetails.lastName,
+      headerName:newRegisteredPatientDetails.prefix + " "+ newRegisteredPatientDetails.firstName + " " +middleName +" "+ lastName,
       gender:newRegisteredPatientDetails.gender,
       age:newRegisteredPatientDetails.ageStr,
       dob:newRegisteredPatientDetails.dobStr,
@@ -66,11 +67,11 @@ useEffect(() => {
   }else{
     const prefix = (alreadyRegisteredPatientDetails.prefix === '' || alreadyRegisteredPatientDetails.prefix === null) ? '' : alreadyRegisteredPatientDetails.prefix;
     const middleName = (alreadyRegisteredPatientDetails.middleName === '' || alreadyRegisteredPatientDetails.middleName === null || alreadyRegisteredPatientDetails.middleName === 'NA') ? '' : alreadyRegisteredPatientDetails.middleName;
-    
+    const lastName = (alreadyRegisteredPatientDetails.lastName === '' || alreadyRegisteredPatientDetails.lastName === null || alreadyRegisteredPatientDetails.lastName === 'NA') ? '' : alreadyRegisteredPatientDetails.lastName;
     const addressList = alreadyRegisteredPatientDetails.addressList[0];
     SetPatientCardDetails({
       photo:alreadyRegisteredPatientDetails.photo === 'NA' ? null:alreadyRegisteredPatientDetails.photo,
-      headerName:prefix + " "+ alreadyRegisteredPatientDetails.firstName + " " +middleName +" "+ alreadyRegisteredPatientDetails.lastName,
+      headerName:prefix + " "+ alreadyRegisteredPatientDetails.firstName + " " +middleName +" "+  lastName,
       gender:alreadyRegisteredPatientDetails.gender,
       age:alreadyRegisteredPatientDetails.ageStr,
       dob:alreadyRegisteredPatientDetails.dobStr,
