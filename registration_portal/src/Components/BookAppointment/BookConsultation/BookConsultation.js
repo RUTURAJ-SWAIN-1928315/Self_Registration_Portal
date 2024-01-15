@@ -353,7 +353,7 @@ function BookConsultation() {
       // Wait for 2 seconds
       await delay(2000);
       const prefix = (alreadyRegisteredPatientDetails.prefix === '' || alreadyRegisteredPatientDetails === 'NA') ? '':alreadyRegisteredPatientDetails.prefix;
-      const middleName = alreadyRegisteredPatientDetails.middleName === 'NA' ? '':alreadyRegisteredPatientDetails.middleName;
+      const middleName = alreadyRegisteredPatientDetails.middleName === null ? '':alreadyRegisteredPatientDetails.middleName;
       const alreadyRegisteredSuccessConfirmation = {
         mrno:alreadyRegisteredPatientDetails.mrno,
         patientName:prefix + " "+alreadyRegisteredPatientDetails.firstName+ " "+ middleName+" "+alreadyRegisteredPatientDetails.lastName,
