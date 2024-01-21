@@ -12,13 +12,18 @@ function Billing() {
   const BACKEND_URL = process.env.REACT_APP_EMR_BACKEND_BASE_URL;
   const [tableData,setTableData] = useState([]);
   const selectedPatientMRNO = localStorage.getItem('selectedPatientMRNO');
+  const patientToken = localStorage.getItem('patientToken');
 
 
    //Fetch TableData for Lab Reports
 useEffect(() => {
   const fetchTableData = async () => {
     try {
-      const response = await axios.get(`${BACKEND_URL}/kiosk/getInvoiceDetails?mrno=${selectedPatientMRNO}`);
+      const response = await axios.get(`${BACKEND_URL}/kiosk/getInvoiceDetails?mrno=${selectedPatientMRNO}`,{
+        headers:{
+          'Authorization': `Bearer ${patientToken}`
+        }
+      });
       setTableData(response.data.invoiceDetails);
     } catch (error) {
       toast.error("Something went wrong!!!!", {

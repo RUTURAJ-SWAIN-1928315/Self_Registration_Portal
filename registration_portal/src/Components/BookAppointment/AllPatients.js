@@ -12,6 +12,7 @@ import axios from 'axios';
 
 function AllPatients() {
   const BACKEND_URL = process.env.REACT_APP_EMR_BACKEND_BASE_URL;
+  const adminToken = localStorage.getItem('adminToken');
   //here checking if alreadyRegisteredPatientDetails is null or not if null setting empty array
   const storedData = localStorage.getItem('AlreadyRegisteredPatientDetails');
   const alreadyRegisteredPatientDetails = storedData ? JSON.parse(storedData) : { data: [] };
@@ -35,12 +36,17 @@ function AllPatients() {
   function patientLogin(mrno,otp,contactNo){
     setIsLoading(true);
     axios
-    .post(`${BACKEND_URL}/kiosk/patient/login?mrno=${mrno}&otp=${otp}&mobileNo=${contactNo}`)
+    .post(`${BACKEND_URL}/kiosk/patient/login?mrno=${mrno}&otp=${otp}&mobileNo=${contactNo}`,{},{
+      headers:{
+        'Authorization': `Bearer ${adminToken}`
+      }
+    })
     .then((response) => {
       setIsLoading(false);
       if(response.data.status === 'success') {
-         fetchPatientDetails(mrno)
+         fetchPatientDetails(mrno,response.data.tokenNo)
          localStorage.removeItem('patientLoginOTP');
+         localStorage.setItem('patientToken',response.data.tokenNo);
         }
     })
     .catch((error) => {
@@ -75,10 +81,15 @@ function AllPatients() {
     
   }
 
-  function fetchPatientDetails(mrno){
+  function fetchPatientDetails(mrno,patientToken){
     setIsLoading(true);
+    
     axios
-    .get(`${BACKEND_URL}/kiosk/fetchPatientDetails?input=${mrno}`)
+    .get(`${BACKEND_URL}/kiosk/fetchPatientDetails?input=${mrno}`,{
+      headers:{
+        'Authorization': `Bearer ${patientToken}`
+      }
+    })
     .then((response) => {
       setIsLoading(false);
       if(response.data.status === 'success') {
@@ -87,6 +98,7 @@ function AllPatients() {
         }
     })
     .catch((error) => {
+      setIsLoading(false);
       toast.error("Something Went Wrong!!!!", {
         position: "top-right",
         autoClose: 800,

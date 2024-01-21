@@ -16,6 +16,7 @@ import axios from 'axios';
 function BookConsultation() {
 
   const alreadyRegisteredPatientDetails = JSON.parse(localStorage.getItem('AlreadyRegisteredPatientDetails'));
+  const patientToken = localStorage.getItem('patientToken');
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [isLoading,setIsLoading] = useState(false);
     const [department,setDepartment] = useState({
@@ -42,7 +43,11 @@ function BookConsultation() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${BACKEND_URL}/kiosk/getPreviousConsultants?mrno=${selectedPatientMRNO}`);
+        const response = await axios.get(`${BACKEND_URL}/kiosk/getPreviousConsultants?mrno=${selectedPatientMRNO}`,{
+          headers:{
+            'Authorization': `Bearer ${patientToken}`
+          }
+        });
         setPrevDoctorsData(response.data.data);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -57,7 +62,11 @@ function BookConsultation() {
   useEffect(() => {
     const fetchDepartments = async () => {
       try {
-        const response = await axios.get(`${BACKEND_URL}/kiosk/getDepartmentsMaster?siteId=${profileData.siteId}`);
+        const response = await axios.get(`${BACKEND_URL}/kiosk/getDepartmentsMaster?siteId=${profileData.siteId}`,{
+          headers:{
+            'Authorization': `Bearer ${patientToken}`
+          }
+        });
         setDepartmentsData(response.data.data);
       } catch (error) {
         console.error('Error fetching departments:', error);
@@ -79,7 +88,11 @@ function BookConsultation() {
   
   const fetchDoctors = async (departmentName) => {
     try {
-      const response = await axios.get(`${BACKEND_URL}/kiosk/getDoctorsMaster?siteId=${profileData.siteId}&departmentName=${departmentName}`);
+      const response = await axios.get(`${BACKEND_URL}/kiosk/getDoctorsMaster?siteId=${profileData.siteId}&departmentName=${departmentName}`,{
+        headers:{
+          'Authorization': `Bearer ${patientToken}`
+        }
+      });
       setDoctorsData(response.data.data);
       // If there's no doctor available for the selected department, reset the doctor selection and slots
       if (!response.data.data.length) {
@@ -119,7 +132,11 @@ function BookConsultation() {
       formattedDate = formatDateAsYYYYMMDD(date);
     }
     try {
-      const response = await axios.get(`${BACKEND_URL}/kiosk/getDoctorSlots?deptId=${department.selectedDepartmentId}&employeeId=${doctorId}&date=${formattedDate}`);
+      const response = await axios.get(`${BACKEND_URL}/kiosk/getDoctorSlots?deptId=${department.selectedDepartmentId}&employeeId=${doctorId}&date=${formattedDate}`,{
+        headers:{
+          'Authorization': `Bearer ${patientToken}`
+        }
+      });
       if (response.data.status === "Success") {
         setDoctorSlots(response.data.data);
       } else {
@@ -335,7 +352,11 @@ function BookConsultation() {
         userId: Number(profileData.userId)
     }
     axios
-    .post(`${BACKEND_URL}/kiosk/saveAppointment?isAlreadyRegistered=true`,bookConsultationRequestBody)
+    .post(`${BACKEND_URL}/kiosk/saveAppointment?isAlreadyRegistered=true`,bookConsultationRequestBody,{
+      headers:{
+        'Authorization': `Bearer ${patientToken}`
+      }
+    })
      .then(async (response) => {
       setIsLoading(false);
           if(response.data.status === true){

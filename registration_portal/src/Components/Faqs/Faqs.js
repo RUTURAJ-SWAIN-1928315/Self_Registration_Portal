@@ -10,12 +10,17 @@ import axios from 'axios';
 
 function Faqs() {
 const BACKEND_URL = process.env.REACT_APP_EMR_BACKEND_BASE_URL;
+const adminToken = localStorage.getItem('adminToken');
   const [faqs, setFaqs] = useState([]);
 
   useEffect(() => {
     async function fetchFAQs() {
       try {
-        const response = await axios.get(`${BACKEND_URL}/kiosk/getFAQs`);
+        const response = await axios.get(`${BACKEND_URL}/kiosk/getFAQs`,{
+          headers:{
+            'Authorization': `Bearer ${adminToken}`
+          }
+        });
         if (response.status === 200) {
           const data = response.data;
           if (data && data.status === 'success') {

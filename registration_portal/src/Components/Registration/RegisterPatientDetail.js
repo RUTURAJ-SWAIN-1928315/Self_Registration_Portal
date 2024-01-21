@@ -14,6 +14,7 @@ function RegisterPatientDetail() {
   const navigate = useNavigate();
   const BACKEND_URL = process.env.REACT_APP_EMR_BACKEND_BASE_URL;
   const profileData = JSON.parse(localStorage.getItem('profileData'));
+  const adminToken = localStorage.getItem('adminToken');
  
  const aadharData = JSON.parse(localStorage.getItem('aadharData'));
  const [addressMaster,setAddressMaster] = useState([]);
@@ -242,7 +243,11 @@ const calculateAge = (dob) => {
   //For getting gender Master
   useEffect(() => {
     axios
-      .get(`${BACKEND_URL}/kiosk/getGenderMaster?categoryName=SEX`)
+      .get(`${BACKEND_URL}/kiosk/getGenderMaster?categoryName=SEX`,{
+        headers:{
+          'Authorization': `Bearer ${adminToken}`
+        }
+      })
       .then((response) => {
         if (response.data && response.data.status === "success") {
           const genders = response.data.data.map(item => ({
@@ -294,7 +299,11 @@ const calculateAge = (dob) => {
        //For getting Prefix master
    useEffect(() => {
     axios
-      .get(`${BACKEND_URL}/kiosk/getPrefixMaster`)
+      .get(`${BACKEND_URL}/kiosk/getPrefixMaster`,{
+        headers:{
+          'Authorization': `Bearer ${adminToken}`
+        }
+      })
       .then((response) => {
         if (response.data && response.data.status === "success") {
           const prefixes = response.data.data.map(item => ({
@@ -351,6 +360,9 @@ const calculateAge = (dob) => {
   }else if (name === "pinCode" && value.length === 6){
       if (value.length === 6) {
         axios.get(`${BACKEND_URL}/kiosk/getAddressMaster?pinCode=${value}`, {
+          headers:{
+            'Authorization': `Bearer ${adminToken}`
+          }
         })
         .then((response) => {
           if (response.data.status === "success" && response.data.data.length > 0) {
@@ -590,7 +602,11 @@ const calculateAge = (dob) => {
   const validateAadhar = () => {
     return new Promise((resolve, reject) => {
         const formattedAadharNumber = formData.aadharNumber.replace(/\s/g, '');
-        axios.get(`${BACKEND_URL}/kiosk/validateAadhaar?aadhaarNo=${formattedAadharNumber}`)
+        axios.get(`${BACKEND_URL}/kiosk/validateAadhaar?aadhaarNo=${formattedAadharNumber}`,{
+          headers:{
+            'Authorization': `Bearer ${adminToken}`
+          }
+        })
             .then((response) => {
                 if (response.data.status === 'success') {
                     
@@ -767,7 +783,11 @@ if(aadharData){
     }
     
     axios
-    .post(`${BACKEND_URL}/kiosk/registerPatient`,newRegistrationRequestBody)
+    .post(`${BACKEND_URL}/kiosk/registerPatient`,newRegistrationRequestBody,{
+      headers:{
+        'Authorization': `Bearer ${adminToken}`
+      }
+    })
      .then(async (response) => {
       setIsLoading(false);
           if(response.data.status === true){
@@ -843,7 +863,11 @@ if(aadharData){
 
   function getNewRegisterPatientDetail(preRegisterId){
     axios
-    .get(`${BACKEND_URL}/kiosk/getNewRegisteredPatient?preRegisterId=${preRegisterId}`)
+    .get(`${BACKEND_URL}/kiosk/getNewRegisteredPatient?preRegisterId=${preRegisterId}`,{
+      headers:{
+        'Authorization': `Bearer ${adminToken}`
+      }
+    })
      .then(async (response) => {
       setIsLoading(false);
           if(response.data.status === true){
