@@ -9,12 +9,17 @@ import axios from 'axios';
 function OpdCheckin() {
   const BACKEND_URL = process.env.REACT_APP_EMR_BACKEND_BASE_URL;
   const selectedPatientMRNO = localStorage.getItem('selectedPatientMRNO');
+  const patientToken = localStorage.getItem('patientToken');
   const [tableData,setTableData] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${BACKEND_URL}/kiosk/opdCheckIn?mrno=${selectedPatientMRNO}&isFuture=true`);
+        const response = await axios.get(`${BACKEND_URL}/kiosk/opdCheckIn?mrno=${selectedPatientMRNO}&isFuture=true`,{
+          headers:{
+            'Authorization': `Bearer ${patientToken}`
+          }
+        });
         setTableData(response.data.data);
       } catch (error) {
         console.error('Error fetching data:', error);

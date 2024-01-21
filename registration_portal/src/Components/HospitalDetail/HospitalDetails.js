@@ -9,11 +9,16 @@ import Twitter from '../../Assests/Images/twitter.svg';
 function HospitalDetails() {
 const BACKEND_URL = process.env.REACT_APP_EMR_BACKEND_BASE_URL;
 const profileData = JSON.parse(localStorage.getItem('profileData'));
+const adminToken = localStorage.getItem('adminToken');
   const [hospitalData, setHospitalData] = useState(null);
 
   useEffect(() => {
     // Fetch data from the API endpoint
-    axios.get(`${BACKEND_URL}/kiosk/getAboutHospital?siteId=${profileData.siteId}`)
+    axios.get(`${BACKEND_URL}/kiosk/getAboutHospital?siteId=${profileData.siteId}`,{
+      headers:{
+        'Authorization': `Bearer ${adminToken}`
+      }
+    })
       .then(response => {
         // Assuming response.data contains the API response
         setHospitalData(response.data.data[0]);

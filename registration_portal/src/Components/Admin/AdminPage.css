@@ -22,7 +22,7 @@
 
 .HeaderSignin{
      padding: 20px;
-     color: var(--Blue2, #185ADC);
+     color: var(--Jade-600, #0FA968);;
     font-size: 24px;
     font-style: normal;
     font-weight: 700;
@@ -49,12 +49,23 @@
     align-items: center;
     gap: 8px;
     border-radius: 4px;
-    border: 1px solid var(--Blue2, #185ADC);
-    background: var(--Blue5, #CDF);
-    color: var(--Blue2, #185ADC);
+    border: 1px solid var(--Jade-600, #0FA968);;
+    background: var(--Jade-600, #0FA968);;
+    color: white;
     font-size: 14px;
     font-style: normal;
     font-weight: 600;
     line-height: 20px; /* 142.857% */
     width: 50%;
+}
+.AdminLabel{
+    color: var(--Oslo-Gray-950, #262B2C);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 30px; /* 166.667% */
+}
+.AdminCheckbox{
+    transform: scale(1.5); /* Adjust the scale as needed */
+    margin-right: 10px; 
 }

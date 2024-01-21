@@ -28,6 +28,7 @@ const newRegisteredPatientDetails = JSON.parse(localStorage.getItem('NewRegister
 
 
 const BACKEND_URL = process.env.REACT_APP_EMR_BACKEND_BASE_URL;
+const adminToken = localStorage.getItem('adminToken');
 const navigate = useNavigate();
 const [doctor,setDoctor] = useState({
   selectedDoctorId:'',
@@ -44,7 +45,11 @@ const [doctorSlots, setDoctorSlots] = useState([]);
 useEffect(() => {
   const fetchDepartments = async () => {
     try {
-      const response = await axios.get(`${BACKEND_URL}/kiosk/getDepartmentsMaster?siteId=${profileData.siteId}`);
+      const response = await axios.get(`${BACKEND_URL}/kiosk/getDepartmentsMaster?siteId=${profileData.siteId}`,{
+        headers:{
+          'Authorization': `Bearer ${adminToken}`
+        }
+      });
       setDepartmentsData(response.data.data);
     } catch (error) {
       console.error('Error fetching departments:', error);
@@ -66,7 +71,11 @@ useEffect(() => {
 
 const fetchDoctors = async (departmentName) => {
   try {
-    const response = await axios.get(`${BACKEND_URL}/kiosk/getDoctorsMaster?siteId=${profileData.siteId}&departmentName=${departmentName}`);
+    const response = await axios.get(`${BACKEND_URL}/kiosk/getDoctorsMaster?siteId=${profileData.siteId}&departmentName=${departmentName}`,{
+      headers:{
+        'Authorization': `Bearer ${adminToken}`
+      }
+    });
     setDoctorsData(response.data.data);
     // If there's no doctor available for the selected department, reset the doctor selection and slots
     if (!response.data.data.length) {
@@ -106,7 +115,11 @@ if(date === undefined){
   formattedDate = formatDateAsYYYYMMDD(date);
 }
   try {
-    const response = await axios.get(`${BACKEND_URL}/kiosk/getDoctorSlots?deptId=${department.selectedDepartmentId}&employeeId=${doctorId}&date=${formattedDate}`);
+    const response = await axios.get(`${BACKEND_URL}/kiosk/getDoctorSlots?deptId=${department.selectedDepartmentId}&employeeId=${doctorId}&date=${formattedDate}`,{
+      headers:{
+        'Authorization': `Bearer ${adminToken}`
+      }
+    });
     if (response.data.status === "Success") {
       setDoctorSlots(response.data.data);
     } else {
@@ -301,7 +314,11 @@ const handleSaveAppointment = async () => {
       userId: Number(profileData.userId)
   }
   axios
-  .post(`${BACKEND_URL}/kiosk/saveAppointment`,saveAppointmentRequestBody)
+  .post(`${BACKEND_URL}/kiosk/saveAppointment`,saveAppointmentRequestBody,{
+    headers:{
+      'Authorization': `Bearer ${adminToken}`
+    }
+  })
    .then(async (response) => {
     setIsLoading(false);
         if(response.data.status === true){

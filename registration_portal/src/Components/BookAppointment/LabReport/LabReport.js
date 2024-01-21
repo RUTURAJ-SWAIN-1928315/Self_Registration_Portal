@@ -10,15 +10,21 @@ import NoData from "../../../Assests/Images/noData.svg";
 function LabReport() {
   const BACKEND_URL = process.env.REACT_APP_EMR_BACKEND_BASE_URL;
   const selectedPatientMRNO = localStorage.getItem('selectedPatientMRNO');
+  const patientToken = localStorage.getItem('patientToken');
   const [tableData,setTableData] = useState([]);
-  // //For Testing purpose Demo MRNO
-  // const mrno = 'KIMS102302010458';
+
+  // For Testing purpose Demo MRNO
+  //const mrno = 'KIMS102302010458';
   //Fetch TableData for Lab Reports
 useEffect(() => {
   const fetchTableData = async () => {
     try {
-      const response = await axios.get(`${BACKEND_URL}/kiosk/getLabReports?mrno=${selectedPatientMRNO}`);
-      setTableData(response.data);
+      const response = await axios.get(`${BACKEND_URL}/kiosk/getLabReports?mrno=${selectedPatientMRNO}`,{
+        headers:{
+          'Authorization': `Bearer ${patientToken}`
+        }
+      });
+      setTableData(response.data.reports);
     } catch (error) {
       toast.error("Something went wrong!!!!", {
         position: "top-right",

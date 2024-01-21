@@ -13,7 +13,7 @@ function CloseSession() {
       navigate('/Home');
 
       for (const key in localStorage) {
-        if (key !== "profileData") {
+        if (key !== "profileData" && key !=='adminToken') {
           localStorage.removeItem(key);
         }
       }

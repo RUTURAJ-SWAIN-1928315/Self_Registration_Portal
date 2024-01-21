@@ -14,6 +14,7 @@ import axios from 'axios';
 
 function BookAppointment() {
   const BACKEND_URL = process.env.REACT_APP_EMR_BACKEND_BASE_URL;
+  const adminToken = localStorage.getItem('adminToken');
   const [MRNMobileNumber,setMRNMobileNumber] = useState('');
   const [OTPresponse,setOTPResponse] = useState([]);
 
@@ -78,8 +79,13 @@ function BookAppointment() {
 
   function validateMRN(){
     setIsLoading(true);
+    //Sending empty Body here as it is a part of syntax, without it getting 401 unauthorized
       axios
-      .post(`${BACKEND_URL}/kiosk/generateOTP?mrno=${MRNMobileNumber}`)
+      .post(`${BACKEND_URL}/kiosk/generateOTP?mrno=${MRNMobileNumber}`,{},{
+        headers:{
+          'Authorization': `Bearer ${adminToken}`
+        }
+      })
       .then((response) => {
         setIsLoading(false);
         if(response.data.status === 'success') {
@@ -118,8 +124,13 @@ function BookAppointment() {
   }
   function validateMobileNumber(){
     setIsLoading(true);
+    //Sending empty Body here as it is a part of syntax, without it getting 401 unauthorized
       axios
-      .post(`${BACKEND_URL}/kiosk/generateOTP?mobileNo=${MRNMobileNumber}`)
+      .post(`${BACKEND_URL}/kiosk/generateOTP?mobileNo=${MRNMobileNumber}`,{},{
+        headers:{
+          'Authorization': `Bearer ${adminToken}`
+        }
+      })
       .then((response) => {
         setIsLoading(false);
         console.log("response",response)
@@ -194,9 +205,13 @@ function BookAppointment() {
   const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
   async function verifyMRNOTP() {
     setIsLoading(true);
-  
+  //Sending empty Body here as it is a part of syntax, without it getting 401 unauthorized
     try {
-      const response = await axios.post(`${BACKEND_URL}/kiosk/verifyOTP?mrno=${MRNMobileNumber}&otp=${otp}`);
+      const response = await axios.post(`${BACKEND_URL}/kiosk/verifyOTP?mrno=${MRNMobileNumber}&otp=${otp}`,{},{
+        headers:{
+          'Authorization': `Bearer ${adminToken}`
+        }
+      });
   
       setIsLoading(false);
   
@@ -249,9 +264,13 @@ function BookAppointment() {
 
   function verifyMobileOTP() {
     setIsLoading(true);
-  
+  //Sending empty Body here as it is a part of syntax, without it getting 401 unauthorized
     axios
-      .post(`${BACKEND_URL}/kiosk/verifyOTP?mobileNo=${MRNMobileNumber}&otp=${otp}`)
+      .post(`${BACKEND_URL}/kiosk/verifyOTP?mobileNo=${MRNMobileNumber}&otp=${otp}`,{},{
+        headers:{
+          'Authorization': `Bearer ${adminToken}`
+        }
+      })
       .then(async (response) => {
         setIsLoading(false);
   
