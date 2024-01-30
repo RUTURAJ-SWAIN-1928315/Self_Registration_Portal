@@ -46,14 +46,36 @@ useEffect(() => {
 console.log("TableData",tableData);
 
 
+    // const handlePrintBilling = (invoiceId) => {
+    //    const reportUrl = `${BACKEND_URL}/kiosk/getInvoice?printType=INVOICE&invoiceId=${invoiceId}`
+    //    //setting the new tab name as invoiceID
+    //   const windowName = `InvoiceID_${invoiceId}`;
+    //   window.open(reportUrl, windowName);
+    //   //window.open(reportUrl, '_blank');
+    //     console.log('Printing...',invoiceId);
+    //   };
+
     const handlePrintBilling = (invoiceId) => {
-       const reportUrl = `${BACKEND_URL}/kiosk/getInvoice?printType=INVOICE&invoiceId=${invoiceId}`
-       //setting the new tab name as invoiceID
-      const windowName = `InvoiceID_${invoiceId}`;
-      window.open(reportUrl, windowName);
-      //window.open(reportUrl, '_blank');
-        console.log('Printing...',invoiceId);
-      };
+      const reportUrl = `${BACKEND_URL}/kiosk/getInvoice?printType=INVOICE&invoiceId=${invoiceId}`;
+  
+      axios.get(reportUrl, {
+          headers: {
+              'Authorization': `Bearer ${patientToken}`
+          },
+          responseType: 'blob' // important if the response is a PDF or other binary format
+      })
+      .then(response => {
+          // Create a Blob from the PDF Stream
+          const file = new Blob([response.data], { type: 'application/pdf' });
+          // Build a URL from the file
+          const fileURL = URL.createObjectURL(file);
+          // Open the URL on new Window
+          window.open(fileURL, `InvoiceID_${invoiceId}`);
+      })
+      .catch(error => {
+          console.error('Error fetching invoice:', error);
+      });
+  };
 
       
   return (
