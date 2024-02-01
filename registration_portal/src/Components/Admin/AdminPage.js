@@ -91,7 +91,7 @@ function AdminPage() {
             <input
               className='inputBox'
               type="text"
-              placeholder='User Name'
+              placeholder='Enter User Name'
               value={loginUserName}
               onChange={(e) => setLoginUserName(e.target.value)}
             />
