@@ -704,6 +704,7 @@ if(aadharData){
 
   // Validate email
   if (formData.emailId && !isEmailValid(formData.emailId)) {
+    setIsLoading(false)
     toast.error('Invalid email address', {
       position: 'top-right',
       autoClose: 2000,
