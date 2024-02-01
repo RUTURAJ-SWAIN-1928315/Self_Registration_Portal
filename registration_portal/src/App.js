@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route,Navigate } from 'react-router-dom';
 import Home from './Components/Home/Home';
 import NewRegistration from './Components/Registration/NewRegistration';
 import BookAppointment from './Components/BookAppointment/BookAppointment';
@@ -19,33 +19,49 @@ import HospitalDetails from './Components/HospitalDetail/HospitalDetails';
 // import WorkInProgress from './Components/WorkInProgress';
 import SuccessConfirmation from './Components/Home/SuccessConfirmation';
 import CloseSession from './Components/Home/CloseSession';
+import SelfRegistrationConfirmation from './Components/Registration/SelfRegistrationConfirmation';
+import { useAuth, AuthProvider } from './Components/AuthContext';
 
-function App() {
+ 
+  const ProtectedRoute = ({ children }) => {
+    const { isAuthenticated } = useAuth();
+  
+    if (!isAuthenticated) {
+      return <Navigate to="/" />;
+    }
+  
+    return children;
+  };
+  const App = () => {
   return (
-    <>
+    <AuthProvider>
+    <div>
      <Routes>
       <Route path='/' element={<AdminPage/>}/>
-       <Route path='/Home' element={<Home/>} />
-       <Route path="/NewRegistrationAadhar" element={<NewRegistrationAadhar/>} />
-       <Route path="/NewRegistration" element={<NewRegistration/>} />
-       <Route path="/RegisterPatientDetail" element={<RegisterPatientDetail/>} />
-       <Route path="/BookAppointment" element={<BookAppointment/>} />
-       <Route path="/BookAppointmentLanding" element={<BookAppointmentLanding/>} />
-       <Route path="/LabReport" element={<LabReport/>} />
-       <Route path="/Billing" element={<Billing/>}/>
-       <Route path="/BookConsultation" element={<BookConsultation/>}/>
-       <Route path="/OpdCheckin" element={<OpdCheckin/>}/>
-       <Route path="/PatientDetailRegister" element ={<RegisterPatientDetail/>} />
-       <Route path="/NewRegisterBookConsultation" element ={<NewRegistrationBookConsultation/>} />
-       <Route path="/AllPatients" element ={<AllPatients/>} />
-       <Route path="/faqs" element={<Faqs/>}/>
-       <Route path="/hospitalDetails" element={<HospitalDetails/>}/>
+
+       <Route path='/Home' element={<ProtectedRoute><Home/></ProtectedRoute>} />
+       <Route path="/NewRegistrationAadhar" element={<ProtectedRoute><NewRegistrationAadhar/></ProtectedRoute>} />
+       <Route path="/NewRegistration" element={<ProtectedRoute><NewRegistration/></ProtectedRoute>} />
+       <Route path="/RegisterPatientDetail" element={<ProtectedRoute><RegisterPatientDetail/></ProtectedRoute>} />
+       <Route path="/BookAppointment" element={<ProtectedRoute><BookAppointment/></ProtectedRoute>} />
+       <Route path="/BookAppointmentLanding" element={<ProtectedRoute><BookAppointmentLanding/></ProtectedRoute>} />
+       <Route path="/LabReport" element={<ProtectedRoute><LabReport/></ProtectedRoute>} />
+       <Route path="/Billing" element={<ProtectedRoute><Billing/></ProtectedRoute>}/>
+       <Route path="/BookConsultation" element={<ProtectedRoute><BookConsultation/></ProtectedRoute>}/>
+       <Route path="/OpdCheckin" element={<ProtectedRoute><OpdCheckin/></ProtectedRoute>}/>
+       <Route path="/PatientDetailRegister" element ={<ProtectedRoute><RegisterPatientDetail/></ProtectedRoute>} />
+       <Route path="/NewRegisterBookConsultation" element ={<ProtectedRoute><NewRegistrationBookConsultation/></ProtectedRoute>} />
+       <Route path="/AllPatients" element ={<ProtectedRoute><AllPatients/></ProtectedRoute>} />
+       <Route path="/faqs" element={<ProtectedRoute><Faqs/></ProtectedRoute>}/>
+       <Route path="/hospitalDetails" element={<ProtectedRoute><HospitalDetails/></ProtectedRoute>}/>
        {/* <Route path="/WorkInProgress" element={<WorkInProgress/>}/> */}
-       <Route path="/SuccessConfirmation" element={<SuccessConfirmation/>}/>
-       <Route path="/SessionClose" element={<CloseSession/>}/>
+       <Route path="/SuccessConfirmation" element={<ProtectedRoute><SuccessConfirmation/></ProtectedRoute>}/>
+       <Route path="/SessionClose" element={<ProtectedRoute><CloseSession/></ProtectedRoute>}/>
+       <Route path="/SelfConfirmation" element={<ProtectedRoute><SelfRegistrationConfirmation/></ProtectedRoute>}/>
 
      </Routes>
-    </>
+     </div>
+    </AuthProvider>
   );
 }
 

@@ -14,6 +14,7 @@ import { CircularProgress, Box } from '@mui/material';
 function NewRegistrationAadhar() {
     
     const BACKEND_URL = process.env.REACT_APP_EMR_BACKEND_BASE_URL;
+    const adminToken = localStorage.getItem('adminToken');
     const [otp, setOtp] = useState('');
     const [aadharNumber, setAadharNumber] = useState('');
     const navigate = useNavigate();
@@ -86,7 +87,11 @@ function NewRegistrationAadhar() {
     function validateAadhar(){
         const formattedAadharNumber = aadharNumber.replace(/\s/g, ''); // Remove spaces
         axios
-        .get(`${BACKEND_URL}/kiosk/validateAadhaar?aadhaarNo=${formattedAadharNumber}`)
+        .get(`${BACKEND_URL}/kiosk/validateAadhaar?aadhaarNo=${formattedAadharNumber}`,{
+          headers:{
+            'Authorization': `Bearer ${adminToken}`
+          }
+        })
         .then((response) => {
             setIsLoading(false);
           if(response.data.status === 'success') {
@@ -126,7 +131,11 @@ function NewRegistrationAadhar() {
     function getAadharOTP(){
         const formattedAadharNumber = aadharNumber.replace(/\s/g, ''); // Remove spaces
         axios
-        .get(`${BACKEND_URL}/kiosk/getOtp?aadhaarNo=${formattedAadharNumber}`)
+        .get(`${BACKEND_URL}/kiosk/getOtp?aadhaarNo=${formattedAadharNumber}`,{
+          headers:{
+            'Authorization': `Bearer ${adminToken}`
+          }
+        })
         .then((response) => {
           if(response.data.status === 'success') {
             setClientId(response.data.client_id);
@@ -165,7 +174,11 @@ function NewRegistrationAadhar() {
     function verifyAadharOTP(){
       setIsLoading(true);
         axios
-        .get(`${BACKEND_URL}/kiosk/verifyAadhaarOtp?otp=${otp}&clientId=${clientId}`)
+        .get(`${BACKEND_URL}/kiosk/verifyAadhaarOtp?otp=${otp}&clientId=${clientId}`,{
+          headers:{
+            'Authorization': `Bearer ${adminToken}`
+          }
+        })
         .then((response) => {
           setIsLoading(false);
           if(response.data.status === 'success') {

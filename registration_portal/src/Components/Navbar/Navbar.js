@@ -15,6 +15,7 @@ import 'react-toastify/dist/ReactToastify.css';
 function Navbar(props) {
 
   const navigate = useNavigate()
+  const patientToken = localStorage.getItem('patientToken');
   const BACKEND_URL = process.env.REACT_APP_EMR_BACKEND_BASE_URL;
   // console.log("pageName", props.pagename)
 
@@ -36,12 +37,16 @@ function Navbar(props) {
 
   const handleCloseSession = ()=>{
     axios
-    .post(`${BACKEND_URL}/kiosk/closePatientSession`)
+    .post(`${BACKEND_URL}/kiosk/closePatientSession`,{},{
+      headers:{
+        'Authorization': `Bearer ${patientToken}`
+      }
+    })
     .then(async (response) => {
       if (response.data === true) {
          // Clear localStorage for all keys except 'profileData'
          for (const key in localStorage) {
-          if (key !== "profileData") {
+          if (key !== "profileData" && key !=='adminToken') {
             localStorage.removeItem(key);
           }
         }

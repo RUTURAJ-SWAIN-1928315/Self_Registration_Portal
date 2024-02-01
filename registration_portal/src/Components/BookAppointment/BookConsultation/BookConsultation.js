@@ -16,6 +16,7 @@ import axios from 'axios';
 function BookConsultation() {
 
   const alreadyRegisteredPatientDetails = JSON.parse(localStorage.getItem('AlreadyRegisteredPatientDetails'));
+  const patientToken = localStorage.getItem('patientToken');
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [isLoading,setIsLoading] = useState(false);
     const [department,setDepartment] = useState({
@@ -42,7 +43,11 @@ function BookConsultation() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${BACKEND_URL}/kiosk/getPreviousConsultants?mrno=${selectedPatientMRNO}`);
+        const response = await axios.get(`${BACKEND_URL}/kiosk/getPreviousConsultants?mrno=${selectedPatientMRNO}`,{
+          headers:{
+            'Authorization': `Bearer ${patientToken}`
+          }
+        });
         setPrevDoctorsData(response.data.data);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -57,7 +62,11 @@ function BookConsultation() {
   useEffect(() => {
     const fetchDepartments = async () => {
       try {
-        const response = await axios.get(`${BACKEND_URL}/kiosk/getDepartmentsMaster?siteId=${profileData.siteId}`);
+        const response = await axios.get(`${BACKEND_URL}/kiosk/getDepartmentsMaster?siteId=${profileData.siteId}`,{
+          headers:{
+            'Authorization': `Bearer ${patientToken}`
+          }
+        });
         setDepartmentsData(response.data.data);
       } catch (error) {
         console.error('Error fetching departments:', error);
@@ -79,7 +88,11 @@ function BookConsultation() {
   
   const fetchDoctors = async (departmentName) => {
     try {
-      const response = await axios.get(`${BACKEND_URL}/kiosk/getDoctorsMaster?siteId=${profileData.siteId}&departmentName=${departmentName}`);
+      const response = await axios.get(`${BACKEND_URL}/kiosk/getDoctorsMaster?siteId=${profileData.siteId}&departmentName=${departmentName}`,{
+        headers:{
+          'Authorization': `Bearer ${patientToken}`
+        }
+      });
       setDoctorsData(response.data.data);
       // If there's no doctor available for the selected department, reset the doctor selection and slots
       if (!response.data.data.length) {
@@ -108,11 +121,22 @@ function BookConsultation() {
   
   
   //To fetch doctor Slots depending upon the selected departmentId and doctorId
-  const fetchDoctorSlots = async (doctorId) => {
-    const formattedDate = formatDateAsYYYYMMDD(selectedDate);
-  
+  const fetchDoctorSlots = async (doctorId,date) => {
+    //Case - 1 -passing date to formatDateAsYYYYMMDD when user changes the date after selecting department and doctor
+    //Case - 2 - And passing selectedDate formatDateAsYYYYMMDD when the user changes the date without selecting any doctor and department
+    //Passing Date for case 1 as previously selected Date was getting passed when using selectedDate.
+    let formattedDate;
+    if(date === undefined){
+      formattedDate = formatDateAsYYYYMMDD(selectedDate);
+    }else{
+      formattedDate = formatDateAsYYYYMMDD(date);
+    }
     try {
-      const response = await axios.get(`${BACKEND_URL}/kiosk/getDoctorSlots?deptId=${department.selectedDepartmentId}&employeeId=${doctorId}&date=${formattedDate}`);
+      const response = await axios.get(`${BACKEND_URL}/kiosk/getDoctorSlots?deptId=${department.selectedDepartmentId}&employeeId=${doctorId}&date=${formattedDate}`,{
+        headers:{
+          'Authorization': `Bearer ${patientToken}`
+        }
+      });
       if (response.data.status === "Success") {
         setDoctorSlots(response.data.data);
       } else {
@@ -136,6 +160,11 @@ function BookConsultation() {
     if (newDate >= today) {
       setDisablePrevDayButton(false);
       setSelectedDate(newDate);
+
+      //Calling doctorSlots here to update the slot details when user changes the date
+      if(doctor.selectedDoctorId){
+        fetchDoctorSlots(doctor.selectedDoctorId,newDate)
+      }
     }else{
       setDisablePrevDayButton(true);
     }
@@ -146,9 +175,14 @@ function BookConsultation() {
       const newDate = new Date(selectedDate);
       newDate.setDate(newDate.getDate() + 1);
       setSelectedDate(newDate);
+      //Calling doctorSlots here to update the slot details when user changes the date
+      if(doctor.selectedDoctorId){
+        fetchDoctorSlots(doctor.selectedDoctorId,newDate)
+      }
     }
   
     useEffect(() => {
+      //fetching doctor Slots when department and doctor is selected.
       if (department.selectedDepartment && doctor.selectedDoctorId) {
         fetchDoctorSlots(doctor.selectedDoctorId);
       } else {
@@ -196,7 +230,6 @@ function BookConsultation() {
 
       fetchDoctorSlots(Prevdtr.employeeId);
   
-      // Match departments
       const matchingDepartment = departmentsData.find(dept =>
         dept.deptName.toLowerCase().includes(Prevdtr.departmentName.toLowerCase())
       );
@@ -296,6 +329,7 @@ function BookConsultation() {
       selectedEventToDateTime = selectedSlot.eventEndDateTime;
       console.log("Selected Event Date:", selectedEventDate);
     } else {
+      setIsLoading(false);
       // No slot selected, handle accordingly
         toast.error("Please Select a Slot", {
             position: "top-right",
@@ -318,7 +352,11 @@ function BookConsultation() {
         userId: Number(profileData.userId)
     }
     axios
-    .post(`${BACKEND_URL}/kiosk/saveAppointment?isAlreadyRegistered=true`,bookConsultationRequestBody)
+    .post(`${BACKEND_URL}/kiosk/saveAppointment?isAlreadyRegistered=true`,bookConsultationRequestBody,{
+      headers:{
+        'Authorization': `Bearer ${patientToken}`
+      }
+    })
      .then(async (response) => {
       setIsLoading(false);
           if(response.data.status === true){
@@ -336,7 +374,7 @@ function BookConsultation() {
       // Wait for 2 seconds
       await delay(2000);
       const prefix = (alreadyRegisteredPatientDetails.prefix === '' || alreadyRegisteredPatientDetails === 'NA') ? '':alreadyRegisteredPatientDetails.prefix;
-      const middleName = alreadyRegisteredPatientDetails.middleName === 'NA' ? '':alreadyRegisteredPatientDetails.middleName;
+      const middleName = alreadyRegisteredPatientDetails.middleName === null ? '':alreadyRegisteredPatientDetails.middleName;
       const alreadyRegisteredSuccessConfirmation = {
         mrno:alreadyRegisteredPatientDetails.mrno,
         patientName:prefix + " "+alreadyRegisteredPatientDetails.firstName+ " "+ middleName+" "+alreadyRegisteredPatientDetails.lastName,
@@ -382,7 +420,15 @@ function BookConsultation() {
 
             <div className="datepicker-container">
               <button className="datepicker-arrow" onClick={handlePrevDay} disabled={disablePrevDayButton}><img src={DateLeftArrow} alt="" className='datepicker-arrow-image'/></button>
-              <DatePicker selected={selectedDate} onChange={date => setSelectedDate(date)} dateFormat="dd / MM / yyyy"className="datepicker-input"/>
+              <DatePicker selected={selectedDate} 
+              onChange={date => {
+              setSelectedDate(date);
+              if (doctor.selectedDoctorId) {
+                  fetchDoctorSlots(doctor.selectedDoctorId,date);
+              }
+              }} 
+              dateFormat="dd / MM / yyyy" 
+              className="datepicker-input"/>
               <button className="datepicker-arrow" onClick={handleNextDay}><img src={DateRightArrow} alt=""  /></button>
             </div>
 
@@ -401,21 +447,24 @@ function BookConsultation() {
 
 
        {/* Previous Doctor Container  */}
+       {prevdoctorsData.length > 0 && (
+      <>
         <div className='doctorStateHeader'>
         LAST CONSULTED DOCTORS
         </div>
 
-       <div className='prevDoctorContainer' style={{paddingBottom:'14px',  borderBottom: '1px solid var(--scarpa-flow-200, #D9D9DE)'}}>
+       <div className='DoctorContainer' style={{paddingBottom:'14px',  borderBottom: '1px solid var(--scarpa-flow-200, #D9D9DE)'}}>
       {prevdoctorsData.map((Prevdtr, index) => (
         <div key={index} style={{ display: 'flex' }}>
           <input
             type='radio'
             id={`doctor_${index}`}
             value={`${Prevdtr.firstName} ${Prevdtr.lastName}`}
-            className='prevdoctor-radio'
-            onClick={() => handlePrevDoctorSelect(Prevdtr)}
+            className='doctor-radio'
+            checked={doctor.selectedDoctor === Prevdtr.doctorName}
+            onChange={() => handlePrevDoctorSelect(Prevdtr)}
           />
-          <label htmlFor={`doctor_${index}`} className='prevdoctor-label'>
+          <label htmlFor={`doctor_${index}`}  className={`doctor-label ${doctor.selectedDoctorId === Prevdtr.employeeId ? 'selected' : ''}`}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', alignItems: 'flex-start' }}>
               <div>{`${Prevdtr.firstName} ${Prevdtr.lastName}`}</div>
               <div className='doctorDeptSubtitle'>{Prevdtr.departmentName}</div>
@@ -424,7 +473,8 @@ function BookConsultation() {
         </div>
       ))}
     </div>
-
+    </> 
+    )}
 
        {/* Department Container  */}
 

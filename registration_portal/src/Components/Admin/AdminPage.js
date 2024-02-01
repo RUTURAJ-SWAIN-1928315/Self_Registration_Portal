@@ -5,8 +5,10 @@ import { ToastContainer,toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { CircularProgress, Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../AuthContext';
 
 function AdminPage() {
+  const { login } = useAuth();
   const BACKEND_URL = process.env.REACT_APP_EMR_BACKEND_BASE_URL;
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading,setIsLoading] = useState(false);
@@ -34,6 +36,12 @@ function AdminPage() {
           draggable: true,
           progress: undefined,
         });
+
+        localStorage.setItem("adminToken",response.data.profile.tokenNo);
+        // Setting authentication status in local storage
+        localStorage.setItem('isAuthenticated', 'true');
+
+        login(); // Call the login function from the context
   
         await delay(2000);
         navigate('/Home');
@@ -79,15 +87,17 @@ function AdminPage() {
         </div>
         <div className='InputfieldContainer'>
           <div>
+          <div className='AdminLabel'>Username</div>
             <input
               className='inputBox'
               type="text"
-              placeholder='User Name'
+              placeholder='Enter User Name'
               value={loginUserName}
               onChange={(e) => setLoginUserName(e.target.value)}
             />
           </div>
           <div style={{display:'flex', flexDirection:'column'}}>
+          <div className='AdminLabel'>Password</div>
             <input
               className='inputBox'
               type={showPassword ? 'text' : 'password'}
@@ -96,9 +106,10 @@ function AdminPage() {
               onChange={(e) => setLoginPassword(e.target.value)}
               onKeyDown={handleKeyPress}
             />
-            <label>
+            <label style={{marginTop:'10px'}}>
               <input
                 type="checkbox"
+                className='AdminCheckbox'
                 onChange={toggleShowPassword}
               />
               Show Password

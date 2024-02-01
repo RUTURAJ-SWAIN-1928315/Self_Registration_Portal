@@ -1,0 +1,203 @@
+.ConfirmationPage{
+    background-color:#EFF2F7;
+    height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: flex;
+    /* align-content: center; */
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.MainContainer{
+     /* background-color: antiquewhite; */
+     display: flex;
+     flex-direction: column;
+     gap: 54px;
+     align-items: center;
+}
+
+.SuccessContainer{
+    display: flex;
+    padding: 20px 45px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    border-radius: 10px;
+    background: var(--White, #FFF);
+
+}
+
+.RegistrationText{
+    color: var(--Jade-600, #0FA968);
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: 0.2px;
+}
+
+.PatientTextBox{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+     
+}
+
+.HeadText{
+    color: var(--Scarpa-Flow-950, #27272A);
+    text-align: center;
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 18px; /* 100% */
+    letter-spacing: 0.2px;
+}
+
+.SubText{
+    color: var(--Scarpa-Flow-950, #27272A);
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-size: 18px;
+    font-style: italic;
+    font-weight: 600;
+    line-height: 18px;
+    letter-spacing: 0.2px;
+}
+
+.QuestionContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.QuestionText{
+    color: var(--Scarpa-Flow-950, #27272A);
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: 0.2px;
+}
+
+.ButtonGroupBox{
+    display: flex;
+    width: 734px;
+    padding: 10px 0px;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.GoAheadBtn{
+    display: flex;
+    height: 42px;
+    padding: 12px 8px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    background: var(--Jade-600, #0FA968);
+    border: none;
+    cursor: pointer;
+     
+}
+
+.GoAheadBtnText{
+    color: var(--Jade-50, #EFFEF7);
+    text-align: center;
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 18px; /* 112.5% */
+    letter-spacing: 0.2px;
+    cursor: pointer;
+}
+
+.GoHomeBtn{
+    display: flex;
+    width: 137px;
+    height: 42px;
+    padding: 12px 8px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    border-radius: 8px;
+    border: 1px solid var(--Jade-600, #0FA968);
+    background: var(--Jade-50, #EFFEF7);
+    cursor: pointer;
+}
+
+.GoHomeBtnText{
+    color: var(--Jade-600, #0FA968);
+    text-align: center;
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 18px; /* 112.5% */
+    letter-spacing: 0.2px;
+    cursor: pointer;
+}
+
+
+.DarkOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.2); /* Adjust the alpha value for darkness */
+    z-index: 1; /* Ensure it's above the content but below the dialog */
+  }
+
+.DialogBox {
+    position: fixed;
+    background-color: #FFF;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+    padding: 20px 38px;
+    gap: 20px;
+    border-radius: 10px;
+  }
+
+ .DialogText{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+ } 
+
+.NoteText{
+    color: var(--Jade-950, #03301F);
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: 0.2px;
+}
+  
+.MsgText{
+    color: var(--Scarpa-Flow-950, #27272A);
+    text-align: center;
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 0.2px;
+} 

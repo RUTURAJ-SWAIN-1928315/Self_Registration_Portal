@@ -9,13 +9,18 @@ import axios from 'axios';
 function OpdCheckin() {
   const BACKEND_URL = process.env.REACT_APP_EMR_BACKEND_BASE_URL;
   const selectedPatientMRNO = localStorage.getItem('selectedPatientMRNO');
+  const patientToken = localStorage.getItem('patientToken');
   const [tableData,setTableData] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${BACKEND_URL}/kiosk/opdCheckIn?mrno=${selectedPatientMRNO}&isFuture=true`);
-        setTableData(response.data.mapList);
+        const response = await axios.get(`${BACKEND_URL}/kiosk/opdCheckIn?mrno=${selectedPatientMRNO}&isFuture=true`,{
+          headers:{
+            'Authorization': `Bearer ${patientToken}`
+          }
+        });
+        setTableData(response.data.data);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -37,7 +42,7 @@ function OpdCheckin() {
   const formatDate = (dateTimeString) => {
     const dateString = dateTimeString.split(' ')[0]; // Extract the date part
  
-    const [year,day,month] = dateString.split('-');
+    const [day,month,year] = dateString.split('-');
   
     // Format the date as DD-MM-YYYY
     const formattedDate = `${day}-${month}-${year}`;
