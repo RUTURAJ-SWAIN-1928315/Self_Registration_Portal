@@ -1153,6 +1153,7 @@ return (
                className='addressInput'
               placeholder='Village'
                value={formData.village}
+               disabled={disableInputFieldAadhar}
                onChange={handleAddressChange}
              />
             </div>
@@ -1165,6 +1166,7 @@ return (
                className='addressInput'
               placeholder='City'
                value={formData.city}
+               disabled={disableInputFieldAadhar}
                onChange={handleAddressChange}
              />
             </div>

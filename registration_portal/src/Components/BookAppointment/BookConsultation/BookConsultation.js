@@ -88,7 +88,7 @@ function BookConsultation() {
   
   const fetchDoctors = async (departmentName) => {
     try {
-      const response = await axios.get(`${BACKEND_URL}/kiosk/getDoctorsMaster?siteId=${profileData.siteId}&departmentName=${departmentName}`,{
+      const response = await axios.get(`${BACKEND_URL}/kiosk/getDoctorsMaster?siteId=${profileData.siteId}&departmentName=${departmentName}&isAlreadyRegistered=true`,{
         headers:{
           'Authorization': `Bearer ${patientToken}`
         }
