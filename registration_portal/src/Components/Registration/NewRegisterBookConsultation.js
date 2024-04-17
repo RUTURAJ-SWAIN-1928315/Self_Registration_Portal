@@ -120,7 +120,7 @@ if(date === undefined){
         'Authorization': `Bearer ${adminToken}`
       }
     });
-    if (response.data.status === "Success") {
+    if (response.status === 200) {
       setDoctorSlots(response.data.data);
     } else {
       setDoctorSlots([]);
@@ -356,6 +356,7 @@ const handleSaveAppointment = async () => {
     }
     })
     .catch((error) => {
+    setIsLoading(false);
     toast.error("Something Went Wrong!!!!", {
       position: "top-right",
       autoClose: 1000,
