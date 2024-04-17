@@ -95,7 +95,7 @@ function Home() {
             <div className='SecondRowBox'>
             <div className='ModuleContainer' onClick={handleAboutKimsCardClick} >
                   <div>
-                    <img src={hospitalPic} alt="AboutHos"/>
+                    <img src={hospitalPic} alt="AboutHos" style={{height:'124px'}}/>
                   </div>
                   <div className='ModuleSubTitleSecond'>
                      About Hospital
