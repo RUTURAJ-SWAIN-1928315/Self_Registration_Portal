@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import './HospitalDetails.css';
 import Navbar from '../Navbar/Navbar';
 import axios from 'axios';
-import AboutKims from '../../Assests/Images/AboutKIMS.svg';
+// import AboutKims from '../../Assests/Images/AboutKIMS.svg';
+import HospitalPic from '../../Assests/Images/zydus_logo.png';
 import Instagram from '../../Assests/Images/instagram.svg';
 import Twitter from '../../Assests/Images/twitter.svg';
 
@@ -50,7 +51,7 @@ const adminToken = localStorage.getItem('adminToken');
       <Navbar pagename={"About Hospital"} hospitalDetails={true}/>
       <div className='detailBody'>
         <div style={{padding:'5px'}}>
-          <img className='imgShape' src={AboutKims} alt="AboutKims" />
+          <img className='imgShape' src={HospitalPic} alt="AboutHospital" />
         </div>
         <div className='detailTextArea'>
           {hospitalData && (

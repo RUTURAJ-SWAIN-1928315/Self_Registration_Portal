@@ -56,6 +56,8 @@ function RegisterPatientDetail() {
     age:'',
     ageUnit:'Years',
     emailId:'',
+    nationality:'',
+    address:'',
     pinCode: '',
     district: '',
     state: '',
@@ -757,6 +759,7 @@ if(aadharData){
       contactNo:formData.mobileNumber,
       whatsAppNumber:formData.whatsAppNumber,
       email:formData.emailId,
+      nationality:formData.nationality,
       userId:Number(profileData.userId),
       aadhaarNumber:formattedAadharNumber,
       photo:patientImage === null || patientImage === '' ? 'NA' :patientImage,
@@ -767,6 +770,7 @@ if(aadharData){
           isUrban:formData.selectedArea === 'Urban'?true:false,
           pin:Number(formData.pinCode),
           districtId:matchingAddress ? matchingAddress.districtId : null,
+          address:formData.address,
           districtName:formData.district,
           stateId:matchingAddress ? matchingAddress.stateId : null,
           stateName:formData.state,
@@ -847,6 +851,8 @@ if(aadharData){
       age:'',
       ageUnit:'Years',
       emailId:'',
+      nationality:'',
+      address:'',
       pinCode: '',
       district: '',
       state: '',
@@ -1031,6 +1037,16 @@ return (
                   </div>
                 </div>
 
+                <div style={{ width:'50%'}}>
+                <div className="patientTypeDetailBox">
+                  <div className='patientTypeDetailLabel'>Nationality</div>
+                  <div style={{display:'flex'}}>
+                  <input className='aadharNumberInput' placeholder='eg: Indian' name='nationality' value={formData.nationality} onChange={handleInputChange}></input>
+                  </div>
+                    
+                  </div>
+                </div>
+
       </div>
 
       <div className='AddressContainer'>
@@ -1070,6 +1086,18 @@ return (
 
      <div style={{ width:'100%', height:'133px'}}>
           <div className='addressDetailsContentRow'>
+          <div style={{width:'193%'}} className='addressInputRow'>
+                <div className='patientTypeDetailLabel'>House No. / Street <span className='mandatoryField'>*</span></div>
+                <input
+                  style={{width:'93%'}}
+                  type='text'
+                  name='address'
+                  className='addressInput'
+                  placeholder='Enter House no./ street / lane '
+                  value={formData.address}
+                  onChange={handleAddressChange}
+                />
+              </div>
           <div className='addressInputRow'>
             <div className='patientTypeDetailLabel'>Pin Code<span className='mandatoryField'>*</span></div>
             <div style={{ position: 'relative', display: 'flex', alignItems: 'center', gap: '2px', borderRadius: '6px 6px 6px 6px', width: '93%' }}>
@@ -1128,7 +1156,11 @@ return (
                 />
               </div>
 
-              <div className='addressInputRow'>
+                </div>
+            
+           
+            <div className='addressDetailsContentRow1'>
+            <div className='addressInputRow'>
                 <div className='patientTypeDetailLabel'>Country<span className='mandatoryField'>*</span></div>
                 <input
                   type='text'
@@ -1140,10 +1172,7 @@ return (
                   onChange={handleAddressChange}
                 />
               </div>
-                </div>
-            
-           
-            <div className='addressDetailsContentRow1'>
+
             {formData.selectedArea === 'Rural' ? (
             <div className='addressInputRow'>
             <div className='patientTypeDetailLabel'>Village<span className='mandatoryField'>*</span></div>

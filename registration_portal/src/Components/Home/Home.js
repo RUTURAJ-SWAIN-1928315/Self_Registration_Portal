@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import './Home.css';
 import NewRegistrationImage from '../../Assests/Images/NewRegistration.svg';
 import BookAppointment from '../../Assests/Images/BookAppointment.svg'
-import hospitalPic from '../../Assests/Images/AboutKIMS.svg'
+import hospitalPic from '../../Assests/Images/zydus_logo.png'
 import feedback from '../../Assests/Images/feedback.svg'
 import faq from '../../Assests/Images/faq.svg'
 import poweredBySOUL from '../../Assests/Images/poweredBySOUL.svg'
@@ -62,9 +62,9 @@ function Home() {
                     </div>
                 </div> 
             </div>
-            <div>
+            {/* <div>
                 <img src={poweredBySOUL} alt="" />
-            </div>
+            </div> */}
         </div>
 
         <div className='HomeContainerBox'>
@@ -95,7 +95,7 @@ function Home() {
             <div className='SecondRowBox'>
             <div className='ModuleContainer' onClick={handleAboutKimsCardClick} >
                   <div>
-                    <img src={hospitalPic} alt="AboutHos"/>
+                    <img src={hospitalPic} alt="AboutHos" style={{height:'124px'}}/>
                   </div>
                   <div className='ModuleSubTitleSecond'>
                      About Hospital
