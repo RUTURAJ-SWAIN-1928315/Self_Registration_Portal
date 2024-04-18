@@ -36,6 +36,8 @@ function RegisterPatientDetail() {
   // const [postOfficeList,setPostOfficeList] = useState([]);
   // const [policeStationList,setPoliceStationList] = useState([]);
   const [maskedAadharNumber, setMaskedAadharNumber] = useState('');
+  const [relationMaster, setRelationMaster] = useState([]);
+  const [referralTypes, setReferralTypes] = useState([]);
 
 
   const [patientImage,SetPatientImage] = useState('');
@@ -68,6 +70,8 @@ function RegisterPatientDetail() {
     localityId:'',
     postOffice: '',
     policeStation: '',
+    relation:'',
+    referalType:'',
   });
  
 
@@ -319,6 +323,42 @@ const calculateAge = (dob) => {
         console.error('Error fetching data:', error);
       });
     }, [BACKEND_URL]);
+
+    //For getting Relationship master
+    useEffect(() => {
+      axios
+          .get(`${BACKEND_URL}/kiosk/getRelationMaster?categoryName=RELATION`, {
+              headers: {
+                  'Authorization': `Bearer ${adminToken}`
+              }
+          })
+          .then((response) => {
+              if (response.data && response.data.data) {
+                  setRelationMaster(response.data.data);
+              }
+          })
+          .catch((error) => {
+              console.error('Error fetching data:', error);
+          });
+  }, [BACKEND_URL]);
+
+  //For getting Referral type master
+  useEffect(() => {
+    axios
+        .get(`${BACKEND_URL}/kiosk/getSimpleProfileMaster?categoryName=REFERRALTYPE`,{
+          headers: {
+            'Authorization': `Bearer ${adminToken}`
+        }
+        })
+        .then((response) => {
+            if (response.data && response.data.data) {
+                setReferralTypes(response.data.data);
+            }
+        })
+        .catch((error) => {
+            console.error('Error fetching data:', error);
+        });
+}, [BACKEND_URL]);
 
 
 
@@ -862,7 +902,9 @@ if(aadharData){
       locality: '',
       localityId:'',
       postOffice: '',
-      policeStation: ''
+      policeStation: '',
+      relation:'',
+      referalType:'',
     });
   }
 
@@ -904,7 +946,7 @@ return (
      <div className='newRegisterPatientBody'>
       <div className='newRegisterPatientContent' style={{display:'flex', flexDirection:'row'}}>
 
-         <div style={{border:'groove', borderColor:'#f0ffff34', width:'11%', height:'170px', display:'flex', alignItems:'center', justifyContent:'center',borderRadius:'20px',padding:'10px'}}>
+         <div style={{border:'groove', borderColor:'#f0ffff34', width:'11%', height:'150px', display:'flex', alignItems:'center', justifyContent:'center',borderRadius:'20px',padding:'10px'}}>
            <img className='patientImage' src={patientImage || DefaultPatient} alt="Patient" />
          </div>
 
@@ -1042,6 +1084,112 @@ return (
                   <div className='patientTypeDetailLabel'>Nationality</div>
                   <div style={{display:'flex'}}>
                   <input className='aadharNumberInput' placeholder='eg: Indian' name='nationality' value={formData.nationality} onChange={handleInputChange}></input>
+                  </div>
+                    
+                  </div>
+                </div>
+
+      </div>
+
+
+      <div className='EmergencyContactBox'>
+      <div className='patientTypeDetailLabelHead'>EMERGENCY CONTACT</div>
+                <div style={{ width:'16%'}}>
+                  <div className="patientTypeDetailBox">
+                      <div className='patientTypeDetailLabel'>Contact Person</div>
+                    <div style={{display:'flex'}}>
+                    <input className='aadharNumberInput' placeholder='Enter Name' 
+                     value={formData.EmergencyPerson}  onChange={handleInputChange}></input>
+                    </div>
+                  </div>
+  
+                </div>
+                <div style={{ width:'16%'}}>
+                  <div className="patientTypeDetailBox">
+                    <div className='patientTypeDetailLabel'>Relationship</div>
+                    <div style={{display:'flex'}}>
+                    <select className='aadharNumberInput' name='relation' value={formData.relation} onChange={handleInputChange}>
+                        <option disabled value="">Select relationship</option>
+                        {relationMaster.map(relation => (
+                            <option key={relation.lookupId} value={relation.lookupValue}>{relation.lookupValue}</option>
+                        ))}
+                    </select>
+                    </div>
+                </div>
+
+                </div>
+
+                <div style={{ width:'16%'}}>
+                <div className="patientTypeDetailBox">
+                  <div className='patientTypeDetailLabel'>Emergency Contact Number</div>
+                  <div style={{display:'flex'}}>
+                  <input className='aadharNumberInput' placeholder='Enter Phone Number' name='EmergencyNumber' value={formData.EmergencyNumber} onChange={handleInputChange}></input>
+                  </div>
+                    
+                  </div>
+                </div>
+
+      </div>
+
+      <div className='ReferralBox'>
+      <div className='patientTypeDetailLabelHead'>REFERRAL DETAILS</div>
+                <div style={{ width:'16%'}}>
+                <div className="patientTypeDetailBox">
+                  <div className='patientTypeDetailLabel'>Referral Type</div>
+                      <div style={{display:'flex'}}>
+                      <select className='aadharNumberInput' name='referalType' value={formData.referalType} onChange={handleInputChange}>
+                          <option value="">Select referral type</option>
+                          {referralTypes.map(referral => (
+                              <option key={referral.profileId} value={referral.profileValue}>{referral.profileValue}</option>
+                          ))}
+                      </select>
+                      </div>
+                  </div>
+
+  
+                </div>
+                <div style={{ width:'16%'}}>
+                <div className="patientTypeDetailBox">
+                    <div className='patientTypeDetailLabel'>Institute</div>
+                    <div style={{display:'flex'}}>
+                            <select className='aadharNumberInput' name='institute' value={formData.institute} onChange={handleInputChange}>
+                                <option value="">Select Institute type</option>
+                                <option value="Type A">Type A</option>
+                                <option value="Type B">Type B</option>
+                                <option value="Type C">Type C</option>
+                            </select>
+                    </div>
+                </div>
+
+                </div>
+
+                <div style={{ width:'16%'}}>
+                <div className="patientTypeDetailBox">
+                  <div className='patientTypeDetailLabel'>Referred by</div>
+                  <div style={{position: 'relative', width:'97%'}}>
+                      <input className='aadharNumberInput' placeholder='' name='referredBy' value={formData.referredBy} onChange={handleInputChange} style={{paddingRight: '30px'}}></input>
+                      <img style={{ position: 'absolute', right: '5px', top: '50%', transform: 'translateY(-50%)', cursor: 'pointer' }} src={searchIcon} alt="search Icon" />
+                  </div>
+                    
+                  </div>
+                </div>
+
+                <div style={{ width:'16%'}}>
+                <div className="patientTypeDetailBox">
+                  <div className='patientTypeDetailLabel'>Refer to Consultant</div>
+                  <div style={{position: 'relative', width:'97%'}}>
+                      <input className='aadharNumberInput' placeholder='' name='referToConsultant' value={formData.referToConsultant} onChange={handleInputChange} style={{paddingRight: '30px'}}></input>
+                      <img style={{ position: 'absolute', right: '5px', top: '50%', transform: 'translateY(-50%)', cursor: 'pointer' }} src={searchIcon} alt="search Icon" />
+                  </div>
+                    
+                  </div>
+                </div>
+
+                <div style={{ width:'16%'}}>
+                <div className="patientTypeDetailBox">
+                  <div className='patientTypeDetailLabel'>Ref. Hospital Patient Number</div>
+                  <div style={{display:'flex'}}>
+                  <input className='aadharNumberInput' placeholder='Enter Ref. Hospital patient Number' name='refHospitalPatientNo' value={formData.refHospitalPatientNo} onChange={handleInputChange}></input>
                   </div>
                     
                   </div>

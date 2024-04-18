@@ -178,7 +178,7 @@
     border-radius: 6px 6px 6px 6px;
     border: 1px solid var(--Scarpa-Flow-300, #B9B9C0);
     background: var(--White, #FFF);
-    width: 175px;
+    width: 188px;
 }
 .aadharNumberInput:disabled{
   background-color: lightgrey;
@@ -378,7 +378,7 @@
 
 
 .newRegisterPatientContent{
-  padding: 10px 20px;
+  padding: 0px 20px;
 }
 .detailContainer1{
   padding: 5px;
@@ -469,4 +469,36 @@
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
+}
+
+.EmergencyContactBox{
+  padding: 10px 48px;
+  /* border-bottom: 1px solid var(--Scarpa-Flow-200, #D9D9DE); */
+  display: flex;
+  gap: 20px;
+  padding-top: 0px;
+  padding-bottom: 0px ;
+  flex-direction: row;
+  align-items: center;
+}
+
+.patientTypeDetailLabelHead{
+  color: #292b37;
+  color: var(--Text1,#292b37);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 22px;
+  width: 190px;
+}
+
+.ReferralBox{
+  padding: 10px 48px;
+  border-bottom: 1px solid var(--Scarpa-Flow-200, #D9D9DE);
+  display: flex;
+  gap: 20px;
+  padding-top: 0px;
+  padding-bottom: 0px ;
+  flex-direction: row;
+  align-items: center;
 }

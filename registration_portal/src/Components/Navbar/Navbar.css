@@ -1,7 +1,7 @@
 .NavbarContainer{
     display: flex;
     width: 94%;
-    padding: 46px 46px 5px;    /* top, leftRight , Buttom  */ 
+    padding: 20px 46px 10px;    /* top, leftRight , Buttom  */ 
     align-items: center;
     gap: 10px;
     border-bottom: 1px solid var(--scarpa-flow-200, #D9D9DE);
