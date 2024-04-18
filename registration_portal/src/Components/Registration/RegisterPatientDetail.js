@@ -1086,7 +1086,7 @@ return (
 
      <div style={{ width:'100%', height:'133px'}}>
           <div className='addressDetailsContentRow'>
-          <div style={{width:'193%'}} className='addressInputRow'>
+          <div style={{width:'169%'}} className='addressInputRow'>
                 <div className='patientTypeDetailLabel'>House No. / Street <span className='mandatoryField'>*</span></div>
                 <input
                   style={{width:'93%'}}
