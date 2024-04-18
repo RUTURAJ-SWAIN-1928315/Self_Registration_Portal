@@ -26,15 +26,15 @@ useEffect(() => {
       });
       setTableData(response.data.reports);
     } catch (error) {
-      toast.error("Something went wrong!!!!", {
-        position: "top-right",
-        autoClose: 800,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
+      // toast.error("Something went wrong!!!!", {
+      //   position: "top-right",
+      //   autoClose: 800,
+      //   hideProgressBar: false,
+      //   closeOnClick: true,
+      //   pauseOnHover: true,
+      //   draggable: true,
+      //   progress: undefined,
+      // });
       console.error('Error fetching Table Data:', error);
       return;
      
