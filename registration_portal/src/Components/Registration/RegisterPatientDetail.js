@@ -38,6 +38,7 @@ function RegisterPatientDetail() {
   const [maskedAadharNumber, setMaskedAadharNumber] = useState('');
   const [relationMaster, setRelationMaster] = useState([]);
   const [referralTypes, setReferralTypes] = useState([]);
+  const [countryMasterList,setCountryMasterList] = useState([]);
 
 
   const [patientImage,SetPatientImage] = useState('');
@@ -58,7 +59,8 @@ function RegisterPatientDetail() {
     age:'',
     ageUnit:'Years',
     emailId:'',
-    nationality:'',
+    selectedNationalityName:'',
+    selectedNationalityId:'',
     address:'',
     pinCode: '',
     district: '',
@@ -70,7 +72,10 @@ function RegisterPatientDetail() {
     localityId:'',
     postOffice: '',
     policeStation: '',
-    relation:'',
+    contactPerson:'',
+    selectedRelationName:'',
+    selectedRelationId:'',
+    emergencyNumber:'',
     referalType:'',
   });
  
@@ -342,6 +347,22 @@ const calculateAge = (dob) => {
           });
   }, [BACKEND_URL]);
 
+  const handleRelationChange = (event) => {
+    const selectedRelation = event.target.value;
+  
+    // Find the corresponding relationId based on the selected Relation
+    const selectedRelationId = relationMaster.find(item => item.lookupValue === selectedRelation)?.lookupId;
+  
+    // Update the formData state with the selectedRelation and selectedRelationId
+    setFormData(prevState => ({
+      ...prevState,
+      selectedRelationName: selectedRelation,
+      selectedRelationId: selectedRelationId,
+    }));
+  };
+
+
+
   //For getting Referral type master
   useEffect(() => {
     axios
@@ -361,6 +382,37 @@ const calculateAge = (dob) => {
 }, [BACKEND_URL]);
 
 
+ //For getting Country/Nationality Master
+ useEffect(() => {
+  axios
+      .get(`${BACKEND_URL}/kiosk/getCountryMaster`,{
+        headers: {
+          'Authorization': `Bearer ${adminToken}`
+      }
+      })
+      .then((response) => {
+          if (response.data && response.data.data) {
+              setCountryMasterList(response.data.data);
+          }
+      })
+      .catch((error) => {
+          console.error('Error fetching data:', error);
+      });
+}, [BACKEND_URL]);
+
+const handleNationalityChange = (event) => {
+  const selectedNationality = event.target.value;
+
+  // Find the corresponding nationalityId based on the selected nationality
+  const selectedNationalityId = countryMasterList.find(item => item.countryName === selectedNationality)?.countryId;
+
+  // Update the formData state with the selectedNationality and selectedNationalityId
+  setFormData(prevState => ({
+    ...prevState,
+    selectedNationalityName: selectedNationality,
+    selectedNationalityId: selectedNationalityId,
+  }));
+};
 
   const handleAddressChange = (event) => {
       const { name, value } = event.target;
@@ -546,12 +598,12 @@ const calculateAge = (dob) => {
     const { name, value } = event.target;
 
     // Allow only numeric values or an empty string for mobileNumber or whatsAppNumber
-    if ((name === 'mobileNumber' || name === 'whatsAppNumber') && value !== '' && !/^\d+$/.test(value)) {
+    if ((name === 'mobileNumber' || name === 'whatsAppNumber' || name === 'emergencyNumber') && value !== '' && !/^\d+$/.test(value)) {
         return; // Ignore non-numeric input, except for empty string
     }
 
     // Handle mobile number/WhatsApp Number input with length restriction
-    if (name === 'mobileNumber') {
+    if (name === 'mobileNumber' || name === 'emergencyNumber') {
         setFormData(prevState => ({
             ...prevState,
             [name]: value.slice(0, 10) // Restrict to max 10 digits
@@ -799,7 +851,7 @@ if(aadharData){
       contactNo:formData.mobileNumber,
       whatsAppNumber:formData.whatsAppNumber,
       email:formData.emailId,
-      nationality:formData.nationality,
+      nationalityId:Number(formData.selectedNationalityId),
       userId:Number(profileData.userId),
       aadhaarNumber:formattedAadharNumber,
       photo:patientImage === null || patientImage === '' ? 'NA' :patientImage,
@@ -823,6 +875,9 @@ if(aadharData){
           policeStation:formData.policeStation,
           cityName:formData.city,
           cityId:matchingAddress ? matchingAddress.cityId : null,
+          contactPerson:formData.contactPerson,
+          relationId:formData.selectedRelationId,
+          phone1:formData.emergencyNumber,
         }
       ]
     }
@@ -891,7 +946,8 @@ if(aadharData){
       age:'',
       ageUnit:'Years',
       emailId:'',
-      nationality:'',
+      selectedNationalityName:'',
+      selectedNationalityId:'',
       address:'',
       pinCode: '',
       district: '',
@@ -903,7 +959,10 @@ if(aadharData){
       localityId:'',
       postOffice: '',
       policeStation: '',
-      relation:'',
+      contactPerson:'',
+      selectedRelationName:'',
+      selectedRelationId:'',
+      emergencyNumber:'',
       referalType:'',
     });
   }
@@ -1082,24 +1141,28 @@ return (
                 <div style={{ width:'50%'}}>
                 <div className="patientTypeDetailBox">
                   <div className='patientTypeDetailLabel'>Nationality</div>
-                  <div style={{display:'flex'}}>
-                  <input className='aadharNumberInput' placeholder='eg: Indian' name='nationality' value={formData.nationality} onChange={handleInputChange}></input>
-                  </div>
-                    
+                  <div style={{width: "80%"}}>
+                    <select className='patientTypeSelectDropdown' placeholder='Select' value={formData.selectedNationalityName} onChange={(e) => handleNationalityChange(e)}>
+                      <option className='patientOptionDropdown' value="" disabled>Select Nationality</option>
+                      {countryMasterList.map((type, index) => (
+                        <option key={index} value={type.countryName}>{type.countryName}</option>
+                      ))}
+                    </select>
+                    </div>
                   </div>
                 </div>
 
       </div>
 
 
-      <div className='EmergencyContactBox'>
-      <div className='patientTypeDetailLabelHead'>EMERGENCY CONTACT</div>
+                <div className='EmergencyContactBox'>
+                <div className='patientTypeDetailLabelHead'>EMERGENCY CONTACT</div>
                 <div style={{ width:'16%'}}>
                   <div className="patientTypeDetailBox">
                       <div className='patientTypeDetailLabel'>Contact Person</div>
                     <div style={{display:'flex'}}>
-                    <input className='aadharNumberInput' placeholder='Enter Name' 
-                     value={formData.EmergencyPerson}  onChange={handleInputChange}></input>
+                    <input className='aadharNumberInput' placeholder='Enter Name' name="contactPerson"
+                     value={formData.contactPerson}  onChange={handleInputChange}></input>
                     </div>
                   </div>
   
@@ -1107,12 +1170,12 @@ return (
                 <div style={{ width:'16%'}}>
                   <div className="patientTypeDetailBox">
                     <div className='patientTypeDetailLabel'>Relationship</div>
-                    <div style={{display:'flex'}}>
-                    <select className='aadharNumberInput' name='relation' value={formData.relation} onChange={handleInputChange}>
-                        <option disabled value="">Select relationship</option>
-                        {relationMaster.map(relation => (
-                            <option key={relation.lookupId} value={relation.lookupValue}>{relation.lookupValue}</option>
-                        ))}
+                   <div style={{width: "80%"}}>
+                    <select className='patientTypeSelectDropdown' placeholder='Select' value={formData.selectedRelationName} onChange={(e) => handleRelationChange(e)}>
+                      <option className='patientOptionDropdown' value="" disabled>Select Relation</option>
+                      {relationMaster.map((type, index) => (
+                        <option key={index} value={type.lookupValue}>{type.lookupValue}</option>
+                      ))}
                     </select>
                     </div>
                 </div>
@@ -1123,7 +1186,7 @@ return (
                 <div className="patientTypeDetailBox">
                   <div className='patientTypeDetailLabel'>Emergency Contact Number</div>
                   <div style={{display:'flex'}}>
-                  <input className='aadharNumberInput' placeholder='Enter Phone Number' name='EmergencyNumber' value={formData.EmergencyNumber} onChange={handleInputChange}></input>
+                  <input className='aadharNumberInput' placeholder='Enter Phone Number' name='emergencyNumber' value={formData.emergencyNumber} onChange={handleInputChange}></input>
                   </div>
                     
                   </div>
