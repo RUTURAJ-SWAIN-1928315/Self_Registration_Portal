@@ -28,7 +28,7 @@
     gap: 8px;
     height: 40px;
     padding: 4px 10px;
-    width: 16rem;
+    width: 15rem;
     border-radius: 8px;
     border: 1px solid var(--Scarpa-Flow-300, #B9B9C0);
     background: var(--White, #FFF);
@@ -404,7 +404,7 @@
   top: 100%; 
   left: 0;
   width: 100%;
-  max-height: 75px; 
+  max-height: 100px; 
   overflow-y: auto; 
   background-color: #fff; 
   border: 1px solid #ccc; 
