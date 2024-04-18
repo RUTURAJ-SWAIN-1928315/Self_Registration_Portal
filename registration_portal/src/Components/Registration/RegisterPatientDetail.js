@@ -37,9 +37,11 @@ function RegisterPatientDetail() {
   // const [policeStationList,setPoliceStationList] = useState([]);
   const [maskedAadharNumber, setMaskedAadharNumber] = useState('');
   const [relationMaster, setRelationMaster] = useState([]);
-  const [referralTypes, setReferralTypes] = useState([]);
-  const [countryMasterList,setCountryMasterList] = useState([]);
-
+  const [referralTypeMaster, setReferralTypeMaster] = useState([]);
+  const [referralInstituteMaster,setReferralInstituteMaster] = useState([]);
+  const [countryMasterSuggestionList,setCountryMasterSuggestionList] = useState([]);
+  const [referredBySuggestionList,setReferredBySuggestionList] = useState([]);
+  const [referredToSuggestionList,setReferredToSuggestionList] = useState([]);
 
   const [patientImage,SetPatientImage] = useState('');
   const [formData, setFormData] = useState({
@@ -76,7 +78,15 @@ function RegisterPatientDetail() {
     selectedRelationName:'',
     selectedRelationId:'',
     emergencyNumber:'',
-    referalType:'',
+    selectedReferralTypeName:'',
+    selectedReferralTypeId:'',
+    selectedReferralInstituteName:'',
+    selectedReferralInstituteId:'',
+    selectedReferredByName:'',
+    selectedReferredById:'',
+    selectedReferredToName:'',
+    selectedReferredToId:'',
+    refHospitalPatientNo:''
   });
  
 
@@ -260,7 +270,7 @@ const calculateAge = (dob) => {
         }
       })
       .then((response) => {
-        if (response.data && response.data.status === "success") {
+        if (response.data && response.status === 200) {
           const genders = response.data.data.map(item => ({
             gender: item.lookupValue,
             genderId: item.lookupId,
@@ -316,7 +326,7 @@ const calculateAge = (dob) => {
         }
       })
       .then((response) => {
-        if (response.data && response.data.status === "success") {
+        if (response.data && response.status === 200) {
           const prefixes = response.data.data.map(item => ({
             prefix: item.prefix,
             prefixId: item.prefixId,
@@ -338,7 +348,7 @@ const calculateAge = (dob) => {
               }
           })
           .then((response) => {
-              if (response.data && response.data.data) {
+              if (response.data && response.status === 200) {
                   setRelationMaster(response.data.data);
               }
           })
@@ -372,8 +382,8 @@ const calculateAge = (dob) => {
         }
         })
         .then((response) => {
-            if (response.data && response.data.data) {
-                setReferralTypes(response.data.data);
+            if (response.data && response.status === 200) {
+                setReferralTypeMaster(response.data.data);
             }
         })
         .catch((error) => {
@@ -381,18 +391,31 @@ const calculateAge = (dob) => {
         });
 }, [BACKEND_URL]);
 
+const handleReferralChange = (event) => {
+  const selectedReferral = event.target.value;
 
- //For getting Country/Nationality Master
- useEffect(() => {
+  // Find the corresponding referralId based on the selected referral
+  const selectedReferralId = referralTypeMaster.find(item => item.profileValue === selectedReferral)?.profileId;
+
+  // Update the formData state with the selectedReferral and selectedReferralId
+  setFormData(prevState => ({
+    ...prevState,
+    selectedReferralTypeName: selectedReferral,
+    selectedReferralTypeId: selectedReferralId,
+  }));
+};
+
+//For Referral Institute Master
+useEffect(() => {
   axios
-      .get(`${BACKEND_URL}/kiosk/getCountryMaster`,{
+      .get(`${BACKEND_URL}/kiosk/getReferralInstitutesMaster?siteId=${profileData.siteId}`,{
         headers: {
           'Authorization': `Bearer ${adminToken}`
       }
       })
       .then((response) => {
-          if (response.data && response.data.data) {
-              setCountryMasterList(response.data.data);
+          if (response.data && response.status === 200) {
+              setReferralInstituteMaster(response.data.data);
           }
       })
       .catch((error) => {
@@ -400,19 +423,115 @@ const calculateAge = (dob) => {
       });
 }, [BACKEND_URL]);
 
-const handleNationalityChange = (event) => {
-  const selectedNationality = event.target.value;
+const handleReferralInstituteChange = (event) => {
+  const selectedReferralInstitute = event.target.value;
 
-  // Find the corresponding nationalityId based on the selected nationality
-  const selectedNationalityId = countryMasterList.find(item => item.countryName === selectedNationality)?.countryId;
+  const selectedReferralInstituteId = referralInstituteMaster.find(item => item.refHospitalName === selectedReferralInstitute)?.refHospitalId;
 
-  // Update the formData state with the selectedNationality and selectedNationalityId
   setFormData(prevState => ({
     ...prevState,
-    selectedNationalityName: selectedNationality,
-    selectedNationalityId: selectedNationalityId,
+    selectedReferralInstituteName: selectedReferralInstitute,
+    selectedReferralInstituteId: selectedReferralInstituteId,
   }));
 };
+
+//For Referred By suggestions
+function fetchReferredBySuggestions(input){
+  if(!formData.selectedReferralInstituteId){
+    toast.error("Please Select the institute.", {
+      position: "top-right",
+      autoClose: 800,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+    return;
+  }
+  axios
+  .get(`${BACKEND_URL}/kiosk/getReferredByMaster?instituteId=${formData.selectedReferralInstituteId}&name=${input}`,{
+    headers: {
+      'Authorization': `Bearer ${adminToken}`
+  }
+  })
+  .then((response) => {
+      if (response.data && response.status === 200) {
+          setReferredBySuggestionList(response.data.data);
+      }
+  })
+  .catch((error) => {
+      console.error('Error fetching data:', error);
+  });
+}
+
+//For Referred To consultant Suggestions
+function fetchReferredToSuggestions(input){
+  axios
+  .get(`${BACKEND_URL}/kiosk/getReferredToConsultant?name=${input}&siteId=${profileData.siteId}`,{
+    headers: {
+      'Authorization': `Bearer ${adminToken}`
+  }
+  })
+  .then((response) => {
+      if (response.data && response.status === 200) {
+          setReferredToSuggestionList(response.data.data);
+      }
+  })
+  .catch((error) => {
+      console.error('Error fetching data:', error);
+  });
+}
+
+ //For getting Country/Nationality Master
+function fetchCountryMaster(input){
+  axios
+      .get(`${BACKEND_URL}/kiosk/getCountryMaster?name=${input}`,{
+        headers: {
+          'Authorization': `Bearer ${adminToken}`
+      }
+      })
+      .then((response) => {
+          if (response.data && response.status === 200) {
+            setCountryMasterSuggestionList(response.data.data);
+          }
+      })
+      .catch((error) => {
+          console.error('Error fetching data:', error);
+      });
+}
+
+//  //For getting Country/Nationality Master
+//  useEffect(() => {
+//   axios
+//       .get(`${BACKEND_URL}/kiosk/getCountryMaster`,{
+//         headers: {
+//           'Authorization': `Bearer ${adminToken}`
+//       }
+//       })
+//       .then((response) => {
+//           if (response.data && response.status === 200) {
+//               setCountryMasterList(response.data.data);
+//           }
+//       })
+//       .catch((error) => {
+//           console.error('Error fetching data:', error);
+//       });
+// }, [BACKEND_URL]);
+
+// const handleNationalityChange = (event) => {
+//   const selectedNationality = event.target.value;
+
+//   // Find the corresponding nationalityId based on the selected nationality
+//   const selectedNationalityId = countryMasterList.find(item => item.countryName === selectedNationality)?.countryId;
+
+//   // Update the formData state with the selectedNationality and selectedNationalityId
+//   setFormData(prevState => ({
+//     ...prevState,
+//     selectedNationalityName: selectedNationality,
+//     selectedNationalityId: selectedNationalityId,
+//   }));
+// };
 
   const handleAddressChange = (event) => {
       const { name, value } = event.target;
@@ -603,7 +722,7 @@ const handleNationalityChange = (event) => {
     }
 
     // Handle mobile number/WhatsApp Number input with length restriction
-    if (name === 'mobileNumber' || name === 'emergencyNumber') {
+    if (name === 'mobileNumber') {
         setFormData(prevState => ({
             ...prevState,
             [name]: value.slice(0, 10) // Restrict to max 10 digits
@@ -615,6 +734,11 @@ const handleNationalityChange = (event) => {
            whatsAppNumber: value.slice(0, 10) // Restrict to max 10 digits
         }));
         }
+    }else if (name === 'emergencyNumber') {
+      setFormData(prevState => ({
+          ...prevState,
+          [name]: value.slice(0, 10) // Restrict to max 10 digits
+      }));
     } else if (name === 'dob') {
         // Handle DOB change and calculate age
         const { age, unit } = calculateAge(value);
@@ -852,6 +976,11 @@ if(aadharData){
       whatsAppNumber:formData.whatsAppNumber,
       email:formData.emailId,
       nationalityId:Number(formData.selectedNationalityId),
+      instituteId:Number(formData.selectedReferralInstituteId),
+      referredById:Number(formData.selectedReferredById),
+      referredToDrId:Number(formData.selectedReferredToId),
+      refHospitalPatientNo:formData.refHospitalPatientNo,
+      referralTypeId:formData.referralTypeId,
       userId:Number(profileData.userId),
       aadhaarNumber:formattedAadharNumber,
       photo:patientImage === null || patientImage === '' ? 'NA' :patientImage,
@@ -963,7 +1092,15 @@ if(aadharData){
       selectedRelationName:'',
       selectedRelationId:'',
       emergencyNumber:'',
-      referalType:'',
+      selectedReferralTypeName:'',
+      selectedReferralTypeId:'',
+      selectedReferralInstituteName:'',
+      selectedReferralInstituteId:'',
+      selectedReferredByName:'',
+      selectedReferredById:'',
+      selectedReferredToName:'',
+      selectedReferredToId:'',
+      refHospitalPatientNo:''
     });
   }
 
@@ -1141,18 +1278,54 @@ return (
                 <div style={{ width:'50%'}}>
                 <div className="patientTypeDetailBox">
                   <div className='patientTypeDetailLabel'>Nationality</div>
-                  <div style={{width: "80%"}}>
-                    <select className='patientTypeSelectDropdown' placeholder='Select' value={formData.selectedNationalityName} onChange={(e) => handleNationalityChange(e)}>
-                      <option className='patientOptionDropdown' value="" disabled>Select Nationality</option>
-                      {countryMasterList.map((type, index) => (
-                        <option key={index} value={type.countryName}>{type.countryName}</option>
-                      ))}
-                    </select>
-                    </div>
+                  <div style={{ position: 'relative', width: '100%' }}>
+                    <input
+                      className='addressInput'
+                      placeholder='Type to search...'
+                      value={formData.selectedNationalityName}
+                      onChange={(e) => {
+                        setFormData(prevFormData => ({
+                          ...prevFormData,
+                          selectedNationalityName: e.target.value,
+                          selectedNationalityId: e.target.value.trim() === '' ? '' : prevFormData.selectedNationalityId
+                        }));
+                        if (e.target.value.trim() !== '') {
+                          fetchCountryMaster(e.target.value);
+                        } else {
+                          setCountryMasterSuggestionList([]); // Clears suggestions if input is cleared
+                        }
+                      }}
+                      style={{ paddingRight: '50px' }}
+                    />
+                    <img 
+                      style={{ position: 'absolute', right: '5px', top: '50%', transform: 'translateY(-50%)', cursor: 'pointer' }}
+                      src={searchIcon}
+                      alt="search Icon"
+                      onClick={() => formData.selectedNationalityName.trim() !== '' && fetchCountryMaster(formData.selectedNationalityName)}
+                    />
+                    {formData.selectedNationalityName.trim() !== '' && countryMasterSuggestionList.length > 0 && (
+                      <div className="suggestions-container">
+                        <ul className="suggestions">
+                          {countryMasterSuggestionList.map((suggestion, index) => (
+                            <li key={index} onClick={() => {
+                              setFormData(prevFormData => ({
+                                ...prevFormData,
+                                selectedNationalityName: suggestion.nationality,
+                                selectedNationalityId: suggestion.countryId
+                              }));
+                              setCountryMasterSuggestionList([]);
+                            }}>
+                              {suggestion.nationality}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
                   </div>
                 </div>
+                </div>
 
-      </div>
+              </div>
 
 
                 <div className='EmergencyContactBox'>
@@ -1192,21 +1365,21 @@ return (
                   </div>
                 </div>
 
-      </div>
+              </div>
 
-      <div className='ReferralBox'>
-      <div className='patientTypeDetailLabelHead'>REFERRAL DETAILS</div>
+              <div className='ReferralBox'>
+              <div className='patientTypeDetailLabelHead'>REFERRAL DETAILS</div>
                 <div style={{ width:'16%'}}>
                 <div className="patientTypeDetailBox">
                   <div className='patientTypeDetailLabel'>Referral Type</div>
-                      <div style={{display:'flex'}}>
-                      <select className='aadharNumberInput' name='referalType' value={formData.referalType} onChange={handleInputChange}>
-                          <option value="">Select referral type</option>
-                          {referralTypes.map(referral => (
-                              <option key={referral.profileId} value={referral.profileValue}>{referral.profileValue}</option>
-                          ))}
-                      </select>
-                      </div>
+                  <div style={{width: "80%"}}>
+                    <select className='patientTypeSelectDropdown' placeholder='Select' value={formData.selectedReferralTypeName} onChange={(e) => handleReferralChange(e)}>
+                      <option className='patientOptionDropdown' value="" disabled>Select Referral Type</option>
+                      {referralTypeMaster.map((type, index) => (
+                        <option key={index} value={type.profileValue}>{type.profileValue}</option>
+                      ))}
+                    </select>
+                    </div>
                   </div>
 
   
@@ -1214,13 +1387,13 @@ return (
                 <div style={{ width:'16%'}}>
                 <div className="patientTypeDetailBox">
                     <div className='patientTypeDetailLabel'>Institute</div>
-                    <div style={{display:'flex'}}>
-                            <select className='aadharNumberInput' name='institute' value={formData.institute} onChange={handleInputChange}>
-                                <option value="">Select Institute type</option>
-                                <option value="Type A">Type A</option>
-                                <option value="Type B">Type B</option>
-                                <option value="Type C">Type C</option>
-                            </select>
+                    <div style={{width: "80%"}}>
+                    <select className='patientTypeSelectDropdown' placeholder='Select' value={formData.selectedReferralInstituteName} onChange={(e) => handleReferralInstituteChange(e)}>
+                      <option className='patientOptionDropdown' value="" disabled>Select Institute</option>
+                      {referralInstituteMaster.map((type, index) => (
+                        <option key={index} value={type.refHospitalName}>{type.refHospitalName}</option>
+                      ))}
+                    </select>
                     </div>
                 </div>
 
@@ -1229,23 +1402,101 @@ return (
                 <div style={{ width:'16%'}}>
                 <div className="patientTypeDetailBox">
                   <div className='patientTypeDetailLabel'>Referred by</div>
-                  <div style={{position: 'relative', width:'97%'}}>
-                      <input className='aadharNumberInput' placeholder='' name='referredBy' value={formData.referredBy} onChange={handleInputChange} style={{paddingRight: '30px'}}></input>
-                      <img style={{ position: 'absolute', right: '5px', top: '50%', transform: 'translateY(-50%)', cursor: 'pointer' }} src={searchIcon} alt="search Icon" />
+                  <div style={{ position: 'relative', width: '100%' }}>
+                    <input
+                      className='addressInput'
+                      placeholder='Type to search...'
+                      value={formData.selectedReferredByName}
+                      onChange={(e) => {
+                        setFormData(prevFormData => ({
+                          ...prevFormData,
+                          selectedReferredByName: e.target.value,
+                          selectedReferredById: e.target.value.trim() === '' ? '' : prevFormData.selectedReferredById
+                        }));
+                        if (e.target.value.trim() !== '') {
+                          fetchReferredBySuggestions(e.target.value);
+                        } else {
+                          setReferredBySuggestionList([]); // Clears suggestions if input is cleared
+                        }
+                      }}
+                      style={{ paddingRight: '20px' }}
+                    />
+                    <img 
+                      style={{ position: 'absolute', right: '5px', top: '50%', transform: 'translateY(-50%)', cursor: 'pointer' }}
+                      src={searchIcon}
+                      alt="search Icon"
+                      onClick={() => formData.selectedReferredByName.trim() !== '' && fetchReferredBySuggestions(formData.selectedReferredByName)}
+                    />
+                    {formData.selectedReferredByName.trim() !== '' && referredBySuggestionList.length > 0 && (
+                      <div className="suggestions-container">
+                        <ul className="suggestions">
+                          {referredBySuggestionList.map((suggestion, index) => (
+                            <li key={index} onClick={() => {
+                              setFormData(prevFormData => ({
+                                ...prevFormData,
+                                selectedReferredByName: suggestion.doctorName,
+                                selectedReferredById: suggestion.doctorId
+                              }));
+                              setReferredBySuggestionList([]);
+                            }}>
+                              {suggestion.doctorName}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
                   </div>
-                    
-                  </div>
+                </div>
                 </div>
 
                 <div style={{ width:'16%'}}>
                 <div className="patientTypeDetailBox">
-                  <div className='patientTypeDetailLabel'>Refer to Consultant</div>
-                  <div style={{position: 'relative', width:'97%'}}>
-                      <input className='aadharNumberInput' placeholder='' name='referToConsultant' value={formData.referToConsultant} onChange={handleInputChange} style={{paddingRight: '30px'}}></input>
-                      <img style={{ position: 'absolute', right: '5px', top: '50%', transform: 'translateY(-50%)', cursor: 'pointer' }} src={searchIcon} alt="search Icon" />
+                  <div className='patientTypeDetailLabel'>Referred To Consultant</div>
+                  <div style={{ position: 'relative', width: '100%' }}>
+                    <input
+                      className='addressInput'
+                      placeholder='Type to search...'
+                      value={formData.selectedReferredToName}
+                      onChange={(e) => {
+                        setFormData(prevFormData => ({
+                          ...prevFormData,
+                          selectedReferredToName: e.target.value,
+                          selectedReferredToId: e.target.value.trim() === '' ? '' : prevFormData.selectedReferredToId
+                        }));
+                        if (e.target.value.trim() !== '') {
+                          fetchReferredToSuggestions(e.target.value);
+                        } else {
+                          setReferredToSuggestionList([]); // Clears suggestions if input is cleared
+                        }
+                      }}
+                      style={{ paddingRight: '20px' }}
+                    />
+                    <img 
+                      style={{ position: 'absolute', right: '5px', top: '50%', transform: 'translateY(-50%)', cursor: 'pointer' }}
+                      src={searchIcon}
+                      alt="search Icon"
+                      onClick={() => formData.selectedReferredToName.trim() !== '' && fetchReferredToSuggestions(formData.selectedReferredToName)}
+                    />
+                    {formData.selectedReferredToName.trim() !== '' && referredToSuggestionList.length > 0 && (
+                      <div className="suggestions-container">
+                        <ul className="suggestions">
+                          {referredToSuggestionList.map((suggestion, index) => (
+                            <li key={index} onClick={() => {
+                              setFormData(prevFormData => ({
+                                ...prevFormData,
+                                selectedReferredToName: suggestion.employeeName,
+                                selectedReferredToId: suggestion.employeeId
+                              }));
+                              setReferredToSuggestionList([]);
+                            }}>
+                              {suggestion.employeeName}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
                   </div>
-                    
-                  </div>
+                </div>
                 </div>
 
                 <div style={{ width:'16%'}}>
