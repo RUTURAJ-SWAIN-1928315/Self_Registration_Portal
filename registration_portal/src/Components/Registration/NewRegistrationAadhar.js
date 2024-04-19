@@ -10,6 +10,7 @@ import { useNavigate,useSearchParams  } from 'react-router-dom';
 import rightIcon from '../../Assests/Images/rightIcon.svg';
 import axios from 'axios';
 import { CircularProgress, Box } from '@mui/material';
+import AxiosInterceptor from '../AxiosInterceptor';
 
 function NewRegistrationAadhar() {
     
@@ -238,6 +239,7 @@ function NewRegistrationAadhar() {
     <div> 
     <Navbar pagename={'New Registration'} newRegistrationAadharIsCalled = {true} showOTPInputs={true}/>
     <div className='BookAppointmentBody'>
+    <AxiosInterceptor/>
         <div className='OTPcardBody' style={{width:'45%'}}>
           {!showOTPInputs ? (
             <div className='OTPcard'>

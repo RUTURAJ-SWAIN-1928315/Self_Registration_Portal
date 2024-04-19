@@ -91,15 +91,8 @@ function SelfRegistrationConfirmation() {
               <span className='GoAheadBtnText'>Understood</span>
             </button>
           </div>
-        
-        
         </>    
-     
-       
-       
       )}
-        
-        
     </div>
   )
 }

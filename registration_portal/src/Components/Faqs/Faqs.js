@@ -7,6 +7,7 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import axios from 'axios';
+import AxiosInterceptor from '../AxiosInterceptor';
 
 function Faqs() {
 const BACKEND_URL = process.env.REACT_APP_EMR_BACKEND_BASE_URL;
@@ -38,6 +39,7 @@ const adminToken = localStorage.getItem('adminToken');
 
   return (
     <div className='FaqPage'>
+    <AxiosInterceptor/>
       <Navbar pagename={"Frequently Asked Questions"} faqIsCalled={true}/>
       <div className='faqBody'>
         {faqs.map((faq) => (

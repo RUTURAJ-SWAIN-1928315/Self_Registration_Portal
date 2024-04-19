@@ -6,7 +6,8 @@ import BookAppointment from '../../Assests/Images/BookAppointment.svg'
 import hospitalPic from '../../Assests/Images/zydus_logo.png'
 import feedback from '../../Assests/Images/feedback.svg'
 import faq from '../../Assests/Images/faq.svg'
-import poweredBySOUL from '../../Assests/Images/poweredBySOUL.svg'
+import poweredBySOUL from '../../Assests/Images/poweredBySOUL.svg';
+import AxiosInterceptor from '../AxiosInterceptor';
 
 function Home() {
 
@@ -43,9 +44,8 @@ function Home() {
 // console.log("aadharData",localStorage.getItem('aadharData'),"alreadyRegistered:",localStorage.getItem('AlreadyRegisteredPatientDetails'),"profileData",localStorage.getItem('profileData'))
 
     return (
-    
         <div className='HomePage'>
-
+        <AxiosInterceptor/>
         <div className='NavBarContainerBox'>
             <div className='HospitalNamediv'>
                 <div>

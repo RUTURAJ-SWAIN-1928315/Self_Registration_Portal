@@ -6,6 +6,7 @@ import axios from 'axios';
 import NoData from "../../../Assests/Images/noData.svg";
 import { ToastContainer,toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import AxiosInterceptor from '../../AxiosInterceptor';
 
 
 function Billing() {
@@ -80,6 +81,7 @@ console.log("TableData",tableData);
       
   return (
     <div className='BillingPage'>
+    <AxiosInterceptor/>
       <Navbar pagename={"Billing"} billingIsCalled={true} />
       <div className='BillingTable'>
       {tableData.length === 0 ? (

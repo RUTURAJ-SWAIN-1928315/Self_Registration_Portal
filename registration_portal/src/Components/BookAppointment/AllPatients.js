@@ -9,6 +9,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
 import { LinearProgress, Box } from '@mui/material';
 import axios from 'axios';
+import AxiosInterceptor from '../AxiosInterceptor';
 
 function AllPatients() {
   const BACKEND_URL = process.env.REACT_APP_EMR_BACKEND_BASE_URL;
@@ -20,9 +21,7 @@ function AllPatients() {
   const [isLoading,setIsLoading] = useState(false);
   const navigate= useNavigate();
 
-  console.log("alreadyRegisteredPatientDetails",alreadyRegisteredPatientDetails)
  
-
   const [selectedCard, setSelectedCard] = useState(null);
 
   const handleCardSelect = (index) => {
@@ -115,6 +114,7 @@ function AllPatients() {
 
   return (
     <div className='AllPatientPage'>
+    <AxiosInterceptor/>
       <Navbar pagename={"Already Registration"} allPatientsIsCalled = {true}/>
       <div className='detailBox'>
         <div className='detailboxContainer'>
