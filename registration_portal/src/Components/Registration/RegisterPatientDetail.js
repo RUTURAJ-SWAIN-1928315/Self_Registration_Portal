@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { ToastContainer,toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import searchIcon from '../../Assests/Images/searchIcon.svg';
+import AxiosInterceptor from '../AxiosInterceptor';
  
 
 function RegisterPatientDetail() {
@@ -1083,6 +1084,7 @@ if(aadharData){
 
 return (
   <div className='RegisterPatientDetailPage'>
+  <AxiosInterceptor />   
     <Navbar pagename={'New Registration'} registerPatientDetailIsCalled={true}/>
      
      <div className='newRegisterPatientBody'>
