@@ -11,15 +11,13 @@ function HospitalDetails() {
 const BACKEND_URL = process.env.REACT_APP_EMR_BACKEND_BASE_URL;
 const profileData = JSON.parse(localStorage.getItem('profileData'));
 const adminToken = localStorage.getItem('adminToken');
+  //Commonly Setting the Bearer Token here so dont need to set header token in each API call.
+  axios.defaults.headers.common['Authorization'] = `Bearer hospital ${adminToken}`;
   const [hospitalData, setHospitalData] = useState(null);
 
   useEffect(() => {
     // Fetch data from the API endpoint
-    axios.get(`${BACKEND_URL}/kiosk/getAboutHospital?siteId=${profileData.siteId}`,{
-      headers:{
-        'Authorization': `Bearer ${adminToken}`
-      }
-    })
+    axios.get(`${BACKEND_URL}/kiosk/getAboutHospital?siteId=${profileData.siteId}`)
       .then(response => {
         // Assuming response.data contains the API response
         setHospitalData(response.data.data[0]);
@@ -30,9 +28,7 @@ const adminToken = localStorage.getItem('adminToken');
       });
 
   }, []); // Empty dependency array ensures useEffect runs only once
- console.log("response",hospitalData)
-
-
+ 
  function extractUsernameTwitter(url) {
     // Assuming the username is the last part of the URL after the last "/"
     const parts = url.split('/');

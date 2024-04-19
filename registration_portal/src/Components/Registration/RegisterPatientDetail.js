@@ -15,6 +15,8 @@ function RegisterPatientDetail() {
   const BACKEND_URL = process.env.REACT_APP_EMR_BACKEND_BASE_URL;
   const profileData = JSON.parse(localStorage.getItem('profileData'));
   const adminToken = localStorage.getItem('adminToken');
+  //Commonly Setting the Bearer Token here so dont need to set header token in each API call.
+  axios.defaults.headers.common['Authorization'] = `Bearer hospital ${adminToken}`;
  
  const aadharData = JSON.parse(localStorage.getItem('aadharData'));
  const [addressMaster,setAddressMaster] = useState([]);
@@ -27,8 +29,6 @@ function RegisterPatientDetail() {
   const [disableInputFieldAadhar,setDisableInputFieldAadhar] = useState(false);
   const [isLoading,setIsLoading] = useState(false);
   //const siteId = localStorage.getItem('SiteId');
-
-
  
   const [prefixMaster,setPrefixMaster] = useState([]);
   const [genderList,setGenderList] = useState([]);
@@ -264,11 +264,7 @@ const calculateAge = (dob) => {
   //For getting gender Master
   useEffect(() => {
     axios
-      .get(`${BACKEND_URL}/kiosk/getGenderMaster?categoryName=SEX`,{
-        headers:{
-          'Authorization': `Bearer ${adminToken}`
-        }
-      })
+      .get(`${BACKEND_URL}/kiosk/getGenderMaster?categoryName=SEX`)
       .then((response) => {
         if (response.data && response.status === 200) {
           const genders = response.data.data.map(item => ({
@@ -320,11 +316,7 @@ const calculateAge = (dob) => {
        //For getting Prefix master
    useEffect(() => {
     axios
-      .get(`${BACKEND_URL}/kiosk/getPrefixMaster`,{
-        headers:{
-          'Authorization': `Bearer ${adminToken}`
-        }
-      })
+      .get(`${BACKEND_URL}/kiosk/getPrefixMaster`)
       .then((response) => {
         if (response.data && response.status === 200) {
           const prefixes = response.data.data.map(item => ({
@@ -342,11 +334,7 @@ const calculateAge = (dob) => {
     //For getting Relationship master
     useEffect(() => {
       axios
-          .get(`${BACKEND_URL}/kiosk/getRelationMaster?categoryName=RELATION`, {
-              headers: {
-                  'Authorization': `Bearer ${adminToken}`
-              }
-          })
+          .get(`${BACKEND_URL}/kiosk/getRelationMaster?categoryName=RELATION`)
           .then((response) => {
               if (response.data && response.status === 200) {
                   setRelationMaster(response.data.data);
@@ -376,11 +364,7 @@ const calculateAge = (dob) => {
   //For getting Referral type master
   useEffect(() => {
     axios
-        .get(`${BACKEND_URL}/kiosk/getSimpleProfileMaster?categoryName=REFERRALTYPE`,{
-          headers: {
-            'Authorization': `Bearer ${adminToken}`
-        }
-        })
+        .get(`${BACKEND_URL}/kiosk/getSimpleProfileMaster?categoryName=REFERRALTYPE`)
         .then((response) => {
             if (response.data && response.status === 200) {
                 setReferralTypeMaster(response.data.data);
@@ -408,11 +392,7 @@ const handleReferralChange = (event) => {
 //For Referral Institute Master
 useEffect(() => {
   axios
-      .get(`${BACKEND_URL}/kiosk/getReferralInstitutesMaster?siteId=${profileData.siteId}`,{
-        headers: {
-          'Authorization': `Bearer ${adminToken}`
-      }
-      })
+      .get(`${BACKEND_URL}/kiosk/getReferralInstitutesMaster?siteId=${profileData.siteId}`)
       .then((response) => {
           if (response.data && response.status === 200) {
               setReferralInstituteMaster(response.data.data);
@@ -450,11 +430,7 @@ function fetchReferredBySuggestions(input){
     return;
   }
   axios
-  .get(`${BACKEND_URL}/kiosk/getReferredByMaster?instituteId=${formData.selectedReferralInstituteId}&name=${input}`,{
-    headers: {
-      'Authorization': `Bearer ${adminToken}`
-  }
-  })
+  .get(`${BACKEND_URL}/kiosk/getReferredByMaster?instituteId=${formData.selectedReferralInstituteId}&name=${input}`)
   .then((response) => {
       if (response.data && response.status === 200) {
           setReferredBySuggestionList(response.data.data);
@@ -468,11 +444,7 @@ function fetchReferredBySuggestions(input){
 //For Referred To consultant Suggestions
 function fetchReferredToSuggestions(input){
   axios
-  .get(`${BACKEND_URL}/kiosk/getReferredToConsultant?name=${input}&siteId=${profileData.siteId}`,{
-    headers: {
-      'Authorization': `Bearer ${adminToken}`
-  }
-  })
+  .get(`${BACKEND_URL}/kiosk/getReferredToConsultant?name=${input}&siteId=${profileData.siteId}`)
   .then((response) => {
       if (response.data && response.status === 200) {
           setReferredToSuggestionList(response.data.data);
@@ -486,11 +458,7 @@ function fetchReferredToSuggestions(input){
  //For getting Country/Nationality Master
 function fetchCountryMaster(input){
   axios
-      .get(`${BACKEND_URL}/kiosk/getCountryMaster?name=${input}`,{
-        headers: {
-          'Authorization': `Bearer ${adminToken}`
-      }
-      })
+      .get(`${BACKEND_URL}/kiosk/getCountryMaster?name=${input}`)
       .then((response) => {
           if (response.data && response.status === 200) {
             setCountryMasterSuggestionList(response.data.data);
@@ -500,38 +468,6 @@ function fetchCountryMaster(input){
           console.error('Error fetching data:', error);
       });
 }
-
-//  //For getting Country/Nationality Master
-//  useEffect(() => {
-//   axios
-//       .get(`${BACKEND_URL}/kiosk/getCountryMaster`,{
-//         headers: {
-//           'Authorization': `Bearer ${adminToken}`
-//       }
-//       })
-//       .then((response) => {
-//           if (response.data && response.status === 200) {
-//               setCountryMasterList(response.data.data);
-//           }
-//       })
-//       .catch((error) => {
-//           console.error('Error fetching data:', error);
-//       });
-// }, [BACKEND_URL]);
-
-// const handleNationalityChange = (event) => {
-//   const selectedNationality = event.target.value;
-
-//   // Find the corresponding nationalityId based on the selected nationality
-//   const selectedNationalityId = countryMasterList.find(item => item.countryName === selectedNationality)?.countryId;
-
-//   // Update the formData state with the selectedNationality and selectedNationalityId
-//   setFormData(prevState => ({
-//     ...prevState,
-//     selectedNationalityName: selectedNationality,
-//     selectedNationalityId: selectedNationalityId,
-//   }));
-// };
 
   const handleAddressChange = (event) => {
       const { name, value } = event.target;
@@ -572,11 +508,7 @@ function fetchCountryMaster(input){
     setPinCodeSuggestions([]); // Clear pin code suggestions
   }else if (name === "pinCode" && value.length === 6){
       if (value.length === 6) {
-        axios.get(`${BACKEND_URL}/kiosk/getAddressMaster?pinCode=${value}`, {
-          headers:{
-            'Authorization': `Bearer ${adminToken}`
-          }
-        })
+        axios.get(`${BACKEND_URL}/kiosk/getAddressMaster?pinCode=${value}`)
         .then((response) => {
           if (response.data.status === "success" && response.data.data.length > 0) {
             const data = response.data.data;
@@ -820,13 +752,9 @@ function fetchCountryMaster(input){
   const validateAadhar = () => {
     return new Promise((resolve, reject) => {
         const formattedAadharNumber = formData.aadharNumber.replace(/\s/g, '');
-        axios.get(`${BACKEND_URL}/kiosk/validateAadhaar?aadhaarNo=${formattedAadharNumber}`,{
-          headers:{
-            'Authorization': `Bearer ${adminToken}`
-          }
-        })
+        axios.get(`${BACKEND_URL}/kiosk/validateAadhaar?aadhaarNo=${formattedAadharNumber}`)
             .then((response) => {
-                if (response.data.status === 'success') {
+                if (response.status === 200) {
                     
                     resolve(true);
                 } else {
@@ -980,7 +908,7 @@ if(aadharData){
       referredById:Number(formData.selectedReferredById),
       referredToDrId:Number(formData.selectedReferredToId),
       refHospitalPatientNo:formData.refHospitalPatientNo,
-      referralTypeId:formData.referralTypeId,
+      referralTypeId:formData.selectedReferralTypeId,
       userId:Number(profileData.userId),
       aadhaarNumber:formattedAadharNumber,
       photo:patientImage === null || patientImage === '' ? 'NA' :patientImage,
@@ -1012,14 +940,10 @@ if(aadharData){
     }
     
     axios
-    .post(`${BACKEND_URL}/kiosk/registerPatient`,newRegistrationRequestBody,{
-      headers:{
-        'Authorization': `Bearer ${adminToken}`
-      }
-    })
+    .post(`${BACKEND_URL}/kiosk/registerPatient`,newRegistrationRequestBody)
      .then(async (response) => {
       setIsLoading(false);
-          if(response.data.status === true){
+          if(response.status === 200){
           localStorage.setItem("newRegistrationHIMSResponse",JSON.stringify(response.data.HimsResponse))
           getNewRegisterPatientDetail(response.data.HimsResponse.preRegisterId)
           toast.success("Self Registration Successfull", {
@@ -1108,14 +1032,10 @@ if(aadharData){
 
   function getNewRegisterPatientDetail(preRegisterId){
     axios
-    .get(`${BACKEND_URL}/kiosk/getNewRegisteredPatient?preRegisterId=${preRegisterId}`,{
-      headers:{
-        'Authorization': `Bearer ${adminToken}`
-      }
-    })
+    .get(`${BACKEND_URL}/kiosk/getNewRegisteredPatient?preRegisterId=${preRegisterId}`)
      .then(async (response) => {
       setIsLoading(false);
-          if(response.data.status === true){
+          if(response.status === 200){
           localStorage.setItem("NewRegisteredPatientDetails",JSON.stringify(response.data.data))
      }
      })
