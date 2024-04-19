@@ -11,6 +11,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import slotMarks from "../../../Assests/Images/slotMarks.svg"
 import 'react-datepicker/dist/react-datepicker.css';
 import axios from 'axios';
+import AxiosInterceptor from '../../AxiosInterceptor';
 
 
 function BookConsultation() {
@@ -408,6 +409,7 @@ function BookConsultation() {
       
   return (
     <div className='BookConsultationPage'>
+    <AxiosInterceptor/>
      <Navbar pagename={"Book Consultation"} bookConsultationIsCalled={true}/>
      <div className='AppointmentContent'>
 

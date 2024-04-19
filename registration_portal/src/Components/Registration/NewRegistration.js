@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import ReplayIcon from '@mui/icons-material/Replay';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { ToastContainer,toast } from 'react-toastify';
+import AxiosInterceptor from '../AxiosInterceptor';
 
 function NewRegistration() {
   const navigate = useNavigate();
@@ -149,6 +150,7 @@ function NewRegistration() {
     <div>
       <Navbar pagename={'New Registration'} newRegistrationCaptureIsCalled = {true}/>
       <div className='capturePageBody'>
+      <AxiosInterceptor/>
         <div className='captureContainer'>
           <div className='captureHeader'>Patient Photo</div>
           <div className='capturePhoto'>

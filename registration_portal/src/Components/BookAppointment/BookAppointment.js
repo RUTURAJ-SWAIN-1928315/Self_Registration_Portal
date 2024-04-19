@@ -10,6 +10,7 @@ import { ToastContainer,toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { CircularProgress, Box } from '@mui/material';
 import axios from 'axios';
+import AxiosInterceptor from '../AxiosInterceptor';
 
 
 function BookAppointment() {
@@ -338,6 +339,7 @@ useEffect(() => {
 
   return (
     <div>
+    <AxiosInterceptor/>
       <Navbar pagename={'Book Appointment'} bookAppointmentIsCalled={true}/>
 
       <div className='BookAppointmentBody'>
