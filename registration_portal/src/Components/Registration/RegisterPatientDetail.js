@@ -947,14 +947,14 @@ if(aadharData){
           localStorage.setItem("newRegistrationHIMSResponse",JSON.stringify(response.data.HimsResponse))
           getNewRegisterPatientDetail(response.data.HimsResponse.preRegisterId)
           toast.success("Self Registration Successfull", {
-         position: "top-right",
-        autoClose: 1000,
-         hideProgressBar: false,
-         closeOnClick: true,
-         pauseOnHover: true,
-         draggable: true,
-         progress: undefined,
-      });
+            position: "top-right",
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
       handleClearAllInputs();
 
       // Wait for 2 seconds
@@ -965,6 +965,18 @@ if(aadharData){
      })
     .catch((error) => {
       setIsLoading(false);
+      if(error.response.status === 500){
+        toast.error("Internal Server Error!!!!", {
+          position: "top-right",
+         autoClose: 1000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+       });
+       return;
+      }else{
       toast.error("Something Went Wrong!!!!", {
         position: "top-right",
        autoClose: 1000,
@@ -974,6 +986,7 @@ if(aadharData){
         draggable: true,
         progress: undefined,
      });
+    }
       console.error('Error saving data:', error);
     });
     
@@ -1031,6 +1044,19 @@ if(aadharData){
   
 
   function getNewRegisterPatientDetail(preRegisterId){
+    if(preRegisterId===null || preRegisterId === undefined){
+      setIsLoading(false);
+      toast.error("Internal Server Error!!!!", {
+        position: "top-right",
+       autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+     });
+     return;
+    }
     axios
     .get(`${BACKEND_URL}/kiosk/getNewRegisteredPatient?preRegisterId=${preRegisterId}`)
      .then(async (response) => {
