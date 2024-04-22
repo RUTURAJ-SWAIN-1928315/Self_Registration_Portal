@@ -1278,9 +1278,9 @@ return (
 
                 <div className='EmergencyContactBox'>
                 <div className='patientTypeDetailLabelHead'>EMERGENCY CONTACT</div>
-                <div style={{ width:'16%'}}>
+                <div style={{ width:'auto'}}>
                   <div className="patientTypeDetailBox">
-                      <div className='patientTypeDetailLabel'>Contact Person</div>
+                      <div style={{width:'240px'}} className='patientTypeDetailLabel'>Contact Person</div>
                     <div style={{display:'flex'}}>
                     <input className='aadharNumberInput' placeholder='Enter Name' name="contactPerson"
                      value={formData.contactPerson}  onChange={handleInputChange}></input>
@@ -1288,7 +1288,7 @@ return (
                   </div>
   
                 </div>
-                <div style={{ width:'16%'}}>
+                <div style={{ width:'auto'}}>
                   <div className="patientTypeDetailBox">
                     <div className='patientTypeDetailLabel'>Relationship</div>
                    <div style={{width: "80%"}}>
@@ -1303,7 +1303,7 @@ return (
 
                 </div>
 
-                <div style={{ width:'16%'}}>
+                <div style={{ width:'auto'}}>
                 <div className="patientTypeDetailBox">
                   <div className='patientTypeDetailLabel'>Emergency Contact Number</div>
                   <div style={{display:'flex'}}>
@@ -1317,7 +1317,7 @@ return (
 
               <div className='ReferralBox'>
               <div className='patientTypeDetailLabelHead'>REFERRAL DETAILS</div>
-                <div style={{ width:'16%'}}>
+                <div style={{ width:'auto'}}>
                 <div className="patientTypeDetailBox">
                   <div className='patientTypeDetailLabel'>Referral Type</div>
                   <div style={{width: "80%"}}>
@@ -1332,7 +1332,7 @@ return (
 
   
                 </div>
-                <div style={{ width:'16%'}}>
+                <div style={{ width:'auto'}}>
                 <div className="patientTypeDetailBox">
                     <div className='patientTypeDetailLabel'>Institute</div>
                     <div style={{width: "80%"}}>
@@ -1347,7 +1347,7 @@ return (
 
                 </div>
 
-                <div style={{ width:'16%'}}>
+                <div style={{ width:'auto'}}>
                 <div className="patientTypeDetailBox">
                   <div className='patientTypeDetailLabel'>Referred by</div>
                   <div style={{ position: 'relative', width: '100%' }}>
@@ -1397,7 +1397,7 @@ return (
                 </div>
                 </div>
 
-                <div style={{ width:'16%'}}>
+                <div style={{ width:'auto'}}>
                 <div className="patientTypeDetailBox">
                   <div className='patientTypeDetailLabel'>Referred To Consultant</div>
                   <div style={{ position: 'relative', width: '100%' }}>
@@ -1447,11 +1447,11 @@ return (
                 </div>
                 </div>
 
-                <div style={{ width:'16%'}}>
+                <div style={{ width:'auto'}}>
                 <div className="patientTypeDetailBox">
                   <div className='patientTypeDetailLabel'>Ref. Hospital Patient Number</div>
                   <div style={{display:'flex'}}>
-                  <input className='aadharNumberInput' placeholder='Enter Ref. Hospital patient Number' name='refHospitalPatientNo' value={formData.refHospitalPatientNo} onChange={handleInputChange}></input>
+                  <input className='aadharNumberInput' placeholder='Enter patient Number' name='refHospitalPatientNo' value={formData.refHospitalPatientNo} onChange={handleInputChange}></input>
                   </div>
                     
                   </div>
