@@ -23,7 +23,8 @@
 }
 
 .HospitalName{
-    color: var(--Jade-600, #0FA968);
+    /* color: var(--Jade-600, #0FA968); */
+    color: #000;
     font-size: 22px;
     font-style: normal;
     font-weight: 700;
@@ -34,7 +35,8 @@
 }
 
 .HospitalLoc{
-    color: var(--Jade-600, #0FA968);
+    /* color: var(--Jade-600, #0FA968); */
+    color: #000;
     font-size: 22px;
     font-style: normal;
     font-weight: 500;

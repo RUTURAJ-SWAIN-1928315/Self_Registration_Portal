@@ -54,7 +54,7 @@ const adminToken = localStorage.getItem('adminToken');
         <div className='detailTextArea'>
           {hospitalData && (
             <>
-              <div className='HospitalName'>
+              <div className='HospitalNameDetail'>
                 {hospitalData.branchName}
               </div>
               <div className='LocName'>

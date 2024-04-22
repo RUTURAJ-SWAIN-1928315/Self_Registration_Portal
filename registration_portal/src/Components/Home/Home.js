@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import './Home.css';
 import NewRegistrationImage from '../../Assests/Images/NewRegistration.svg';
 import BookAppointment from '../../Assests/Images/BookAppointment.svg'
-import hospitalPic from '../../Assests/Images/zydus_logo.png'
+import hospitalPic from '../../Assests/Images/zydus_logo2.jpg'
 import feedback from '../../Assests/Images/feedback.svg'
 import faq from '../../Assests/Images/faq.svg'
 import poweredBySOUL from '../../Assests/Images/poweredBySOUL.svg';
@@ -24,22 +24,27 @@ function Home() {
         navigate('/BookAppointment');
     };
 
-    const handleAboutKimsCardClick = () => {
-        navigate('/hospitalDetails');
-    };
-
-    // const handleMyLocationCardClick = () => {
-    //     alert(`Clicked on handleMyLocationCardClick`);
+    // const handleAboutKimsCardClick = () => {
+    //     navigate('/hospitalDetails');
     // };
+
+    const handleAboutKimsCardClick = () => {
+      // navigate(`/WorkInProgress`);
+      window.open('https://zydushospitals.com/#top-tab1', '_blank');
+  };
 
     const handlefeedbackCardClick = () => {
         // navigate(`/WorkInProgress`);
-        window.open('https://iamkhedut.com/feedback/2', '_blank');
+        window.open('https://services.zydushospitals.com/zydus_form/myform/8', '_blank');
     };
 
+    // const handlefaqCardClick = () => {
+    //     navigate('/faqs');
+    // };
+
     const handlefaqCardClick = () => {
-        navigate('/faqs');
-    };
+      window.open('https://zydushospitals.com/international-faq', '_blank');
+  };
 
 // console.log("aadharData",localStorage.getItem('aadharData'),"alreadyRegistered:",localStorage.getItem('AlreadyRegisteredPatientDetails'),"profileData",localStorage.getItem('profileData'))
 
@@ -49,7 +54,7 @@ function Home() {
         <div className='NavBarContainerBox'>
             <div className='HospitalNamediv'>
                 <div>
-                    <img style={{height:'90px', width:'90px', borderRadius:'50%' }} src={hospitalPic} alt="Hospital" />
+                    <img style={{height:'90px', width:'90px' }} src={hospitalPic} alt="Hospital" />
                 </div>
                 <div className='HospitalName'>
                     <div>
