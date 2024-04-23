@@ -7,7 +7,7 @@ import hospitalPic from '../../Assests/Images/zydus_logo2.jpg'
 import feedback from '../../Assests/Images/feedback.svg'
 import faq from '../../Assests/Images/faq.svg'
 import poweredBySOUL from '../../Assests/Images/poweredBySOUL.svg';
-import AxiosInterceptor from '../AxiosInterceptor';
+// import AxiosInterceptor from '../AxiosInterceptor';
 
 function Home() {
 
@@ -50,7 +50,7 @@ function Home() {
 
     return (
         <div className='HomePage'>
-        <AxiosInterceptor/>
+        {/* <AxiosInterceptor/> */}
         <div className='NavBarContainerBox'>
             <div className='HospitalNamediv'>
                 <div>

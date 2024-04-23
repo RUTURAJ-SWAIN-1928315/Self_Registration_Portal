@@ -9,7 +9,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
 import { LinearProgress, Box } from '@mui/material';
 import axios from 'axios';
-import AxiosInterceptor from '../AxiosInterceptor';
+// import AxiosInterceptor from '../AxiosInterceptor';
 
 function AllPatients() {
   const BACKEND_URL = process.env.REACT_APP_EMR_BACKEND_BASE_URL;
@@ -114,7 +114,7 @@ function AllPatients() {
 
   return (
     <div className='AllPatientPage'>
-    <AxiosInterceptor/>
+    {/* <AxiosInterceptor/> */}
       <Navbar pagename={"Already Registration"} allPatientsIsCalled = {true}/>
       <div className='detailBox'>
         <div className='detailboxContainer'>

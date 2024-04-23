@@ -3,7 +3,7 @@ import './OpdCheckin.css';
 import Navbar from '../../Navbar/Navbar';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Button } from '@mui/material';
 import axios from 'axios';
-import AxiosInterceptor from '../../AxiosInterceptor';
+// import AxiosInterceptor from '../../AxiosInterceptor';
  
 
 
@@ -63,7 +63,7 @@ function OpdCheckin() {
   };
   return (
     <div className='OpdCheckinPage'>
-    <AxiosInterceptor/>
+    {/* <AxiosInterceptor/> */}
       <Navbar pagename={"OPD Check-in"} opdCheckinIsCalled={true}/>
       <div className='opdcheckintable'>
       <TableContainer>

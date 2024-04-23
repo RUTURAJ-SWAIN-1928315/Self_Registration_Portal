@@ -6,7 +6,7 @@ import axios from 'axios';
 import HospitalPic from '../../Assests/Images/zydus_logo.png';
 import Instagram from '../../Assests/Images/instagram.svg';
 import Twitter from '../../Assests/Images/twitter.svg';
-import AxiosInterceptor from '../AxiosInterceptor';
+// import AxiosInterceptor from '../AxiosInterceptor';
 
 function HospitalDetails() {
 const BACKEND_URL = process.env.REACT_APP_EMR_BACKEND_BASE_URL;
@@ -45,7 +45,7 @@ const adminToken = localStorage.getItem('adminToken');
   
   return (
     <div className='hospitalDetail'>
-    <AxiosInterceptor/>
+    {/* <AxiosInterceptor/> */}
       <Navbar pagename={"About Hospital"} hospitalDetails={true}/>
       <div className='detailBody'>
         <div style={{padding:'5px'}}>

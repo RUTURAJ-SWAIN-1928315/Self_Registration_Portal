@@ -6,7 +6,7 @@ import axios from 'axios';
 import { ToastContainer,toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import NoData from "../../../Assests/Images/noData.svg";
-import AxiosInterceptor from '../../AxiosInterceptor';
+// import AxiosInterceptor from '../../AxiosInterceptor';
 
 function LabReport() {
   const BACKEND_URL = process.env.REACT_APP_EMR_BACKEND_BASE_URL;
@@ -64,7 +64,7 @@ const handlePrint = (reportUrl,mrn) => {
   };
   return (
     <div className='LabReportPage'>
-    <AxiosInterceptor/>
+    {/* <AxiosInterceptor/> */}
     <Navbar pagename={"Lab Reports"} labReportIsCalled={true}/>
     {tableData.length === 0 ? (
       <div style={{ textAlign: 'center', padding: '20px' }}>

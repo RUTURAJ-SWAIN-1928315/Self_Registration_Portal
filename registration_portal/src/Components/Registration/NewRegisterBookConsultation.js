@@ -13,7 +13,7 @@ import searchIcon from "../../Assests/Images/searchIcon.svg";
 import { ToastContainer,toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import slotMarks from "../../Assests/Images/slotMarks.svg";
-import AxiosInterceptor from '../AxiosInterceptor';
+// import AxiosInterceptor from '../AxiosInterceptor';
 
 function NewRegisterBookConsultation() {
 
@@ -379,7 +379,7 @@ const handleSaveAppointment = async () => {
       <PatientCard NewRegisterBookConsultationIsCalled={true}/>
 
     <div className='AppointmentContent'>
-    <AxiosInterceptor/>
+    {/* <AxiosInterceptor/> */}
       {/* Date Container  */}
       <div style={{display:'flex'}}>
        <div className='DateContainer'>
