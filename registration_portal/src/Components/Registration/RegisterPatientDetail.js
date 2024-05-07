@@ -320,11 +320,7 @@ const calculateAge = (dob) => {
       .get(`${BACKEND_URL}/kiosk/getPrefixMaster`)
       .then((response) => {
         if (response.data && response.status === 200) {
-          const prefixes = response.data.data.map(item => ({
-            prefix: item.prefix,
-            prefixId: item.prefixId,
-          }));
-          setPrefixMaster(prefixes);
+          setPrefixMaster(response.data.data);
         }
       })
       .catch((error) => {
@@ -690,19 +686,40 @@ function fetchCountryMaster(input){
     }
 };
 
-  const handlePrefixChange = (event) => {
-    const selectedPrefix = event.target.value;
+
+const handlePrefixChange = (event) => {
+  const selectedPrefix = event.target.value;
+
+  // Find the corresponding prefixId based on the selected prefix
+  const selectedPrefixId = prefixMaster.find(item => item.prefix === selectedPrefix)?.prefixId;
+
+  // Find the corresponding genderId based on the selected prefix
+  const selectedGenderId = prefixMaster.find(item => item.prefix === selectedPrefix)?.genderId;
+
   
-    // Find the corresponding prefixId based on the selected prefix
-    const selectedPrefixId = prefixMaster.find(item => item.prefix === selectedPrefix)?.prefixId;
+  // Find the corresponding gender value based on the selected genderId
+  const selectedGender = genderList.find(item => item.genderId === selectedGenderId)?.gender;
+
+  // Find the corresponding gender code based on the selected genderId
+  const selectedGenderCode = genderList.find(item => item.genderId === selectedGenderId)?.genderCode;
   
-    // Update the formData state with the selectedPrefix and selectedPrefixId
-    setFormData(prevState => ({
-      ...prevState,
-      selectedPrefix: selectedPrefix,
-      selectedPrefixId: selectedPrefixId,
-    }));
-  };
+  console.log('Selected Prefix:', selectedPrefix); 
+  console.log('Selected Gender ID:', selectedGenderId); 
+  console.log('Selected Gender:', selectedGender); 
+  console.log('Selected Gender Code:', selectedGenderCode); 
+
+  // Update the formData state with the selectedPrefix, selectedPrefixId, and selectedGenderId
+  setFormData(prevState => ({
+    ...prevState,
+    selectedPrefix: selectedPrefix,
+    selectedPrefixId: selectedPrefixId,
+    selectedGenderId: selectedGenderId,
+    selectedGender: selectedGender , // If selectedGender is not found, set an empty string
+    selectedGenderCode: selectedGenderCode ,
+  }));
+};
+
+
 
   const handleGenderChange = (event) => {
     const selectedGender = event.target.value;
