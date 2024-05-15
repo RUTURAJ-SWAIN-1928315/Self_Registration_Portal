@@ -1,6 +1,6 @@
 .capturePageBody{
-    height: 86.5vh;
-    background-color:#EFF2F7;
+    height: 90vh;
+    background-color:#1a9ea93d;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -65,5 +65,5 @@
     flex-shrink: 0;
     border-radius: 10px;
     font-size: larger;
-    background-color:#EFF2F7;
+    background-color:#1a9ea93d;
 }

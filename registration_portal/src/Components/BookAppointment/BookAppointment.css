@@ -1,6 +1,6 @@
 .BookAppointmentBody{
-    height: 77.5vh;
-    background-color:#EFF2F7;
+    height: 81.5vh;
+    background-color:#1a9ea93d;
     display: flex;
     justify-content: center;
     /* align-items: center; */
@@ -37,7 +37,7 @@
     align-items: center;
     border-radius: 4px;
     border: 2px solid var(--Grey4, #DFE7F7);
-    background: #EFF2F7;
+    /* background: #1a9ea93d; */
     box-shadow: 4px 4px 250px 0px rgba(0, 0, 0, 0.20);
 }
 
@@ -50,7 +50,8 @@
     font-style: normal;
     line-height: 24px;
     border: none;
-    background: #EFF2F7;
+    background: #414148;
+    color: #FFF;
 }
 
 .ArrowBtn{

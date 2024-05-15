@@ -1,5 +1,5 @@
 .HomePage{
-    background-color:#EFF2F7;
+    background-color:#1a9ea93d;
     height: 100vh;
     overflow-y: auto;
     overflow-x: hidden;
@@ -12,7 +12,7 @@
     align-items: center;
     gap: 10px;
     /* border-bottom: 1px solid var(--scarpa-flow-200, #D9D9DE); */
-    background: #EFF2F7;
+    /* background: #1a9ea93d; */
     justify-content: space-between;
 }
 

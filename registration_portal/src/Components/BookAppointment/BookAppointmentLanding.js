@@ -33,7 +33,7 @@ const handleOPDCheckinClick = () => {
 
   return (
     <>
-    <div style={{background:'#EFF2F7', height:'100vh'}}>    
+    <div style={{background:'#1a9ea93d', height:'100vh'}}>    
      <Navbar pagename={'Already Registered'} BookAppointmentLandingIsCalled={true}/>
      <PatientCard BookAppointmentLandingIsCalled={true}/>
 
