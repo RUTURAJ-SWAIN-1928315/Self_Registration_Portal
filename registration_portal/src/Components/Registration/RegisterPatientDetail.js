@@ -827,14 +827,22 @@ const handlePrefixChange = (event) => {
   let mandatoryFields = [
     'selectedPrefix',
     'firstName',
+    'lastName',
+    'selectedNationalityName',
+    'emailId',
+    'contactPerson',
+    'selectedRelationName',
+    'emergencyNumber',
     'selectedGender',
+    'selectedReferralInstituteName',
     'pinCode',
     'mobileNumber',
     'age',
     'district',
     'state',
     'country',
-    'dob'
+    'dob',
+    'address'
   ];
 
    // Add 'village' or 'city' to mandatory fields based on selected area
@@ -1155,9 +1163,9 @@ return (
              <div className="patientTypeDetailBox">
                 <div className='patientTypeDetailLabel'>Patient Name<span className='mandatoryField'>*</span></div>
                   <div style={{display:'flex'}}>
-                  <input style={{borderRadius: '6px 0px 0px 6px'}} className='patientNameInput' placeholder='First Name' value={formData.firstName} disabled={disableInputFieldAadhar} onChange={handleInputChange} name="firstName"></input>
+                  <input style={{borderRadius: '6px 0px 0px 6px'}} className='patientNameInput' placeholder='First Name*' value={formData.firstName} disabled={disableInputFieldAadhar} onChange={handleInputChange} name="firstName"></input>
                   <input style={{borderRadius: '0px'}} className='patientNameInput' placeholder='Middle Name' value={formData.middleName} disabled={disableInputFieldAadhar} onChange={handleInputChange} name="middleName"></input>
-                  <input style={{borderRadius: '0px 6px 6px 0px'}} className='patientNameInput' placeholder='Last Name' value={formData.lastName} disabled={disableInputFieldAadhar} onChange={handleInputChange} name="lastName"></input>
+                  <input style={{borderRadius: '0px 6px 6px 0px'}} className='patientNameInput' placeholder='Last Name*' value={formData.lastName} disabled={disableInputFieldAadhar} onChange={handleInputChange} name="lastName"></input>
                 </div>
               </div>
               <div style={{display:'flex', gap:'20px',alignItems:'baseline'}}>
@@ -1232,7 +1240,7 @@ return (
                 </div>
                 <div style={{ width:'50%'}}>
                 <div className="patientTypeDetailBox">
-                  <div className='patientTypeDetailLabel'>Email</div>
+                  <div className='patientTypeDetailLabel'>Email<span className='mandatoryField'>*</span></div>
                   <div style={{display:'flex'}}>
                   <input className='aadharNumberInput' placeholder='example@email.com' name='emailId' value={formData.emailId} onChange={handleInputChange}></input>
                   </div>
@@ -1242,7 +1250,7 @@ return (
 
                 <div style={{ width:'50%'}}>
                 <div className="patientTypeDetailBox">
-                  <div className='patientTypeDetailLabel'>Nationality</div>
+                  <div className='patientTypeDetailLabel'>Nationality<span className='mandatoryField'>*</span></div>
                   <div style={{ position: 'relative', width: '100%' }}>
                     <input
                       className='addressInput'
@@ -1294,10 +1302,10 @@ return (
 
 
                 <div className='EmergencyContactBox'>
-                <div className='patientTypeDetailLabelHead'>EMERGENCY CONTACT</div>
+                <div className='patientTypeDetailLabelHead'>EMERGENCY CONTACT<span className='mandatoryField'>*</span></div>
                 <div style={{ width:'auto'}}>
                   <div className="patientTypeDetailBox">
-                      <div style={{width:'240px'}} className='patientTypeDetailLabel'>Contact Person</div>
+                      <div style={{width:'240px'}} className='patientTypeDetailLabel'>Contact Person<span className='mandatoryField'>*</span></div>
                     <div style={{display:'flex'}}>
                     <input className='aadharNumberInput' placeholder='Enter Name' name="contactPerson"
                      value={formData.contactPerson}  onChange={handleInputChange}></input>
@@ -1307,7 +1315,7 @@ return (
                 </div>
                 <div style={{ width:'auto'}}>
                   <div className="patientTypeDetailBox">
-                    <div className='patientTypeDetailLabel'>Relationship</div>
+                    <div className='patientTypeDetailLabel'>Relationship<span className='mandatoryField'>*</span></div>
                    <div style={{width: "80%"}}>
                     <select className='patientTypeSelectDropdown' placeholder='Select' value={formData.selectedRelationName} onChange={(e) => handleRelationChange(e)}>
                       <option className='patientOptionDropdown' value="" disabled>Select Relation</option>
@@ -1322,7 +1330,7 @@ return (
 
                 <div style={{ width:'auto'}}>
                 <div className="patientTypeDetailBox">
-                  <div className='patientTypeDetailLabel'>Emergency Contact Number</div>
+                  <div className='patientTypeDetailLabel'>Emergency Contact Number<span className='mandatoryField'>*</span></div>
                   <div style={{display:'flex'}}>
                   <input className='aadharNumberInput' placeholder='Enter Phone Number' name='emergencyNumber' value={formData.emergencyNumber} onChange={handleInputChange}></input>
                   </div>
@@ -1351,7 +1359,7 @@ return (
                 </div>
                 <div style={{ width:'auto'}}>
                 <div className="patientTypeDetailBox">
-                    <div className='patientTypeDetailLabel'>Institute</div>
+                    <div className='patientTypeDetailLabel'>Institute<span className='mandatoryField'>*</span></div>
                     <div style={{width: "80%"}}>
                     <select className='patientTypeSelectDropdown' placeholder='Select' value={formData.selectedReferralInstituteName} onChange={(e) => handleReferralInstituteChange(e)}>
                       <option className='patientOptionDropdown' value="" disabled>Select Institute</option>
