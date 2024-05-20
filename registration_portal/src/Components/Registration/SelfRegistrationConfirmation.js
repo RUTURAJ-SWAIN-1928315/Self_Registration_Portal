@@ -51,12 +51,13 @@ function SelfRegistrationConfirmation() {
                           {newRegistrationHIMSResponse.patientName}
                         </div>
                     </div>
+                    {/* Changed it to reference No: and showing message on recommendation of HIS Team */}
                     <div style={{display:'flex', flexDirection:'row'}}>
                         <div className='HeadText'>
-                            ID : 
+                            Reference No: 
                         </div>
                         <div className='SubText'>
-                         {newRegistrationHIMSResponse.preRegisterId}
+                         {newRegistrationHIMSResponse.message}
                         </div>
                     </div>
                     
